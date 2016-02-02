@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.net.SocketAddress"
+					value="org.apache.mina.integration.beans.InetSocketAddressEditor">
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!-- 心跳过滤器的构造参数 -->
+	<bean id="heartBeatMessageFactory" class="com.bili.diushoujuaner.chat.filter.keepAlive.KeepAliveMessageFactoryImpl"/>
+	<bean id="heartBeatRequestTimeoutHandler" class="com.bili.diushoujuaner.chat.filter.keepAlive.KeepAliveRequestTimeoutHandlerImpl" />
+	<bean id="org.apache.mina.core.session.IdleStatus.BOTH_IDLE" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean" />
+	<!-- 线程处理过滤器 -->
+	<bean id="executorFilter" class="org.apache.mina.filter.executor.ExecutorFilter" />
+	<!-- websocket编码解码器 -->
+	<bean id="webSocketEncoder" class="com.bili.diushoujuaner.chat.filter.websocket.WebsocketServerEncoder"/>
+	<bean id="webSocketDecoder" class="com.bili.diushoujuaner.chat.filter.websocket.WebsocketServerDecoder"/>
+	<!-- webcosket编码工厂 -->
+	<bean id="websocketServerCodecFactory" class="com.bili.diushoujuaner.chat.filter.websocket.WebsocketServerCodecFactory">
+	    <constructor-arg index="0" ref="webSocketEncoder"/>
+	    <constructor-arg index="1" ref="webSocketDecoder"/>
+	</bean>
+	<!-- 对象编码工厂 -->
+	<bean id="objectSerializationCodecFactory" class="org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory"/>
+	<!-- unifyFactory -->
+	<bean id="unifyFactory" class="com.bili.diushoujuaner.chat.filter.unify.UnifyProtocolCodecFactory">
+	    <constructor-arg index="0" ref="objectSerializationCodecFactory"/>
+	    <constructor-arg index="1" ref="websocketServerCodecFactory"/>
+	</bean>
+	<!-- 编码过滤器 -->
+	<bean id="unifyFilter" class="com.bili.diushoujuaner.chat.filter.unify.UnifyProtocolCodecFilter">
+		<constructor-arg ref="unifyFactory"/>
+	</bean>
+	
+	<!-- 心跳过滤器 -->
+	<bean id="customKeepAliveFilter" class="com.bili.diushoujuaner.chat.filter.keepAlive.CustomKeepAliveFilter">
+		<constructor-arg index="0" ref="heartBeatMessageFactory" />
+		<constructor-arg index="1"
+			ref="org.apache.mina.core.session.IdleStatus.BOTH_IDLE" />
+		<constructor-arg index="2"
+			ref="heartBeatRequestTimeoutHandler" />
+		<property name="requestInterval" value="12" />
+		<property name="requestTimeout" value="5"/>
+	</bean>
+	<!-- 控制客户端请求服务器频率的过滤器,简易防止网络攻击 
+	<bean id="connectionThrottleFilter"
+		class="org.apache.mina.filter.firewall.ConnectionThrottleFilter">
+		<property name="allowedInterval" value="300" />
+	</bean>-->
+	<!-- 日志过滤器 -->
+	<bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
+	<!-- 服务端事务处理器 -->
+	<bean id="serverHandler" class="com.bili.diushoujuaner.chat.handler.MinaServerHanlder" />
+	<!-- 过滤器链 -->
+	<bean id="filterChainBuilder"
+		class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+		<property name="filters">
+			<map>
+				<!-- <entry key="connectionThrottle" value-ref="connectionThrottleFilter" /> -->
+				<entry key="unifyFilter" value-ref="unifyFilter" />
+				<entry key="heartBeatFilter" value-ref="customKeepAliveFilter" />
+				<entry key="executorFilter" value-ref="executorFilter" />
+				<entry key="loggingFilter" value-ref="loggingFilter" />
+			</map>
+		</property>
+	</bean>
+	<!-- 网络监听器 -->
+	<bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind">
+		<property name="defaultLocalAddress" value=":1314" />
+		<property name="handler" ref="serverHandler" />
+		<property name="filterChainBuilder" ref="filterChainBuilder" />
+		<property name="reuseAddress" value="true" />
+	</bean>
+	<!-- 配置SessionConfig -->
+	<bean id="sessionConfig" factory-bean="ioAcceptor" factory-method="getSessionConfig">
+		<property name="receiveBufferSize" value="1048576"/>
+		<property name="keepAlive" value="true"/>
+	</bean>
+</beans>

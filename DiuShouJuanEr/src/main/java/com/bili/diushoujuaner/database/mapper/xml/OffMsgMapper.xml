@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.OffMsgMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.OffMsg" >
+    <id column="OffMsgNo" property="offMsgNo" jdbcType="BIGINT" />
+    <result column="FromNo" property="fromNo" jdbcType="BIGINT" />
+    <result column="ToNo" property="toNo" jdbcType="BIGINT" />
+    <result column="Content" property="content" jdbcType="VARCHAR" />
+    <result column="Time" property="time" jdbcType="VARCHAR" />
+    <result column="IsRead" property="isRead" jdbcType="BIT" />
+    <result column="MsgType" property="msgType" jdbcType="SMALLINT" />
+    <result column="ConType" property="conType" jdbcType="SMALLINT" />
+  </resultMap>
+  <!-- 获取用户的离线信息，包含两张表，需要联合查询  -->
+  <select id="getOffMsgListByUserNo"  resultMap="BaseResultMap" parameterType="long">
+    select OffMsgNo,FromNo,ToNo,Content,Time,IsRead,MsgType,ConType from OffMsg
+    where ToNo = #{userNo,jdbcType=BIGINT} and MsgType = 2
+	union
+    select OffMsg.OffMsgNo,FromNo,OffMsg.ToNo,Content,Time,OffMsg.IsRead,MsgType,ConType 
+    from OffMsg,CommonInfo 
+    where CommonInfo.ToNo = #{userNo,jdbcType=BIGINT} and CommonInfo.IsRead = false and OffMsg.OffMsgNo = CommonInfo.OffMsgNo and MsgType = 5
+  </select>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    OffMsgNo, FromNo, ToNo, Content, Time, IsRead, MsgType, ConType
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.OffMsgExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from offmsg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from offmsg
+    where OffMsgNo = #{offMsgNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from offmsg
+    where OffMsgNo = #{offMsgNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.OffMsgExample" >
+    delete from offmsg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.OffMsg" >
+    <selectKey resultType="java.lang.Long" keyProperty="offMsgNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into offmsg (FromNo, ToNo, Content, 
+      Time, IsRead, MsgType, 
+      ConType)
+    values (#{fromNo,jdbcType=BIGINT}, #{toNo,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, 
+      #{time,jdbcType=VARCHAR}, #{isRead,jdbcType=BIT}, #{msgType,jdbcType=SMALLINT}, 
+      #{conType,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.OffMsg" >
+    <selectKey resultType="java.lang.Long" keyProperty="offMsgNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into offmsg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fromNo != null" >
+        FromNo,
+      </if>
+      <if test="toNo != null" >
+        ToNo,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="time != null" >
+        Time,
+      </if>
+      <if test="isRead != null" >
+        IsRead,
+      </if>
+      <if test="msgType != null" >
+        MsgType,
+      </if>
+      <if test="conType != null" >
+        ConType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fromNo != null" >
+        #{fromNo,jdbcType=BIGINT},
+      </if>
+      <if test="toNo != null" >
+        #{toNo,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null" >
+        #{isRead,jdbcType=BIT},
+      </if>
+      <if test="msgType != null" >
+        #{msgType,jdbcType=SMALLINT},
+      </if>
+      <if test="conType != null" >
+        #{conType,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.OffMsgExample" resultType="java.lang.Integer" >
+    select count(*) from offmsg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update offmsg
+    <set >
+      <if test="record.offMsgNo != null" >
+        OffMsgNo = #{record.offMsgNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.fromNo != null" >
+        FromNo = #{record.fromNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.toNo != null" >
+        ToNo = #{record.toNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.content != null" >
+        Content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        Time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isRead != null" >
+        IsRead = #{record.isRead,jdbcType=BIT},
+      </if>
+      <if test="record.msgType != null" >
+        MsgType = #{record.msgType,jdbcType=SMALLINT},
+      </if>
+      <if test="record.conType != null" >
+        ConType = #{record.conType,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update offmsg
+    set OffMsgNo = #{record.offMsgNo,jdbcType=BIGINT},
+      FromNo = #{record.fromNo,jdbcType=BIGINT},
+      ToNo = #{record.toNo,jdbcType=BIGINT},
+      Content = #{record.content,jdbcType=VARCHAR},
+      Time = #{record.time,jdbcType=VARCHAR},
+      IsRead = #{record.isRead,jdbcType=BIT},
+      MsgType = #{record.msgType,jdbcType=SMALLINT},
+      ConType = #{record.conType,jdbcType=SMALLINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.OffMsg" >
+    update offmsg
+    <set >
+      <if test="fromNo != null" >
+        FromNo = #{fromNo,jdbcType=BIGINT},
+      </if>
+      <if test="toNo != null" >
+        ToNo = #{toNo,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        Time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null" >
+        IsRead = #{isRead,jdbcType=BIT},
+      </if>
+      <if test="msgType != null" >
+        MsgType = #{msgType,jdbcType=SMALLINT},
+      </if>
+      <if test="conType != null" >
+        ConType = #{conType,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where OffMsgNo = #{offMsgNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.OffMsg" >
+    update offmsg
+    set FromNo = #{fromNo,jdbcType=BIGINT},
+      ToNo = #{toNo,jdbcType=BIGINT},
+      Content = #{content,jdbcType=VARCHAR},
+      Time = #{time,jdbcType=VARCHAR},
+      IsRead = #{isRead,jdbcType=BIT},
+      MsgType = #{msgType,jdbcType=SMALLINT},
+      ConType = #{conType,jdbcType=SMALLINT}
+    where OffMsgNo = #{offMsgNo,jdbcType=BIGINT}
+  </update>
+</mapper>

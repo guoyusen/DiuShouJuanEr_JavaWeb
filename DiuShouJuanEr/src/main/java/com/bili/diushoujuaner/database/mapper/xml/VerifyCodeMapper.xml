@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.VerifyCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.VerifyCode" >
+    <id column="VerifyCodeNo" property="verifyCodeNo" jdbcType="BIGINT" />
+    <result column="Code" property="code" jdbcType="VARCHAR" />
+    <result column="AddTime" property="addTime" jdbcType="VARCHAR" />
+    <result column="Mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="Type" property="type" jdbcType="SMALLINT" />
+    <result column="Valid" property="valid" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    VerifyCodeNo, Code, AddTime, Mobile, Type, Valid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.VerifyCodeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from verifycode
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from verifycode
+    where VerifyCodeNo = #{verifyCodeNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from verifycode
+    where VerifyCodeNo = #{verifyCodeNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.VerifyCodeExample" >
+    delete from verifycode
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.VerifyCode" >
+    <selectKey resultType="java.lang.Long" keyProperty="verifyCodeNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into verifycode (Code, AddTime, Mobile, 
+      Type, Valid)
+    values (#{code,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{type,jdbcType=SMALLINT}, #{valid,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.VerifyCode" >
+    <selectKey resultType="java.lang.Long" keyProperty="verifyCodeNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into verifycode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        Code,
+      </if>
+      <if test="addTime != null" >
+        AddTime,
+      </if>
+      <if test="mobile != null" >
+        Mobile,
+      </if>
+      <if test="type != null" >
+        Type,
+      </if>
+      <if test="valid != null" >
+        Valid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="valid != null" >
+        #{valid,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.VerifyCodeExample" resultType="java.lang.Integer" >
+    select count(*) from verifycode
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update verifycode
+    <set >
+      <if test="record.verifyCodeNo != null" >
+        VerifyCodeNo = #{record.verifyCodeNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.code != null" >
+        Code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        AddTime = #{record.addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        Mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        Type = #{record.type,jdbcType=SMALLINT},
+      </if>
+      <if test="record.valid != null" >
+        Valid = #{record.valid,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update verifycode
+    set VerifyCodeNo = #{record.verifyCodeNo,jdbcType=BIGINT},
+      Code = #{record.code,jdbcType=VARCHAR},
+      AddTime = #{record.addTime,jdbcType=VARCHAR},
+      Mobile = #{record.mobile,jdbcType=VARCHAR},
+      Type = #{record.type,jdbcType=SMALLINT},
+      Valid = #{record.valid,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.VerifyCode" >
+    update verifycode
+    <set >
+      <if test="code != null" >
+        Code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        AddTime = #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        Mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        Type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="valid != null" >
+        Valid = #{valid,jdbcType=BIT},
+      </if>
+    </set>
+    where VerifyCodeNo = #{verifyCodeNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.VerifyCode" >
+    update verifycode
+    set Code = #{code,jdbcType=VARCHAR},
+      AddTime = #{addTime,jdbcType=VARCHAR},
+      Mobile = #{mobile,jdbcType=VARCHAR},
+      Type = #{type,jdbcType=SMALLINT},
+      Valid = #{valid,jdbcType=BIT}
+    where VerifyCodeNo = #{verifyCodeNo,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/java/com/bili/diushoujuaner/chat/filter/keepAlive/KeepAliveMessageFactoryImpl.java=UTF-8
+encoding//src/main/java/com/bili/diushoujuaner/chat/filter/keepAlive/KeepAliveRequestTimeoutHandlerImpl.java=UTF-8
+encoding//src/main/java/com/bili/diushoujuaner/chat/handler/MinaServerHanlder.java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/WEB-INF/views/login.jsp=UTF-8
+encoding//src/test/java=UTF-8
+encoding//src/test/java/com/bili/diushoujuaner/server/FilterFactory.java=UTF-8
+encoding//src/test/java/com/bili/diushoujuaner/server/MinaServerTest.java=UTF-8
+encoding//src/test/resources=UTF-8
+encoding/<project>=UTF-8

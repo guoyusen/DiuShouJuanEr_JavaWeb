@@ -1,0 +1,143 @@
+@charset "utf-8";
+.margin_all_0 {
+	margin: 0;
+}
+.margin_center {
+	margin: 0 auto;
+}
+.margin_left_5 {
+	margin-left: 5px;
+}
+.margin_left_10 {
+	margin-left: 10px;
+}
+.margin_left_15 {
+	margin-left: 15px;
+}
+.margin_left_20 {
+	margin-left: 20px;
+}
+.margin_left_25 {
+	margin-left: 25px;
+}
+.margin_left_30 {
+	margin-left: 30px;
+}
+.margin_top_5 {
+	margin-top: 5px;
+}
+.margin_top_10 {
+	margin-top: 10px;
+}
+.margin_top_15 {
+	margin-top: 15px;
+}
+.margin_top_20 {
+	margin-top: 20px;
+}
+.margin_top_25 {
+	margin-top: 25px;
+}
+.margin_top_30 {
+	margin-top: 30px;
+}
+.margin_right_5 {
+	margin-right: 5px;
+}
+.margin_right_10 {
+	margin-right: 10px;
+}
+.margin_right_15 {
+	margin-right: 15px;
+}
+.margin_right_20 {
+	margin-right: 20px;
+}
+.margin_right_25 {
+	margin-right: 25px;
+}
+.margin_right_30 {
+	margin-right: 30px;
+}
+.margin_bottom_5 {
+	margin-bottom: 5px;
+}
+.margin_bottom_10 {
+	margin-bottom: 10px;
+}
+.margin_bottom_15 {
+	margin-bottom: 15px;
+}
+.margin_bottom_20 {
+	margin-bottom: 20px;
+}
+.margin_bottom_25 {
+	margin-bottom: 25px;
+}
+.margin_bottom_30 {
+	margin-bottom: 30px;
+}
+.vanish{
+	display:none;
+}
+html {
+	position: relative;
+	min-height: 100%;
+	height: 100%;
+}
+body {
+	height: 100%;
+	margin: 0;
+	background-image: url(../images/system/background.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	font-family: "Helvetica Neue",Helvetica,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+a {
+	text-decoration: none;
+	background-repeat: no-repeat;
+}
+a:hover {
+	text-decoration: underline;
+}
+.wrap {
+	width: auto;
+	height:100%;
+	margin-left:60px;
+	margin-right:60px;
+}
+.wrap_center {
+	min-height: 100%;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	display: -webkit-flex;
+	display: flex;
+}
+/*网页内容*/
+.content {
+	background-color: #00000000;
+	margin: 0 auto;
+}
+/*footer，始终居底*/
+.footer {
+	z-index: -1;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #00000000;
+	color: #fff;
+}
+.footer p {
+	text-align: center;
+	font-size: 12px;
+	line-height: 60px;
+	padding: 0;
+	margin: 0;
+}
+.displayInline {
+	position: relative;
+	display: inline;
+	float: left;
+}

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.User" >
+    <id column="UserNo" property="userNo" jdbcType="BIGINT" />
+    <result column="RealName" property="realName" jdbcType="VARCHAR" />
+    <result column="NickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="UserPsd" property="userPsd" jdbcType="VARCHAR" />
+    <result column="Mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="Autograph" property="autograph" jdbcType="VARCHAR" />
+    <result column="Gender" property="gender" jdbcType="SMALLINT" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="RegistTime" property="registTime" jdbcType="VARCHAR" />
+    <result column="Birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="HomeTown" property="homeTown" jdbcType="VARCHAR" />
+    <result column="Location" property="location" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="PicPath" property="picPath" jdbcType="VARCHAR" />
+    <result column="IsValid" property="isValid" jdbcType="BIT" />
+    <result column="VisitType" property="visitType" jdbcType="SMALLINT" />
+    <result column="SmallNick" property="smallNick" jdbcType="VARCHAR" />
+    <result column="IsOnline" property="isOnline" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    UserNo, RealName, NickName, UserPsd, Mobile, Autograph, Gender, Status, RegistTime, 
+    Birthday, HomeTown, Location, Email, PicPath, IsValid, VisitType, SmallNick, IsOnline
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where UserNo = #{userNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where UserNo = #{userNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.User" >
+    <selectKey resultType="java.lang.Long" keyProperty="userNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (RealName, NickName, UserPsd, 
+      Mobile, Autograph, Gender, 
+      Status, RegistTime, Birthday, 
+      HomeTown, Location, Email, 
+      PicPath, IsValid, VisitType, 
+      SmallNick, IsOnline)
+    values (#{realName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{userPsd,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{autograph,jdbcType=VARCHAR}, #{gender,jdbcType=SMALLINT}, 
+      #{status,jdbcType=SMALLINT}, #{registTime,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, 
+      #{homeTown,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{picPath,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT}, #{visitType,jdbcType=SMALLINT}, 
+      #{smallNick,jdbcType=VARCHAR}, #{isOnline,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.User" >
+    <selectKey resultType="java.lang.Long" keyProperty="userNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="realName != null" >
+        RealName,
+      </if>
+      <if test="nickName != null" >
+        NickName,
+      </if>
+      <if test="userPsd != null" >
+        UserPsd,
+      </if>
+      <if test="mobile != null" >
+        Mobile,
+      </if>
+      <if test="autograph != null" >
+        Autograph,
+      </if>
+      <if test="gender != null" >
+        Gender,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="registTime != null" >
+        RegistTime,
+      </if>
+      <if test="birthday != null" >
+        Birthday,
+      </if>
+      <if test="homeTown != null" >
+        HomeTown,
+      </if>
+      <if test="location != null" >
+        Location,
+      </if>
+      <if test="email != null" >
+        Email,
+      </if>
+      <if test="picPath != null" >
+        PicPath,
+      </if>
+      <if test="isValid != null" >
+        IsValid,
+      </if>
+      <if test="visitType != null" >
+        VisitType,
+      </if>
+      <if test="smallNick != null" >
+        SmallNick,
+      </if>
+      <if test="isOnline != null" >
+        IsOnline,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPsd != null" >
+        #{userPsd,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="autograph != null" >
+        #{autograph,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="registTime != null" >
+        #{registTime,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="homeTown != null" >
+        #{homeTown,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=BIT},
+      </if>
+      <if test="visitType != null" >
+        #{visitType,jdbcType=SMALLINT},
+      </if>
+      <if test="smallNick != null" >
+        #{smallNick,jdbcType=VARCHAR},
+      </if>
+      <if test="isOnline != null" >
+        #{isOnline,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.userNo != null" >
+        UserNo = #{record.userNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.realName != null" >
+        RealName = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickName != null" >
+        NickName = #{record.nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPsd != null" >
+        UserPsd = #{record.userPsd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        Mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.autograph != null" >
+        Autograph = #{record.autograph,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        Gender = #{record.gender,jdbcType=SMALLINT},
+      </if>
+      <if test="record.status != null" >
+        Status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.registTime != null" >
+        RegistTime = #{record.registTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        Birthday = #{record.birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.homeTown != null" >
+        HomeTown = #{record.homeTown,jdbcType=VARCHAR},
+      </if>
+      <if test="record.location != null" >
+        Location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        Email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picPath != null" >
+        PicPath = #{record.picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isValid != null" >
+        IsValid = #{record.isValid,jdbcType=BIT},
+      </if>
+      <if test="record.visitType != null" >
+        VisitType = #{record.visitType,jdbcType=SMALLINT},
+      </if>
+      <if test="record.smallNick != null" >
+        SmallNick = #{record.smallNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isOnline != null" >
+        IsOnline = #{record.isOnline,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set UserNo = #{record.userNo,jdbcType=BIGINT},
+      RealName = #{record.realName,jdbcType=VARCHAR},
+      NickName = #{record.nickName,jdbcType=VARCHAR},
+      UserPsd = #{record.userPsd,jdbcType=VARCHAR},
+      Mobile = #{record.mobile,jdbcType=VARCHAR},
+      Autograph = #{record.autograph,jdbcType=VARCHAR},
+      Gender = #{record.gender,jdbcType=SMALLINT},
+      Status = #{record.status,jdbcType=SMALLINT},
+      RegistTime = #{record.registTime,jdbcType=VARCHAR},
+      Birthday = #{record.birthday,jdbcType=VARCHAR},
+      HomeTown = #{record.homeTown,jdbcType=VARCHAR},
+      Location = #{record.location,jdbcType=VARCHAR},
+      Email = #{record.email,jdbcType=VARCHAR},
+      PicPath = #{record.picPath,jdbcType=VARCHAR},
+      IsValid = #{record.isValid,jdbcType=BIT},
+      VisitType = #{record.visitType,jdbcType=SMALLINT},
+      SmallNick = #{record.smallNick,jdbcType=VARCHAR},
+      IsOnline = #{record.isOnline,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.User" >
+    update user
+    <set >
+      <if test="realName != null" >
+        RealName = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        NickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPsd != null" >
+        UserPsd = #{userPsd,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        Mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="autograph != null" >
+        Autograph = #{autograph,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        Gender = #{gender,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="registTime != null" >
+        RegistTime = #{registTime,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        Birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="homeTown != null" >
+        HomeTown = #{homeTown,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        Location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        Email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        PicPath = #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        IsValid = #{isValid,jdbcType=BIT},
+      </if>
+      <if test="visitType != null" >
+        VisitType = #{visitType,jdbcType=SMALLINT},
+      </if>
+      <if test="smallNick != null" >
+        SmallNick = #{smallNick,jdbcType=VARCHAR},
+      </if>
+      <if test="isOnline != null" >
+        IsOnline = #{isOnline,jdbcType=BIT},
+      </if>
+    </set>
+    where UserNo = #{userNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.User" >
+    update user
+    set RealName = #{realName,jdbcType=VARCHAR},
+      NickName = #{nickName,jdbcType=VARCHAR},
+      UserPsd = #{userPsd,jdbcType=VARCHAR},
+      Mobile = #{mobile,jdbcType=VARCHAR},
+      Autograph = #{autograph,jdbcType=VARCHAR},
+      Gender = #{gender,jdbcType=SMALLINT},
+      Status = #{status,jdbcType=SMALLINT},
+      RegistTime = #{registTime,jdbcType=VARCHAR},
+      Birthday = #{birthday,jdbcType=VARCHAR},
+      HomeTown = #{homeTown,jdbcType=VARCHAR},
+      Location = #{location,jdbcType=VARCHAR},
+      Email = #{email,jdbcType=VARCHAR},
+      PicPath = #{picPath,jdbcType=VARCHAR},
+      IsValid = #{isValid,jdbcType=BIT},
+      VisitType = #{visitType,jdbcType=SMALLINT},
+      SmallNick = #{smallNick,jdbcType=VARCHAR},
+      IsOnline = #{isOnline,jdbcType=BIT}
+    where UserNo = #{userNo,jdbcType=BIGINT}
+  </update>
+</mapper>

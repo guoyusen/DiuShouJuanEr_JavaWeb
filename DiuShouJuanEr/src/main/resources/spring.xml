@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                      http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+                      http://www.springframework.org/schema/context 
+                      http://www.springframework.org/schema/context/spring-context-4.1.xsd
+                      http://www.springframework.org/schema/mvc 
+                      http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+
+	<mvc:annotation-driven enable-matrix-variables="false">
+		<mvc:message-converters register-defaults="true">
+			<bean
+				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+		<mvc:async-support default-timeout="300000" />
+	</mvc:annotation-driven> 
+	<!-- 扫描注解Bean -->
+	<context:component-scan base-package="com.bili.diushoujuaner.controller"/>
+	<context:component-scan base-package="com.bili.diushoujuaner.service" />
+	<context:component-scan base-package="com.bili.diushoujuaner.mgt" />
+	
+	<mvc:resources location="/WEB-INF/resources/images/" mapping="/images/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/resources/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/resources/fonts/" mapping="/fonts/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/resources/js/" mapping="/js/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/resources/audio/" mapping="/audio/**"></mvc:resources>
+	
+	<mvc:interceptors>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/*"/>
+	        <bean class="com.bili.diushoujuaner.interceptor.CustomSessionInterceptor">
+	            <property name="allowUrls">
+	                <list>
+	                    <value>/login</value>
+	                    <value>/account/verify</value>
+	                    <value>/account/register</value>
+	                    <value>/account/reset</value>
+	                    <value>/getverifycode</value>
+	                    <value>/css</value>
+	                    <value>/images</value>
+	                    <value>/js</value>
+	                    <value>/audio</value>
+	                </list>
+	            </property>
+	        </bean>
+	    </mvc:interceptor>
+	</mvc:interceptors>
+	
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager">
+			<bean
+				class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+				<property name="defaultContentType" value="text/html" />
+				<property name="favorPathExtension" value="true" />
+				<property name="mediaTypes">
+					<map>
+						<entry key="html" value="text/html" />
+						<entry key="json" value="application/json" />
+					</map>
+				</property>
+			</bean>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/views/" />
+					<property name="suffix" value=".jsp" />
+				</bean>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean class="com.alibaba.fastjson.support.spring.FastJsonJsonView" />
+			</list>
+		</property>
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<bean id="SpringContextUtil" class="com.bili.diushoujuaner.common.springcontext.SpringContextUtil" scope="singleton"></bean>
+</beans>

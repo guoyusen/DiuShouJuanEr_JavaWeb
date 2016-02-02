@@ -1,0 +1,303 @@
+@charset "utf-8";
+
+.frameUserContent {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	top: 0;
+	bottom: 0;
+	z-index: 200;
+}
+
+#frameUserImageHead {
+	position: absolute;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 140px 140px;
+	cursor: pointer;
+	border-radius: 50%;
+	width: 140px;
+	height: 140px;
+	display: block;
+	top: 4px;
+	left: 4px;
+}
+
+#userRecallList{
+	width: 100%;
+	height: 100%;
+	top: 0;
+	bottom: 0;
+}
+
+.frameUserHead{
+	height: 150px;
+    width: 920px;
+    margin: 20px 25px 0 15px;
+}
+
+.frameUserRecall{
+	height:auto;
+	width:930px;
+}
+
+.frameUserHeadImg{
+	width: 180px;
+	height: 150px;
+}
+
+.frameUserHeadInfo{
+	width: 740px;
+	height: 150px;
+}
+
+.frameUserNickNameTip{
+	padding-left:10px;
+}
+
+.frameUserHeadNickName{
+	height:50px;
+	width:740px;
+	color:#26292e;
+	font-weight:500;
+	font-size:20px;
+	line-height:50px;
+	z-index:200;
+}
+
+.frameUserHeadNickName:after{
+	position:absolute;
+	content:"";
+	top:0;
+	left:0;
+	width:40px;
+	height:2px;
+	background-color:#2e3238;
+}
+
+.frameUserHeadNickName:before{
+	position:absolute;
+	content:"";
+	top:0;
+	left:0;
+	width:2px;
+	height:20px;
+	background-color:#2e3238;
+}
+
+.frameUserHeadAutograph{
+	height:100px;
+	width:720px;
+	padding:0 10px;
+	color:#222;
+	font-size:18px;
+	z-index:200;
+}
+
+.frameUserHeadAutograph:hover .frameUserAutographEdit{
+	display:block;
+}
+
+.frameUserHeadAutograph:after{
+	position:absolute;
+	content:"";
+	bottom:0;
+	right:0;
+	width:2px;
+	height:20px;
+	background-color:#2e3238;
+}
+
+.frameUserHeadAutograph:before{
+	position:absolute;
+	content:"";
+	bottom:0;
+	right:0;
+	width:40px;
+	height:2px;
+	background-color:#2e3238;
+}
+#frameUserAutograph{
+	padding:0 5px;
+	margin:0 15px;
+	cursor:text;
+}
+#frameUserAutograph:before{
+	position:absolute;
+	content:"“";
+	top:5px;
+	left:-15px;
+	font-size:25px;
+	line-height:26px;
+	text-align:center;
+	font-weight:500;
+	width:16px;
+	height:16px;
+	background-color:#2e3238;
+	border-radius:50%;
+	color:#fff;
+}
+#frameUserAutograph:after{
+	position:absolute;
+	content:"”";
+	top:5px;
+	right:-15px;
+	font-size:25px;
+	line-height:26px;
+	text-align:center;
+	font-weight:500;
+	width:16px;
+	height:16px;
+	background-color:#2e3238;
+	border-radius:50%;
+	color:#fff;
+}
+
+.userRecallItem{
+	width: 930px;
+	margin: 0 15px;
+}
+
+.userRecallItemHead{
+	position:absolute;
+	top:0;
+	bottom:0;
+	width:180px;
+}
+.userRecallItemHead:before{
+	position:absolute;
+	content:"";
+	top:0;
+	left:89px;
+	bottom:0;
+	background-color:#ddd;
+	width:2px;
+}
+
+.userRecallItemHead:after{
+	position:absolute;
+	content:"";
+	top:50px;
+	left:91px;
+	background-color:#ddd;
+	height:2px;
+	width:65px;
+	z-index:209;
+}
+
+.userRecallItemBody {
+	height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 180px;
+    margin-right: 0px;
+    width: 720px;
+    padding: 10px;
+    background-color: #fafafa;
+}
+
+.userRecallItemBody:before{
+	content: "";
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: #fd7c00;
+    left: -36px;
+    top: 32px;
+    position: absolute;
+    z-index: 210;
+}
+
+.frameUserAutographEdit{
+	position:absolute;
+	bottom:5px;
+	right:15px;
+	background-image:url(../images/system/icon_edit_1.png);
+	background-size:14px 14px;
+	background-repeat: no-repeat;
+	background-position:left;
+	text-align:right;
+	width:48px;
+	height:30px;
+	color:#999;
+	font-size:14px;
+	line-height:30px;
+	display:none;
+	cursor:pointer;
+}
+
+#frameUserAutographLeft{
+	position:absolute;
+	right:80px;
+	bottom:10px;
+	color: #808080;
+	letter-spacing: normal;
+    word-spacing: normal;
+    font-size: 10px;
+}
+
+#frameUserAutographLeft span{
+	font-style: italic;
+    font-family: Constantia, Georgia;
+    font-size: 24px;
+}
+
+.frameUserAutographSure, .frameUserAutographCancle{
+	position:absolute;
+	right:5px;
+	width:58px;
+	height:24px;
+	font-size:10px;
+	line-height:24px;
+	text-align:center;
+	border-radius:2px;
+	color:#fff;
+	cursor:pointer;
+}
+
+.frameUserAutographSure{
+	top:0;
+	background-color:#E86B21;
+}
+
+.frameUserAutographSure:hover{
+	background-color:#fd7c00;
+}
+
+.frameUserAutographCancle{
+	top:30px;
+	background-color:#49be38;
+}
+
+.frameUserAutographCancle:hover{
+	background-color:#6bd95b;
+}
+
+.frameUserAutographEdit:hover{
+	background-image:url(../images/system/icon_edit_2.png);
+	color:#fd7c00;
+}
+
+#frameUserAutographEditer{
+	position:absolute;
+	top:0;
+	left:10px;
+	background-color:#fff;
+	border-radius:5px;
+	outline:none;
+	width:650px;
+	padding:4px;
+	height:80px;
+	margin:0;
+}
+
+#frameUserBottom{
+	height: 60px;
+	width: 100%;
+	border-radius: 0 0 10px 10px;
+	background-color: #fdfdfd;
+	text-align:center;
+	line-height:60px;
+	color:#333;
+	font-size:16px;
+}

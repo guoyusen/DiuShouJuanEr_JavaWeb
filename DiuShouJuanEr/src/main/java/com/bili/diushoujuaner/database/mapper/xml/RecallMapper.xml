@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.RecallMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.Recall" >
+    <id column="RecallNo" property="recallNo" jdbcType="BIGINT" />
+    <result column="UserNo" property="userNo" jdbcType="BIGINT" />
+    <result column="Content" property="content" jdbcType="VARCHAR" />
+    <result column="PublishTime" property="publishTime" jdbcType="VARCHAR" />
+    <result column="PicPath" property="userPicPath" jdbcType="VARCHAR" />
+    <result column="NickName" property="userName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="getUserNoByRecallNo" parameterType="long" resultType="long">
+      select UserNo 
+      from Recall
+      where RecallNo = #{recallNo,jdbcType=BIGINT}
+  </select>
+  <select id="getRecallListByPageParam" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.param.RecallRequestParam" >
+      select RecallNo, Recall.UserNo, Content, PublishTime, PicPath, NickName 
+      from Recall,User
+      where Recall.UserNo = User.UserNo
+      order by PublishTime desc
+      limit ${pageStart},${pageSize}
+  </select>
+  <select id="getRecallListByPageParamAndTime" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.param.RecallRequestParam" >
+      select RecallNo, Recall.UserNo, Content, PublishTime, PicPath, NickName 
+      from Recall,User
+      where Recall.UserNo = User.UserNo and Recall.PublishTime ${prefix}${lastTime}${surfix}
+      order by PublishTime desc
+      limit ${pageStart},${pageSize}
+  </select>
+  <select id="getRecallListByUserNoAndPageParam" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.param.RecallRequestParam" >
+      select RecallNo, Recall.UserNo, Content, PublishTime, PicPath, NickName 
+      from Recall,User
+      where Recall.UserNo = ${userNo} and Recall.UserNo = User.UserNo
+      order by PublishTime desc
+      limit ${pageStart},${pageSize}
+  </select>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    RecallNo, UserNo, Content, PublishTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.RecallExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from recall
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from recall
+    where RecallNo = #{recallNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from recall
+    where RecallNo = #{recallNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.RecallExample" >
+    delete from recall
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.Recall" >
+    <selectKey resultType="java.lang.Long" keyProperty="recallNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into recall (UserNo, Content, PublishTime
+      )
+    values (#{userNo,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{publishTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.Recall" >
+    <selectKey resultType="java.lang.Long" keyProperty="recallNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into recall
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userNo != null" >
+        UserNo,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="publishTime != null" >
+        PublishTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userNo != null" >
+        #{userNo,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.RecallExample" resultType="java.lang.Integer" >
+    select count(*) from recall
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update recall
+    <set >
+      <if test="record.recallNo != null" >
+        RecallNo = #{record.recallNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.userNo != null" >
+        UserNo = #{record.userNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.content != null" >
+        Content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publishTime != null" >
+        PublishTime = #{record.publishTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update recall
+    set RecallNo = #{record.recallNo,jdbcType=BIGINT},
+      UserNo = #{record.userNo,jdbcType=BIGINT},
+      Content = #{record.content,jdbcType=VARCHAR},
+      PublishTime = #{record.publishTime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.Recall" >
+    update recall
+    <set >
+      <if test="userNo != null" >
+        UserNo = #{userNo,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        PublishTime = #{publishTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RecallNo = #{recallNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.Recall" >
+    update recall
+    set UserNo = #{userNo,jdbcType=BIGINT},
+      Content = #{content,jdbcType=VARCHAR},
+      PublishTime = #{publishTime,jdbcType=VARCHAR}
+    where RecallNo = #{recallNo,jdbcType=BIGINT}
+  </update>
+</mapper>

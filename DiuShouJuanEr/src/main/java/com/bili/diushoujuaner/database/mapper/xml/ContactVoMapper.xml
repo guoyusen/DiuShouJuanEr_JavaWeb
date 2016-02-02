@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.diushoujuaner.database.mapper.ContactVoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bili.diushoujuaner.database.model.ContactVo">
+		<result column="ContNo" property="contNo" jdbcType="BIGINT" />
+		<result column="DisplayName" property="displayName" jdbcType="VARCHAR" />
+		<result column="PicPath" property="picPath" jdbcType="VARCHAR" />
+		<result column="Type" property="type" jdbcType="INTEGER" />
+		<result column="StartTime" property="startTime" jdbcType="VARCHAR" />
+		<result column="NickName" property="nickName" jdbcType="VARCHAR" />
+		<result column="Autograph" property="autograph" jdbcType="VARCHAR" />
+		<result column="Gender" property="gender" jdbcType="SMALLINT" />
+		<result column="HomeTown" property="homeTown" jdbcType="VARCHAR" />
+		<result column="SmallNick" property="smallNick" jdbcType="VARCHAR" />
+		<result column="OwnerNo" property="ownerNo" jdbcType="BIGINT" />
+		<result column="information" property="information" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getFriendListByUserNo" resultMap="BaseResultMap"
+		parameterType="long">
+		select User.UserNo ContNo,NickName,StartTime,Remark
+		DisplayName,Autograph,Gender,PicPath,HomeTown,SmallNick,2 'Type' from
+		User,Friend
+		where Friend.UserANo = #{userNo,jdbcType=BIGINT} and Friend.UserBNo =
+		User.UserNo
+	</select>
+	<select id="getPartyListByUserNo" resultMap="BaseResultMap"
+		parameterType="long">
+		select Party.PartyNo ContNo,Party.UserNo OwnerNo,PartyName DisplayName,Information,RegistTime StartTime,PicPath,1 'Type' 
+		from Party,Member
+		where Member.UserNo = #{userNo,jdbcType=BIGINT} and Party.PartyNo = Member.PartyNo
+	</select>
+</mapper>
+

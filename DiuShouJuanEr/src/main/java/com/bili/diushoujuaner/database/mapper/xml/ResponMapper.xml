@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.ResponMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.Respon" >
+    <id column="ResponNo" property="responNo" jdbcType="BIGINT" />
+    <result column="CommentNo" property="commentNo" jdbcType="BIGINT" />
+    <result column="Content" property="content" jdbcType="VARCHAR" />
+    <result column="AddTime" property="addTime" jdbcType="VARCHAR" />
+    <result column="FromNo" property="fromNo" jdbcType="BIGINT" />
+    <result column="NickNameFrom" property="nickNameFrom" jdbcType="VARCHAR" />
+    <result column="NickNameTo" property="nickNameTo" jdbcType="VARCHAR" />
+    <result column="PicPath" property="fromPicPath" jdbcType="VARCHAR" />
+    <result column="ToNo" property="toNo" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="getResponListByCommentNo" resultMap="BaseResultMap" parameterType="long">
+  	select ResponNo,CommentNo,Content,AddTime,FromNo,NickName NickNameFrom,tmp.NickNameTo,PicPath,ToNo
+  	from Respon,User,(select UserNo UserNoTo, NickName NickNameTo from User) as tmp
+  	where CommentNo = #{commentNo,jdbcType=BIGINT} and FromNo = UserNo and ToNo = tmp.UserNoTo
+  	order by AddTime asc
+  </select>
+  <select id="getResponListByResponNo" resultMap="BaseResultMap" parameterType="long">
+  	select ResponNo,CommentNo,Content,AddTime,FromNo,NickName NickNameFrom,tmp.NickNameTo,PicPath,ToNo
+  	from Respon,User,(select UserNo UserNoTo, NickName NickNameTo from User) as tmp
+  	where ResponNo = #{responNo,jdbcType=BIGINT} and FromNo = UserNo and ToNo = tmp.UserNoTo
+  	order by AddTime asc
+  </select>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ResponNo, CommentNo, Content, AddTime, FromNo, ToNo
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.ResponExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from respon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from respon
+    where ResponNo = #{responNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from respon
+    where ResponNo = #{responNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.ResponExample" >
+    delete from respon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.Respon" >
+    <selectKey resultType="java.lang.Long" keyProperty="responNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into respon (CommentNo, Content, AddTime, 
+      FromNo, ToNo)
+    values (#{commentNo,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, 
+      #{fromNo,jdbcType=BIGINT}, #{toNo,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.Respon" >
+    <selectKey resultType="java.lang.Long" keyProperty="responNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into respon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentNo != null" >
+        CommentNo,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="addTime != null" >
+        AddTime,
+      </if>
+      <if test="fromNo != null" >
+        FromNo,
+      </if>
+      <if test="toNo != null" >
+        ToNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentNo != null" >
+        #{commentNo,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fromNo != null" >
+        #{fromNo,jdbcType=BIGINT},
+      </if>
+      <if test="toNo != null" >
+        #{toNo,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.ResponExample" resultType="java.lang.Integer" >
+    select count(*) from respon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update respon
+    <set >
+      <if test="record.responNo != null" >
+        ResponNo = #{record.responNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.commentNo != null" >
+        CommentNo = #{record.commentNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.content != null" >
+        Content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        AddTime = #{record.addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromNo != null" >
+        FromNo = #{record.fromNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.toNo != null" >
+        ToNo = #{record.toNo,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update respon
+    set ResponNo = #{record.responNo,jdbcType=BIGINT},
+      CommentNo = #{record.commentNo,jdbcType=BIGINT},
+      Content = #{record.content,jdbcType=VARCHAR},
+      AddTime = #{record.addTime,jdbcType=VARCHAR},
+      FromNo = #{record.fromNo,jdbcType=BIGINT},
+      ToNo = #{record.toNo,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.Respon" >
+    update respon
+    <set >
+      <if test="commentNo != null" >
+        CommentNo = #{commentNo,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        AddTime = #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fromNo != null" >
+        FromNo = #{fromNo,jdbcType=BIGINT},
+      </if>
+      <if test="toNo != null" >
+        ToNo = #{toNo,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ResponNo = #{responNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.Respon" >
+    update respon
+    set CommentNo = #{commentNo,jdbcType=BIGINT},
+      Content = #{content,jdbcType=VARCHAR},
+      AddTime = #{addTime,jdbcType=VARCHAR},
+      FromNo = #{fromNo,jdbcType=BIGINT},
+      ToNo = #{toNo,jdbcType=BIGINT}
+    where ResponNo = #{responNo,jdbcType=BIGINT}
+  </update>
+</mapper>

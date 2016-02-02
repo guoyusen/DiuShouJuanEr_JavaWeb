@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.PictureMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.Picture" >
+    <id column="PictureNo" property="pictureNo" jdbcType="BIGINT" />
+    <result column="RecallNo" property="recallNo" jdbcType="BIGINT" />
+    <result column="PicPath" property="picPath" jdbcType="VARCHAR" />
+    <result column="Height" property="height" jdbcType="INTEGER" />
+    <result column="Width" property="width" jdbcType="INTEGER" />
+    <result column="offSetTop" property="offSetTop" jdbcType="INTEGER" />
+    <result column="offSetLeft" property="offSetLeft" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    PictureNo, RecallNo, PicPath, Height, Width, offSetTop, offSetLeft
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.PictureExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from picture
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where PictureNo = #{pictureNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from picture
+    where PictureNo = #{pictureNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.PictureExample" >
+    delete from picture
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.Picture" >
+    <selectKey resultType="java.lang.Long" keyProperty="pictureNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into picture (RecallNo, PicPath, Height, 
+      Width, offSetTop, offSetLeft
+      )
+    values (#{recallNo,jdbcType=BIGINT}, #{picPath,jdbcType=VARCHAR}, #{height,jdbcType=INTEGER}, 
+      #{width,jdbcType=INTEGER}, #{offSetTop,jdbcType=INTEGER}, #{offSetLeft,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.Picture" >
+    <selectKey resultType="java.lang.Long" keyProperty="pictureNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into picture
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recallNo != null" >
+        RecallNo,
+      </if>
+      <if test="picPath != null" >
+        PicPath,
+      </if>
+      <if test="height != null" >
+        Height,
+      </if>
+      <if test="width != null" >
+        Width,
+      </if>
+      <if test="offSetTop != null" >
+        offSetTop,
+      </if>
+      <if test="offSetLeft != null" >
+        offSetLeft,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recallNo != null" >
+        #{recallNo,jdbcType=BIGINT},
+      </if>
+      <if test="picPath != null" >
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=INTEGER},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=INTEGER},
+      </if>
+      <if test="offSetTop != null" >
+        #{offSetTop,jdbcType=INTEGER},
+      </if>
+      <if test="offSetLeft != null" >
+        #{offSetLeft,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.PictureExample" resultType="java.lang.Integer" >
+    select count(*) from picture
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update picture
+    <set >
+      <if test="record.pictureNo != null" >
+        PictureNo = #{record.pictureNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.recallNo != null" >
+        RecallNo = #{record.recallNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.picPath != null" >
+        PicPath = #{record.picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.height != null" >
+        Height = #{record.height,jdbcType=INTEGER},
+      </if>
+      <if test="record.width != null" >
+        Width = #{record.width,jdbcType=INTEGER},
+      </if>
+      <if test="record.offSetTop != null" >
+        offSetTop = #{record.offSetTop,jdbcType=INTEGER},
+      </if>
+      <if test="record.offSetLeft != null" >
+        offSetLeft = #{record.offSetLeft,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update picture
+    set PictureNo = #{record.pictureNo,jdbcType=BIGINT},
+      RecallNo = #{record.recallNo,jdbcType=BIGINT},
+      PicPath = #{record.picPath,jdbcType=VARCHAR},
+      Height = #{record.height,jdbcType=INTEGER},
+      Width = #{record.width,jdbcType=INTEGER},
+      offSetTop = #{record.offSetTop,jdbcType=INTEGER},
+      offSetLeft = #{record.offSetLeft,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.Picture" >
+    update picture
+    <set >
+      <if test="recallNo != null" >
+        RecallNo = #{recallNo,jdbcType=BIGINT},
+      </if>
+      <if test="picPath != null" >
+        PicPath = #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        Height = #{height,jdbcType=INTEGER},
+      </if>
+      <if test="width != null" >
+        Width = #{width,jdbcType=INTEGER},
+      </if>
+      <if test="offSetTop != null" >
+        offSetTop = #{offSetTop,jdbcType=INTEGER},
+      </if>
+      <if test="offSetLeft != null" >
+        offSetLeft = #{offSetLeft,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PictureNo = #{pictureNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.Picture" >
+    update picture
+    set RecallNo = #{recallNo,jdbcType=BIGINT},
+      PicPath = #{picPath,jdbcType=VARCHAR},
+      Height = #{height,jdbcType=INTEGER},
+      Width = #{width,jdbcType=INTEGER},
+      offSetTop = #{offSetTop,jdbcType=INTEGER},
+      offSetLeft = #{offSetLeft,jdbcType=INTEGER}
+    where PictureNo = #{pictureNo,jdbcType=BIGINT}
+  </update>
+</mapper>
