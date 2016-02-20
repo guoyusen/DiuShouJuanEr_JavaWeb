@@ -33,11 +33,13 @@ public class CommonUtils {
 	 */
 	public static ResponseDto getResponse(String retCode, String message,
 			Map<String, Object> data) {
+		
 		ResponseDto res = new ResponseDto();
 		res.setRetCode(retCode);
 		res.setData(data);
 		res.setMessage(message);
 		return res;
+		
 	}
 
 	/**
