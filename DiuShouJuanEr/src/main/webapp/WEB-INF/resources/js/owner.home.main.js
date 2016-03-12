@@ -438,19 +438,19 @@ var HomeMainRecallUtil = {
 	},
 	refreshCallBack : function(result){
 		if (result.retCode == "success") {
-			if(result.data && result.data.recallList && result.data.recallList.length > 0){
+			if(result.data && result.data.length > 0){
 				if(HomeMainRecallUtil.currentPageIndex == 1){
 					HomeMainRecallUtil.recallList = [];
 				}
-				for(var i = 0; i < result.data.recallList.length; i++){
-					HomeMainRecallUtil.recallList[HomeMainRecallUtil.recallList.length] = result.data.recallList[i];
+				for(var i = 0; i < result.data.length; i++){
+					HomeMainRecallUtil.recallList[HomeMainRecallUtil.recallList.length] = result.data[i];
 				}
 				HomeMainOperateUtil.removeFrameBottomHtml();
 				if(HomeMainRecallUtil.currentPageIndex == 1){
 					$("#mainRecallList .mCSB_container").empty();
 					HomeMainRecallUtil.showRecallListHtml(0);
 				}else{
-					HomeMainRecallUtil.showRecallListHtml(HomeMainRecallUtil.recallList.length - result.data.recallList.length);
+					HomeMainRecallUtil.showRecallListHtml(HomeMainRecallUtil.recallList.length - result.data.length);
 				}
 				/*分页索引加1*/
 				HomeMainRecallUtil.currentPageIndex += 1;
@@ -468,8 +468,8 @@ var HomeMainRecallUtil = {
 			params : {commentno:commentNo,tono:toNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
 			type : 'json',
 			callback : function(result){
-				if (result && result.retCode == "success" && result.data.respon) {
-					var respon = result.data.respon;
+				if (result && result.retCode == "success" && result.data) {
+					var respon = result.data;
 					
 					var outPutHtml = '<!-- responItem --><div class="responItem displayInline" id="main_respon_';
 					outPutHtml += respon.responNo;
@@ -521,8 +521,8 @@ var HomeMainRecallUtil = {
 			params : {recallno:recallNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
 			type : 'json',
 			callback : function(result){
-				if (result && result.retCode == "success" && result.data.comment) {
-					var comment = result.data.comment;
+				if (result && result.retCode == "success" && result.data) {
+					var comment = result.data;
 					var outPutHtml = '<!-- commentItem --><div class="commentItem displayInline" id="main_comment_';
 					outPutHtml += comment.commentNo;
 					outPutHtml += '">';

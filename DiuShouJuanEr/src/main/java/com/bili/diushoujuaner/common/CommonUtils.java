@@ -4,7 +4,6 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -32,7 +31,7 @@ public class CommonUtils {
 	 * @return ResponseDto
 	 */
 	public static ResponseDto getResponse(String retCode, String message,
-			Map<String, Object> data) {
+			Object data) {
 		
 		ResponseDto res = new ResponseDto();
 		res.setRetCode(retCode);
@@ -41,6 +40,15 @@ public class CommonUtils {
 		return res;
 		
 	}
+	
+	/**
+     * 判断字符串是否为空
+     * @param str
+     * @return
+     */
+    public static boolean isEmpty(String str) {
+        return str == null || str.length() == 0;
+    }
 
 	/**
 	 * 获取随机验证码

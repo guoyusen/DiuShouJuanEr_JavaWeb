@@ -393,7 +393,7 @@ var HomeOperateUtil = {
 		HomeOperateUtil.homeAddRecallRemoveWait();
 		if (result.retCode == "success") {
 			
-			var picture = result.data.picture;
+			var picture = result.data;
 			
 			var outPutHtml = '<div class="postPicItem displayInline" id="recallPic_';
 			outPutHtml += picture.picId;
@@ -633,7 +633,7 @@ var UserInfoUtil = {
 	},
 	refreshCallBack : function(result) {
 		if (result.retCode == "success") {
-			UserInfoUtil.userInfo = result.data.userInfo;
+			UserInfoUtil.userInfo = result.data;
 			$("#nickName").html(UserInfoUtil.getUserNickName());
 			$("#userHeadImg").attr("src", UserInfoUtil.getPicPath());
 			
@@ -676,7 +676,7 @@ var OffMsgUtil = {
 		},
 		refreshCallBack : function(result) {
 			if (result.retCode == "success") {
-				var offMsgList = result.data.offMsgList;
+				var offMsgList = result.data;
 				for (var i = 0; i < offMsgList.length; i++) {
 					switch (offMsgList[i].msgType) {
 					case HomeChatTypeUtil.CHAT_FRI:

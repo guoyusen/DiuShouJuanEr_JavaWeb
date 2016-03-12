@@ -1,8 +1,6 @@
 package com.bili.diushoujuaner.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +22,8 @@ public class OffMsgServiceImpl implements OffMsgService {
 	public ResponseDto getOffMsgListByToken(String accessToken) {
 		
 		List<OffMsg> offMsgList = offMsgMgt.getOffMsgListByUserNo(CommonUtils.getUserNoFromAccessToken(accessToken));
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("offMsgList", offMsgList);
 		
-		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取离线信息成功", data);
+		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取离线信息成功", offMsgList);
 
 	}
 

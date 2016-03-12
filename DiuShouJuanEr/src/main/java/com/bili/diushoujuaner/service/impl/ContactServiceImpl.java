@@ -2,9 +2,7 @@ package com.bili.diushoujuaner.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,10 +43,8 @@ public class ContactServiceImpl implements ContactService {
 			contactList.get(0).setSortLetter(PinyinUtil.getHeadCapitalByChar(contactList.get(0).getDisplayName().charAt(0)) + "");
 		}
 		Collections.sort(contactList, new PinyinComparator());
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("contactList", contactList);
 		
-		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取通讯录成功", data);
+		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取通讯录成功", contactList);
 		
 	}
 

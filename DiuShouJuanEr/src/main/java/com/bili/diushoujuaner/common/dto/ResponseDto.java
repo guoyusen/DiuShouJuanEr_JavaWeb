@@ -1,12 +1,10 @@
 package com.bili.diushoujuaner.common.dto;
 
-import java.util.Map;
-
 public class ResponseDto {
 	
 	private String retCode = "";
 	private String message = "";
-	private Map<String, Object> data;
+	private Object data;
 	
 	public String getRetCode() {
 		return retCode;
@@ -20,10 +18,10 @@ public class ResponseDto {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public Map<String, Object> getData() {
+	public Object getData() {
 		return data;
 	}
-	public void setData(Map<String, Object> data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 

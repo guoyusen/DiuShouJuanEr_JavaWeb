@@ -1,8 +1,6 @@
 package com.bili.diushoujuaner.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,10 +59,7 @@ public class RecallServiceImpl implements RecallService {
 			}
 			recall.setCommentList(commentList);
 		}
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("recallList", recallList);
-		
-		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取recallList信息成功", data);
+		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取recallList信息成功", recallList);
 	}
 
 	@Override
@@ -88,9 +83,7 @@ public class RecallServiceImpl implements RecallService {
 		
 		int effectLines = recallMgt.deleteRecallByRecallNo(recallNo);
 		if(effectLines > 0){
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("recallNo", recallNo);
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Recall成功", data);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Recall成功", recallNo);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "删除Recall失败" + recallNo, null);
 		}

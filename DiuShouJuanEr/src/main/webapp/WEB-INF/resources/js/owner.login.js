@@ -99,7 +99,7 @@ var LoginOperateUtil = {
     			callback : function(result){
     				LoginOperateUtil.isLogin = false;
     				if(result.retCode == "success"){
-    					CookieUtil.setCookie("AccessToken", result.data.AccessToken);
+    					CookieUtil.setCookie("AccessToken", result.data.accessToken);
     					window.location.href="home";
     				}else if(result.retCode == "fail" || result.retCode == "error"){
     					LoginOperateUtil.showNoticeTip(result.message);

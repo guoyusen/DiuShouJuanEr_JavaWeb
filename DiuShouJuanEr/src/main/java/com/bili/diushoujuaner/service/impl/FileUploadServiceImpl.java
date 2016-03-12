@@ -1,8 +1,6 @@
 package com.bili.diushoujuaner.service.impl;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,11 +20,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 	public ResponseDto uploadPostPicByRecord(MultipartFile file, String accessToken, String deviceType) throws IOException {
 		if (file != null) {
 			Picture picture = RecallPicManager.storePictureToLocal(CustomSessionManager.getCustomSession(accessToken).getUserNo(), file, deviceType);
-				
-			Map<String, Object> data = new HashMap<>();
-			data.put("picture", picture);
-				
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传图片成功", data);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传图片成功", picture);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "不能传输空文件", null);
 	}

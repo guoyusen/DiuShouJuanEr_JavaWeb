@@ -137,7 +137,7 @@ var ContactUtil = {
 	refreshCallBack : function(result) {
 		if (result.retCode == "success") {
 			var groupLetter = "";
-			var contactList = result.data.contactList;
+			var contactList = result.data;
 			$("#userNavCont .mCSB_container .userNavList").empty();
 			$("#userNavCont .mCSB_container .userNavList").append('<li class="userNavContItem">'
 					+ '<div class="navItemContHead" style="background-image:url(images/system/icon_friend_add.png);"></div>'

@@ -1,8 +1,5 @@
 package com.bili.diushoujuaner.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +29,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseDto getUserLogin(String mobile, String password, String deviceType) {
 		
+		System.out.println("mobile = " + mobile);
+		System.out.println("password = " + password);
+		
 		String accessToken = CommonUtils.getRandomAccessToken();
 		
 		User user = userMgt.getUserByMobile(mobile);
@@ -45,10 +45,7 @@ public class UserServiceImpl implements UserService {
 			
 			CustomSessionManager.addCustomSession(customSession);
 
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("AccessToken", accessToken);
-			
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "登录成功", data);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "登录成功", customSession);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "账号或密码错误了", null);
 	
@@ -68,14 +65,12 @@ public class UserServiceImpl implements UserService {
 		if (user == null){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "获取用户信息失败", null);
 		}
-		
-		user.setNickName(user.getRealName());
-		user.setRealName("");
+		if(CommonUtils.isEmpty(user.getNickName())){
+			user.setNickName(user.getRealName());
+		}
 		user.setUserPsd(null);
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("userInfo", user);
 				
-		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取用户信息成功", data);
+		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取用户信息成功", user);
 	}
 
 	@Override
@@ -138,9 +133,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseDto modifyAutographByAutoAndToken(String autograph, String accessToken) {
 		if(userMgt.modifyAutographByUserNo(autograph, CommonUtils.getUserNoFromAccessToken(accessToken))){
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("autograph", autograph);
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "修改用户签名成功", data);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "修改用户签名成功", autograph);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "修改用户签名失败", null);
 	}

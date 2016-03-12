@@ -52,11 +52,11 @@ var HomeUserOperateUtil = {
 			type : 'json',
 			callback : function(result){
 				if (result && result.retCode == "success") {
-					UserInfoUtil.setAutograph(result.data.autograph);
+					UserInfoUtil.setAutograph(result.data);
 					$(".frameUserHeadAutograph").empty();
 					$(".frameUserHeadAutograph").append('<span class="displayInline">签名：</span>'
 							+ '<span id="frameUserAutograph" class="displayInline">'
-						    + HomeOperateUtil.HTMLDecode(result.data.autograph)
+						    + HomeOperateUtil.HTMLDecode(result.data)
 							+ '</span>'
 							+ '<span class="frameUserAutographEdit" onClick="HomeUserOperateUtil.homeUserAutographEditClick()">修改</span>');
 				}else if (result.retCode == "fail" || result.retCode == "error") {
@@ -501,19 +501,19 @@ var HomeUserRecallUtil = {
 		},
 		refreshCallBack : function(result){
 			if (result.retCode == "success") {
-				if(result.data && result.data.recallList && result.data.recallList.length > 0){
+				if(result.data && result.data.length > 0){
 					if(HomeUserRecallUtil.currentPageIndex == 1){
 						HomeUserRecallUtil.recallList = [];
 					}
-					for(var i = 0; i < result.data.recallList.length; i++){
-						HomeUserRecallUtil.recallList[HomeUserRecallUtil.recallList.length] = result.data.recallList[i];
+					for(var i = 0; i < result.data.length; i++){
+						HomeUserRecallUtil.recallList[HomeUserRecallUtil.recallList.length] = result.data[i];
 					}
 					HomeMainOperateUtil.removeFrameBottomHtml();
 					if(HomeUserRecallUtil.currentPageIndex == 1){
 						$("#userRecallList .mCSB_container .frameUserRecall").empty();
 						HomeUserRecallUtil.showRecallListHtml(0);
 					}else{
-						HomeUserRecallUtil.showRecallListHtml(HomeUserRecallUtil.recallList.length - result.data.recallList.length);
+						HomeUserRecallUtil.showRecallListHtml(HomeUserRecallUtil.recallList.length - result.data.length);
 					}
 					/*分页索引加1*/
 					HomeUserRecallUtil.currentPageIndex += 1;
@@ -531,8 +531,8 @@ var HomeUserRecallUtil = {
 				params : {commentno:commentNo,tono:toNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
 				type : 'json',
 				callback : function(result){
-					if (result && result.retCode == "success" && result.data.respon) {
-						var respon = result.data.respon;
+					if (result && result.retCode == "success" && result.data) {
+						var respon = result.data;
 						
 						var outPutHtml = '<!-- responItem --><div class="responItem displayInline" id="user_respon_';
 						outPutHtml += respon.responNo;
@@ -584,8 +584,8 @@ var HomeUserRecallUtil = {
 				params : {recallno:recallNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
 				type : 'json',
 				callback : function(result){
-					if (result && result.retCode == "success" && result.data.comment) {
-						var comment = result.data.comment;
+					if (result && result.retCode == "success" && result.data) {
+						var comment = result.data;
 						var outPutHtml = '<!-- commentItem --><div class="commentItem displayInline" id="user_comment_';
 						outPutHtml += comment.commentNo;
 						outPutHtml += '">';
