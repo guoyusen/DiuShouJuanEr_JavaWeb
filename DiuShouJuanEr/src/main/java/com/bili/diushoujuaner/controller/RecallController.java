@@ -20,10 +20,11 @@ public class RecallController {
 	@ResponseBody
 	public Object getRecallListByRecord(
 			@RequestParam(value = "type", required = true, defaultValue = "0") int type,
-			@RequestParam(value = "pageindex", required = true, defaultValue = "1") int pageIndex,
-			@RequestParam(value = "pagesize", required = true, defaultValue = "20") int pageSize,
-			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
-		return recallService.getRecallListByRecord(type, pageIndex, pageSize, accessToken);
+			@RequestParam(value = "pageIndex", required = true, defaultValue = "1") int pageIndex,
+			@RequestParam(value = "pageSize", required = true, defaultValue = "20") int pageSize,
+			@RequestParam(value = "userNo", required = true, defaultValue = "-1") long userNo,
+			@RequestParam(value = "lastRecall", required = true, defaultValue = "-1") long lastRecall){
+		return recallService.getRecallListByRecord(type, pageIndex, pageSize, userNo, lastRecall);
 	}
 	
 	@RequestMapping(value = "/1.0/recalls/recall", method = RequestMethod.POST)

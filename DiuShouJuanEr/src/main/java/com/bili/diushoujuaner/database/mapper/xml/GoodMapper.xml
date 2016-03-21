@@ -9,7 +9,7 @@
     <result column="PicPath" property="userPicPath" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getGoodListByRecallNo" resultMap="BaseResultMap" parameterType="long">
-      select GoodNo,RecallNo,Good.UserNo,GoodTime,PicPath
+      select GoodNo,RecallNo,Good.UserNo,PicPath
       from Good,User
       where RecallNo = #{recallNo,jdbcType=BIGINT} and Good.UserNo = User.UserNo
       order by GoodTime asc

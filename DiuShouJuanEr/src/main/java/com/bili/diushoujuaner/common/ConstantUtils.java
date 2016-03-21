@@ -49,9 +49,9 @@ public interface ConstantUtils {
 	// 通讯录身份类型
 	int CONTACT_PARTY = 1;
 	int CONTACT_FRIEND = 2;
-	// 用户获取Recall的类型，所有的 || 仅自己的
+	// 用户获取Recall的类型，所有的 || 单个用户所有的
 	int RECALL_ALL = 1;
-	int RECALL_OWNER = 2;
+	int RECALL_USER = 2;
 	
 	float RECALL_PIC_WIDTH = 176;
 	float RECALL_PIC_HEIGHT = 114;

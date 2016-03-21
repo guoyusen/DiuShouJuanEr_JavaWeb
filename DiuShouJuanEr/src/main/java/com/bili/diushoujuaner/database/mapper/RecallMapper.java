@@ -33,9 +33,11 @@ public interface RecallMapper {
     
     List<Recall> getRecallListByPageParam(RecallRequestParam recallRequestParam);
     
-    List<Recall> getRecallListByPageParamAndTime(RecallRequestParam recallRequestParam);
+    List<Recall> getRecallListByPageParamAndRecall(RecallRequestParam recallRequestParam);
     
     List<Recall> getRecallListByUserNoAndPageParam(RecallRequestParam recallRequestParam);
+    
+    List<Recall> getRecallListByUserNoAndPageParamAndRecall(RecallRequestParam recallRequestParam);
     
     long getUserNoByRecallNo(long recallNo);
 }

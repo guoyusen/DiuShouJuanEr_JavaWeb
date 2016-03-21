@@ -44,7 +44,7 @@ var HomeUserOperateUtil = {
 				+ '<span class="frameUserAutographEdit" onClick="HomeUserOperateUtil.homeUserAutographEditClick()">修改</span>');
 	},
 	homeUserAutographEditPublish : function(){
-		var autograph = HomeOperateUtil.HTMLEncode($("#frameUserAutographEditer").html());
+		var autograph = HomeOperateUtil.HTMLEnCode($("#frameUserAutographEditer").html());
 		AjaxUtil.request({
 			method : "post",
 			url : "1.0/users/modify/autograph",
@@ -71,6 +71,7 @@ var HomeUserRecallUtil = {
 		recallList : [],
 		goodMap : {},
 		currentPageIndex : 1,
+		lastRecall : -1,
 		hasBottom : false,
 		deleteRecallNo : 0,
 		deleteCommentNo : 0,
@@ -80,7 +81,7 @@ var HomeUserRecallUtil = {
 			AjaxUtil.request({
 				method : "get",
 				url : "1.0/recalls",
-				params : {type:2,pageindex:HomeUserRecallUtil.currentPageIndex,pagesize:20},
+				params : {type:2,pageIndex:HomeUserRecallUtil.currentPageIndex,pageSize:20,userNo:UserInfoUtil.getUserUserNo(),lastRecall:HomeUserRecallUtil.lastRecall},
 				type : 'json',
 				callback : HomeUserRecallUtil.refreshCallBack
 			});
@@ -89,10 +90,36 @@ var HomeUserRecallUtil = {
 			AjaxUtil.request({
 				method : "get",
 				url : "1.0/recalls",
-				params : {type:2,pageindex:HomeUserRecallUtil.currentPageIndex,pagesize:20},
+				params : {type:2,pageIndex:HomeUserRecallUtil.currentPageIndex,pageSize:20,userNo:UserInfoUtil.getUserUserNo(),lastRecall:HomeUserRecallUtil.lastRecall},
 				type : 'json',
 				callback : HomeUserRecallUtil.refreshCallBack
 			});
+		},
+		refreshCallBack : function(result){
+			if (result.retCode == "success") {
+				if(result.data && result.data.length > 0){
+					HomeUserRecallUtil.lastRecall = result.data[0].recallNo;
+					if(HomeUserRecallUtil.currentPageIndex == 1){
+						HomeUserRecallUtil.recallList = [];
+					}
+					for(var i = 0; i < result.data.length; i++){
+						HomeUserRecallUtil.recallList[HomeUserRecallUtil.recallList.length] = result.data[i];
+					}
+					HomeMainOperateUtil.removeFrameBottomHtml();
+					if(HomeUserRecallUtil.currentPageIndex == 1){
+						$("#userRecallList .mCSB_container .frameUserRecall").empty();
+						HomeUserRecallUtil.showRecallListHtml(0);
+					}else{
+						HomeUserRecallUtil.showRecallListHtml(HomeUserRecallUtil.recallList.length - result.data.length);
+					}
+					/*分页索引加1*/
+					HomeUserRecallUtil.currentPageIndex += 1;
+				}else{
+					$("#frameUserBottom").html("已加载全部数据");
+				}
+			}else if (result.retCode == "fail" || result.retCode == "error") {
+				HomeOperateUtil.showNoticeTip(result.message);
+			}
 		},
 		getGoodCountByRecallNo : function(recallNo){
 			var length = 0;
@@ -498,31 +525,6 @@ var HomeUserRecallUtil = {
 				$("#userRecallList .mCSB_container .frameUserRecall").append(HomeUserRecallUtil.getRecallItemHtml(i));
 			}
 			HomeUserRecallUtil.updateRecallListScrollBar();
-		},
-		refreshCallBack : function(result){
-			if (result.retCode == "success") {
-				if(result.data && result.data.length > 0){
-					if(HomeUserRecallUtil.currentPageIndex == 1){
-						HomeUserRecallUtil.recallList = [];
-					}
-					for(var i = 0; i < result.data.length; i++){
-						HomeUserRecallUtil.recallList[HomeUserRecallUtil.recallList.length] = result.data[i];
-					}
-					HomeMainOperateUtil.removeFrameBottomHtml();
-					if(HomeUserRecallUtil.currentPageIndex == 1){
-						$("#userRecallList .mCSB_container .frameUserRecall").empty();
-						HomeUserRecallUtil.showRecallListHtml(0);
-					}else{
-						HomeUserRecallUtil.showRecallListHtml(HomeUserRecallUtil.recallList.length - result.data.length);
-					}
-					/*分页索引加1*/
-					HomeUserRecallUtil.currentPageIndex += 1;
-				}else{
-					$("#frameUserBottom").html("已加载全部数据");
-				}
-			}else if (result.retCode == "fail" || result.retCode == "error") {
-				HomeOperateUtil.showNoticeTip(result.message);
-			}
 		},
 		publishRespon : function(commentNo, toNo){
 			AjaxUtil.request({

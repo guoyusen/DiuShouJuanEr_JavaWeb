@@ -4,7 +4,7 @@ import com.bili.diushoujuaner.common.dto.ResponseDto;
 
 public interface RecallService {
 	
-	ResponseDto getRecallListByRecord(int type, int pageIndex, int pageSize, String accessToken);
+	ResponseDto getRecallListByRecord(int type, int pageIndex, int pageSize, long userNo, long lastRecall);
 
 	ResponseDto addRecallByContAndToken(String content, String accessToken, int picCount, String deviceType);
 	

@@ -32,12 +32,12 @@ public class RecallMgtImpl implements RecallMgt {
 	}
 	
 	@Override
-	public List<Recall> getRecallListByPageParamAndTime(int pageIndex, int pageSize,String lastTime) {
+	public List<Recall> getRecallListByPageParamAndRecall(int pageIndex, int pageSize,long lastRecall) {
 		RecallRequestParam recallRequestParam = new RecallRequestParam();
 		recallRequestParam.setPageStart((pageIndex - 1) * pageSize);
 		recallRequestParam.setPageSize(pageSize);
-		recallRequestParam.setLastTime(lastTime);
-		return recallMapper.getRecallListByPageParamAndTime(recallRequestParam);
+		recallRequestParam.setLastRecall(lastRecall);
+		return recallMapper.getRecallListByPageParamAndRecall(recallRequestParam);
 	}
 
 	@Override
@@ -48,6 +48,17 @@ public class RecallMgtImpl implements RecallMgt {
 		recallRequestParam.setPageStart((pageIndex - 1) * pageSize);
 		recallRequestParam.setPageSize(pageSize);
 		return recallMapper.getRecallListByUserNoAndPageParam(recallRequestParam);
+	}
+
+	@Override
+	public List<Recall> getRecallListByUserNoAndPageParamAndRecall(long userNo, 
+			int pageIndex, int pageSize, long lastRecall) {
+		RecallRequestParam recallRequestParam = new RecallRequestParam();
+		recallRequestParam.setUserNo(userNo);
+		recallRequestParam.setPageStart((pageIndex - 1) * pageSize);
+		recallRequestParam.setPageSize(pageSize);
+		recallRequestParam.setLastRecall(lastRecall);
+		return recallMapper.getRecallListByUserNoAndPageParamAndRecall(recallRequestParam);
 	}
 
 	@Override

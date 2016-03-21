@@ -1,5 +1,6 @@
 package com.bili.diushoujuaner.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.dto.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.database.model.Picture;
 import com.bili.diushoujuaner.database.model.Recall;
@@ -34,22 +34,19 @@ public class RecallServiceImpl implements RecallService {
 	ResponMgt responMgt;
 
 	@Override
-	public ResponseDto getRecallListByRecord(int type, int pageIndex, int pageSize, String accessToken) {
+	public ResponseDto getRecallListByRecord(int type, int pageIndex, int pageSize, long userNo, long lastRecall) {
 		
-		List<Recall> recallList = null;
-		if(type == ConstantUtils.RECALL_ALL){
-			if(pageIndex == 1){
-				recallList = recallMgt.getRecallListByPageParam(pageIndex, pageSize);
-			}else{
-				recallList = recallMgt.getRecallListByPageParamAndTime(pageIndex, pageSize,CustomSessionManager.getCustomSession(accessToken).getAttribute("lastTime").toString().trim());
-			}
-			
-		}else{
-			recallList = recallMgt.getRecallListByUserNoAndPageParam(CommonUtils.getUserNoFromAccessToken(accessToken), pageIndex, pageSize);
+		List<Recall> recallList = new ArrayList<>();
+		if(type == ConstantUtils.RECALL_ALL && pageIndex == 1){
+			recallList.addAll(recallMgt.getRecallListByPageParam(pageIndex, pageSize));
+		} else if (type == ConstantUtils.RECALL_ALL && pageIndex > 1){
+			recallList.addAll(recallMgt.getRecallListByPageParamAndRecall(pageIndex, pageSize,lastRecall));
+		} else if (type == ConstantUtils.RECALL_USER && pageIndex == 1){
+			recallList.addAll(recallMgt.getRecallListByUserNoAndPageParam(userNo, pageIndex, pageSize));
+		} else if (type == ConstantUtils.RECALL_USER && pageIndex > 1){
+			recallList.addAll(recallMgt.getRecallListByUserNoAndPageParamAndRecall(userNo, pageIndex, pageSize, lastRecall));
 		}
-		if(recallList.size() > 0 && pageIndex == 1){
-			CustomSessionManager.getCustomSession(accessToken).setAttribute("lastTime", recallList.get(0).getPublishTime());
-		}
+		
 		for(Recall recall : recallList){
 			recall.setPictureList(pictureMgt.getPictureListByRecallNo(recall.getRecallNo()));
 			recall.setGoodList(goodMgt.getGoodListByRecallNo(recall.getRecallNo()));

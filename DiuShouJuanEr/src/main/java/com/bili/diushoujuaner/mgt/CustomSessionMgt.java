@@ -6,4 +6,6 @@ public interface CustomSessionMgt {
 
 	CustomSession updateCustomSession(String accessToken, long userNo, short deviceType);
 	
+	CustomSession updateCustomSession(String accessToken);
+	
 }

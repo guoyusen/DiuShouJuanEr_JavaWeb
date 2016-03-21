@@ -21,10 +21,10 @@
       order by PublishTime desc
       limit ${pageStart},${pageSize}
   </select>
-  <select id="getRecallListByPageParamAndTime" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.param.RecallRequestParam" >
+  <select id="getRecallListByPageParamAndRecall" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.param.RecallRequestParam" >
       select RecallNo, Recall.UserNo, Content, PublishTime, PicPath, NickName 
       from Recall,User
-      where Recall.UserNo = User.UserNo and Recall.PublishTime ${prefix}${lastTime}${surfix}
+      where Recall.UserNo = User.UserNo and Recall.RecallNo ${prefix}${lastRecall}${surfix}
       order by PublishTime desc
       limit ${pageStart},${pageSize}
   </select>
@@ -32,6 +32,13 @@
       select RecallNo, Recall.UserNo, Content, PublishTime, PicPath, NickName 
       from Recall,User
       where Recall.UserNo = ${userNo} and Recall.UserNo = User.UserNo
+      order by PublishTime desc
+      limit ${pageStart},${pageSize}
+  </select>
+  <select id="getRecallListByUserNoAndPageParamAndRecall" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.param.RecallRequestParam" >
+      select RecallNo, Recall.UserNo, Content, PublishTime, PicPath, NickName 
+      from Recall,User
+      where Recall.UserNo = ${userNo} and Recall.UserNo = User.UserNo and Recall.RecallNo ${prefix}${lastRecall}${surfix}
       order by PublishTime desc
       limit ${pageStart},${pageSize}
   </select>

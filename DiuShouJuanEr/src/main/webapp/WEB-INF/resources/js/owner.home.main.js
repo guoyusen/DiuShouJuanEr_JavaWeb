@@ -2,6 +2,7 @@ var HomeMainRecallUtil = {
 	recallList : [],
 	goodMap : {},
 	currentPageIndex : 1,
+	lastRecall : -1,
 	hasBottom : false,
 	deleteRecallNo : 0,
 	deleteCommentNo : 0,
@@ -11,7 +12,7 @@ var HomeMainRecallUtil = {
 		AjaxUtil.request({
 			method : "get",
 			url : "1.0/recalls",
-			params : {type:1,pageindex:HomeMainRecallUtil.currentPageIndex,pagesize:20},
+			params : {type:1,pageIndex:HomeMainRecallUtil.currentPageIndex,pageSize:20,userNo:UserInfoUtil.getUserUserNo(),lastRecall:HomeMainRecallUtil.lastRecall},
 			type : 'json',
 			callback : HomeMainRecallUtil.refreshCallBack
 		});
@@ -20,10 +21,36 @@ var HomeMainRecallUtil = {
 		AjaxUtil.request({
 			method : "get",
 			url : "1.0/recalls",
-			params : {type:1,pageindex:HomeMainRecallUtil.currentPageIndex,pagesize:20},
+			params : {type:1,pageIndex:HomeMainRecallUtil.currentPageIndex,pageSize:20,userNo:UserInfoUtil.getUserUserNo(),lastRecall:HomeMainRecallUtil.lastRecall},
 			type : 'json',
 			callback : HomeMainRecallUtil.refreshCallBack
 		});
+	},
+	refreshCallBack : function(result){
+		if (result.retCode == "success") {
+			if(result.data && result.data.length > 0){
+				HomeMainRecallUtil.lastRecall = result.data[0].recallNo;
+				if(HomeMainRecallUtil.currentPageIndex == 1){
+					HomeMainRecallUtil.recallList = [];
+				}
+				for(var i = 0; i < result.data.length; i++){
+					HomeMainRecallUtil.recallList[HomeMainRecallUtil.recallList.length] = result.data[i];
+				}
+				HomeMainOperateUtil.removeFrameBottomHtml();
+				if(HomeMainRecallUtil.currentPageIndex == 1){
+					$("#mainRecallList .mCSB_container").empty();
+					HomeMainRecallUtil.showRecallListHtml(0);
+				}else{
+					HomeMainRecallUtil.showRecallListHtml(HomeMainRecallUtil.recallList.length - result.data.length);
+				}
+				/*分页索引加1*/
+				HomeMainRecallUtil.currentPageIndex += 1;
+			}else{
+				$("#frameMainBottom").html("已加载全部数据");
+			}
+		}else if (result.retCode == "fail" || result.retCode == "error") {
+			HomeOperateUtil.showNoticeTip(result.message);
+		}
 	},
 	getGoodCountByRecallNo : function(recallNo){
 		var length = 0;
@@ -435,31 +462,6 @@ var HomeMainRecallUtil = {
 			$("#mainRecallList .mCSB_container").append(HomeMainRecallUtil.getRecallItemHtml(i));
 		}
 		HomeMainRecallUtil.updateRecallListScrollBar();
-	},
-	refreshCallBack : function(result){
-		if (result.retCode == "success") {
-			if(result.data && result.data.length > 0){
-				if(HomeMainRecallUtil.currentPageIndex == 1){
-					HomeMainRecallUtil.recallList = [];
-				}
-				for(var i = 0; i < result.data.length; i++){
-					HomeMainRecallUtil.recallList[HomeMainRecallUtil.recallList.length] = result.data[i];
-				}
-				HomeMainOperateUtil.removeFrameBottomHtml();
-				if(HomeMainRecallUtil.currentPageIndex == 1){
-					$("#mainRecallList .mCSB_container").empty();
-					HomeMainRecallUtil.showRecallListHtml(0);
-				}else{
-					HomeMainRecallUtil.showRecallListHtml(HomeMainRecallUtil.recallList.length - result.data.length);
-				}
-				/*分页索引加1*/
-				HomeMainRecallUtil.currentPageIndex += 1;
-			}else{
-				$("#frameMainBottom").html("已加载全部数据");
-			}
-		}else if (result.retCode == "fail" || result.retCode == "error") {
-			HomeOperateUtil.showNoticeTip(result.message);
-		}
 	},
 	publishRespon : function(commentNo, toNo){
 		AjaxUtil.request({

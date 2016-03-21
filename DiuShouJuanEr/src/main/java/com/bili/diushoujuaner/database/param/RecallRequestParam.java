@@ -5,9 +5,9 @@ public class RecallRequestParam {
 	private long userNo;
 	private int pageStart;
 	private int pageSize;
-	private String lastTime;
+	private long lastRecall;
 	
-	private String prefix = "<='";
+	private String prefix = "<'";
 	private String surfix = "'";
 	
 	public String getPrefix() {
@@ -15,12 +15,6 @@ public class RecallRequestParam {
 	}
 	public String getSurfix() {
 		return surfix;
-	}
-	public String getLastTime() {
-		return lastTime;
-	}
-	public void setLastTime(String lastTime) {
-		this.lastTime = lastTime;
 	}
 	public long getUserNo() {
 		return userNo;
@@ -39,6 +33,12 @@ public class RecallRequestParam {
 	}
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
+	}
+	public long getLastRecall() {
+		return lastRecall;
+	}
+	public void setLastRecall(long lastRecall) {
+		this.lastRecall = lastRecall;
 	}
 	
 }

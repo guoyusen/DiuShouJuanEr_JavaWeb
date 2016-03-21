@@ -40,4 +40,16 @@ public class CustomSessionMgtImpl implements CustomSessionMgt {
 		return customSession;
 	}
 
+	@Override
+	public CustomSession updateCustomSession(String accessToken) {
+		CustomSessionExample customSessionExample = new CustomSessionExample();
+		customSessionExample.createCriteria().andAccessTokenEqualTo(accessToken);
+		
+		List<CustomSession> list = customSessionMapper.selectByExample(customSessionExample);
+		if(list.size() > 0){
+			return list.get(0);
+		}
+		return null;
+	}
+
 }
