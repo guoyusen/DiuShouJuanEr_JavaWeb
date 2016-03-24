@@ -16,10 +16,10 @@ public class GoodController {
 	@Autowired
 	GoodService goodService;
 	
-	@RequestMapping(value = "/1.0/goods/good", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/goods/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addGoodByRecallNoAndToken(
-			@RequestParam(value = "recallno", required = true, defaultValue = "-1") long recallNo,
+			@RequestParam(value = "recallNo", required = true, defaultValue = "-1") long recallNo,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
 		return goodService.addGoodByRecallNoAndToken(recallNo, accessToken);
 	}
@@ -27,7 +27,7 @@ public class GoodController {
 	@RequestMapping(value = "/1.0/goods/remove", method = RequestMethod.POST)
 	@ResponseBody
 	public Object removeGoodByRecallNoAndToken(
-			@RequestParam(value = "recallno", required = true, defaultValue = "-1") long recallNo,
+			@RequestParam(value = "recallNo", required = true, defaultValue = "-1") long recallNo,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
 		return goodService.removeGoodByRecallNoAndToken(recallNo, accessToken);
 	}

@@ -10,8 +10,18 @@ public class Good {
     private String goodTime;
     
     private String userPicPath;
+    
+    private String nickName;
 
-    public String getUserPicPath() {
+    public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public String getUserPicPath() {
 		return userPicPath;
 	}
 

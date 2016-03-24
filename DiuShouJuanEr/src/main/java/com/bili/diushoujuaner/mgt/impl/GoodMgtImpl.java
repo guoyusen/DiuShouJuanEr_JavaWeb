@@ -24,6 +24,11 @@ public class GoodMgtImpl implements GoodMgt {
 
 	@Override
 	public int addGoodByRecallNoAndUserNo(long recallNo, long userNo) {
+		GoodExample goodExample = new GoodExample();
+		goodExample.createCriteria().andRecallNoEqualTo(recallNo).andUserNoEqualTo(userNo);
+		if(goodMapper.selectByExample(goodExample).size() > 0){
+			return 1;
+		}
 		Good good = new Good();
 		good.setRecallNo(recallNo);
 		good.setUserNo(userNo);

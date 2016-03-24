@@ -80,7 +80,7 @@ var HomeMainRecallUtil = {
 			AjaxUtil.request({
 				method : "post",
 				url : "1.0/goods/remove",
-				params : {recallno:recallNo},
+				params : {recallNo:recallNo},
 				type : 'json',
 				callback : function(){}
 			});
@@ -100,8 +100,8 @@ var HomeMainRecallUtil = {
 			
 			AjaxUtil.request({
 				method : "post",
-				url : "1.0/goods/good",
-				params : {recallno:recallNo},
+				url : "1.0/goods/add",
+				params : {recallNo:recallNo},
 				type : 'json',
 				callback : function(){}
 			});

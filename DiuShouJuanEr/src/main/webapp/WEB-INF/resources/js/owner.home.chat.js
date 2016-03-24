@@ -503,10 +503,20 @@ var HomeChatOperateUtil = {
 		if (e.which == 13) {
 			e.preventDefault();
 		}
+		if($("#senderBox .mCSB_container").html().length <= 100){
+			$("#senderBox .mCSB_container").css("height","100%");
+		}else{
+			$("#senderBox .mCSB_container").css("height","auto");
+		}
 	},
 	senderBoxKeyUp : function(e){
 		if (e.which == 13) {
 			HomeChatOperateUtil.sendMessage();
+		}
+		if($("#senderBox .mCSB_container").html().length <= 100){
+			$("#senderBox .mCSB_container").css("height","100%");
+		}else{
+			$("#senderBox .mCSB_container").css("height","auto");
 		}
 	    $("#senderBox").mCustomScrollbar("update");
 	},

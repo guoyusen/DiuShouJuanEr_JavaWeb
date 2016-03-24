@@ -65,9 +65,9 @@ public class GoodServiceImpl implements GoodService {
 	public ResponseDto removeGoodByRecallNoAndToken(long recallNo, String accessToken) {
 		int effectLines = goodMgt.removeGoodByRecallNoAndUserNo(recallNo,CommonUtils.getUserNoFromAccessToken(accessToken));
 		if(effectLines > 0){
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Good成功", null);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "取消Good成功", null);
 		}else{
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "添加Good失败", null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "取消Good失败", null);
 		}
 	}
 
