@@ -1,8 +1,6 @@
 package com.bili.diushoujuaner.chat.message;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 聊天的消息实体
@@ -11,35 +9,35 @@ import java.util.List;
 public class Message implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private String senderAcc = "";
-	private List<String> receiverAcc = new ArrayList<>();
+	private long senderNo;
+	private long receiverNo;
 	private short msgType;
 	private short conType;
 	private String msgContent = "";
 	private String msgTime = "";
-	public String getSenderAcc() {
-		return senderAcc;
+	public long getSenderNo() {
+		return senderNo;
 	}
-	public void setSenderAcc(String senderAcc) {
-		this.senderAcc = senderAcc;
+	public void setSenderNo(long senderNo) {
+		this.senderNo = senderNo;
 	}
-	public List<String> getReceiverAcc() {
-		return receiverAcc;
+	public long getReceiverNo() {
+		return receiverNo;
 	}
-	public void setReceiverAcc(List<String> receiverAcc) {
-		this.receiverAcc = receiverAcc;
-	}
-	public short getConType() {
-		return conType;
-	}
-	public void setConType(short conType) {
-		this.conType = conType;
+	public void setReceiverNo(long receiverNo) {
+		this.receiverNo = receiverNo;
 	}
 	public short getMsgType() {
 		return msgType;
 	}
 	public void setMsgType(short msgType) {
 		this.msgType = msgType;
+	}
+	public short getConType() {
+		return conType;
+	}
+	public void setConType(short conType) {
+		this.conType = conType;
 	}
 	public String getMsgContent() {
 		return msgContent;
@@ -55,8 +53,9 @@ public class Message implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Message [senderAcc=" + senderAcc + ", receiverAcc="
-				+ receiverAcc + ", msgType=" + msgType + ", msgContent="
-				+ msgContent + ", msgTime=" + msgTime + "]";
+		return "Message [senderNo=" + senderNo + ", receiverNo=" + receiverNo + ", msgType=" + msgType + ", conType="
+				+ conType + ", msgContent=" + msgContent + ", msgTime=" + msgTime + "]";
 	}
+	
+	
 }

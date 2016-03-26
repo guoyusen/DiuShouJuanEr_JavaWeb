@@ -125,8 +125,8 @@ public class CommonUtils {
 		message.setMsgContent("");
 		message.setMsgTime("");
 		message.setMsgType(chatType);
-		message.setReceiverAcc(null);
-		message.setSenderAcc("");
+		message.setReceiverNo(0);
+		message.setSenderNo(0);
 		return getJSONStringFromObject(message);
 	}
 
@@ -232,6 +232,20 @@ public class CommonUtils {
 			file.delete();
 		}
 		
+	}
+	
+	public static long getLongFromString(String value){
+		long result = 0;
+		if(isEmpty(value)){
+			result = 0;
+		}
+		try{
+			result = Long.parseLong(value);
+		}catch(Exception e){
+			result = 0;
+		}finally{
+		}
+		return result;
 	}
 	
 }

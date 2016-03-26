@@ -20,4 +20,9 @@ public class MemberMgtImpl implements MemberMgt {
 		return memberMapper.getMemberListByPartyNo(partyNo);
 	}
 
+	@Override
+	public List<Long> getMemberNoListByPartyNo(long partyNo) {
+		return memberMapper.getMemberNoListByPartyNo(partyNo);
+	}
+
 }

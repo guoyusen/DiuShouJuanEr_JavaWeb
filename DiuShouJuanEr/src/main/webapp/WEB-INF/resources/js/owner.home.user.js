@@ -30,10 +30,11 @@ var HomeUserOperateUtil = {
 	},		
 	homeUserAutographEditClick : function(){
 		$(".frameUserHeadAutograph").empty(); 
-		$(".frameUserHeadAutograph").append('<pre id="frameUserAutographEditer" contenteditable="true"></pre>'
+		$(".frameUserHeadAutograph").append('<div id="frameUserAutographEditer"></div>'
 				+ '<div id="frameUserAutographLeft">还可以输入<span>100</span>字</div>'
 				+ '<span class="frameUserAutographSure" onClick="HomeUserOperateUtil.homeUserAutographEditPublish()">发布</span>'
 				+ '<span class="frameUserAutographCancle" onClick="HomeUserOperateUtil.homeUserAutographEditReset()">取消</span>');
+		HomeOperateUtil.initCustomEditor("#frameUserAutographEditer", 100, "'#frameUserAutographLeft span'", null);
 	},
 	homeUserAutographEditReset : function(){
 		$(".frameUserHeadAutograph").empty();

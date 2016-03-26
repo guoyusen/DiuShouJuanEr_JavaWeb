@@ -367,10 +367,7 @@ var HomeMainRecallUtil = {
 		}else if(type == HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON){
 			$("#main_comment_" + commentNo).parent().parent().parent().append(HomeOperateUtil.getHomeAddCommentHtml(commentNo,toNo,type,HomeTypeUtil.HOME_ADDCOMMENT_FROM_MAIN));
 		}
-		
-		HomeOperateUtil.initCustomScrollbar("#homeAddCommentContent");
-		HomeOperateUtil.initCustomEditor("#homeAddCommentContent","HomeOperateUtil.homeAddCommentContentKeyUp(event)","HomeOperateUtil.homeAddCommentContentKeyDown(event)");
-		
+		HomeOperateUtil.initCustomEditor("#homeAddCommentContent", 500, "'#homeAddCommentLeftWord span'", null);
 		HomeMainRecallUtil.updateRecallListScrollBar();
 	},
 	addRecallItemCommentCount : function(recallNo){

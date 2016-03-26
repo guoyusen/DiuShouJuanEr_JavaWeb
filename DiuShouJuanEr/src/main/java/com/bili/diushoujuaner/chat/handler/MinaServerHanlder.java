@@ -9,6 +9,7 @@ import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bili.diushoujuaner.chat.MemberManager;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.chat.message.Message;
 import com.bili.diushoujuaner.common.CommonUtils;
@@ -66,34 +67,27 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 	    }
 	}
 	
-	private Message changeSenderAndReceiver(IoSession session, Message msg){
-		List<String> tmpReceiverList = new ArrayList<>();
-		tmpReceiverList.add(msg.getSenderAcc());
-		msg.setReceiverAcc(tmpReceiverList);
-		msg.setSenderAcc(IOSessionManager.getUserNoFromIoSessionToString(session));
-		return msg;
-	}
-	
 	private void processMessageParty(IoSession session, Message msg){
 		IoSession sessionTmp = null;
-		List<String> offLineAccList = new ArrayList<>();
-		List<String> receiverAccList = new ArrayList<>();
-		receiverAccList.addAll(msg.getReceiverAcc());
+		List<Long> offLineAccList = new ArrayList<>();
+		List<Long> receiverAccList = new ArrayList<>();
+		//msg.getReceiverAcc()得到的是群号
+		receiverAccList.addAll(MemberManager.getMemberNoList(msg.getReceiverNo()));
 		boolean isMobileAccept = false;
 		boolean isBrowserAccept = false;
 		
-		msg = changeSenderAndReceiver(session, msg);
-		
 		// 转发群消息给群组员
-		for(String receiverAcc : receiverAccList){
+		for(Long receiverAcc : receiverAccList){
+			isMobileAccept = false;
+			isBrowserAccept = false;
     		sessionTmp = IOSessionManager.getSessionBrowser(receiverAcc);
-	    	if(sessionTmp != null){
+	    	if(sessionTmp != null && !(receiverAcc == IOSessionManager.getUserNoFromIoSessionToLong(session) && !IOSessionManager.isSessionMobile(session))){
 	    		isBrowserAccept = true;
 	    		sessionTmp.write(CommonUtils.getJSONStringFromObject(msg));
 	    	}
 	    	
 	    	sessionTmp = IOSessionManager.getSessionMobile(receiverAcc);
-	    	if(sessionTmp != null){
+	    	if(sessionTmp != null && !(receiverAcc == IOSessionManager.getUserNoFromIoSessionToLong(session) && IOSessionManager.isSessionMobile(session))){
 	    		isMobileAccept = true;
 	    		sessionTmp.write(CommonUtils.getJSONStringFromObject(msg));
 	    	}
@@ -105,7 +99,7 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 		
 		// 存储群消息，确保非在线用户下次上线可以看到离线信息
 		if(offLineAccList.size() > 0){
-			//processMessageStore(session, msg, offLineAccList);
+			processMessageStore(session, msg, offLineAccList);
 		}
 	}
 	
@@ -114,11 +108,11 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 	 * @param session
 	 * @param msg
 	 */
-	private void processMessageStore(IoSession session, Message msg, List<String> offLineAccList){
+	private void processMessageStore(IoSession session, Message msg, List<Long> offMemberList){
 		
 		OffMsg offMsg = new OffMsg();
 		
-		offMsg.setToNo(msg.getMsgType() == ConstantUtils.CHAT_PAR ? Long.valueOf(msg.getReceiverAcc().get(0)) : Long.valueOf(msg.getSenderAcc()));
+		offMsg.setToNo(msg.getReceiverNo());
 		offMsg.setFromNo(IOSessionManager.getUserNoFromIoSessionToLong(session));
 		offMsg.setContent(msg.getMsgContent());
 		offMsg.setConType(msg.getConType());
@@ -130,13 +124,13 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 		
 		offMsg = offMsgMgt.putOffMsgByRecord(offMsg);
 		
-		if(offLineAccList != null && offMsg != null){
+		if(offMemberList != null && offMsg != null){
 			CommonInfoMgt commonInfoMgt = (CommonInfoMgt)SpringContextUtil.getBean("commonInfoMgtImpl");
-			for(String offAcc : offLineAccList){
+			for(long memberNo : offMemberList){
 				CommonInfo commonInfo = new CommonInfo();
 				commonInfo.setIsRead(false);
 				commonInfo.setOffMsgNo(offMsg.getOffMsgNo());
-				commonInfo.setToNo(Long.valueOf(offAcc));
+				commonInfo.setToNo(Long.valueOf(memberNo));
 				
 				commonInfoMgt.addCommonInfoByRecord(commonInfo);
 			}
@@ -150,7 +144,7 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 	 * @throws Exception
 	 */
 	private void processMessageInit(IoSession session, Message msg) throws Exception{
-		session.setAttribute(ConstantUtils.ATTR_USERNO, msg.getSenderAcc());
+		session.setAttribute(ConstantUtils.ATTR_USERNO, msg.getSenderNo());
     	IOSessionManager.addSession(session);
 	}
 	
@@ -159,13 +153,13 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 	 * @param message 消息实体
 	 */
 	private void processMessageFriend(IoSession session, Message msg){
-		IoSession sessionTmp = IOSessionManager.getSessionMobile(msg.getReceiverAcc().get(0));
+		IoSession sessionTmp = IOSessionManager.getSessionMobile(msg.getReceiverNo());
 		boolean isSend = false;
     	if(sessionTmp != null){
     		sessionTmp.write(CommonUtils.getJSONStringFromObject(msg));
     		isSend = true;
     	}
-    	sessionTmp = IOSessionManager.getSessionBrowser(msg.getReceiverAcc().get(0));
+    	sessionTmp = IOSessionManager.getSessionBrowser(msg.getReceiverNo());
     	if(sessionTmp != null){
     		sessionTmp.write(CommonUtils.getJSONStringFromObject(msg));
     		isSend = true;

@@ -67,12 +67,8 @@ public class CommonTest {
 		msg.setMsgContent("今天天气不错");
 		msg.setMsgTime("2015-12-10 12:30:45");
 		msg.setMsgType(ConstantUtils.CHAT_FRI);
-		List<String> list = new ArrayList<>();
-		list.add("12");
-		list.add("321");
-		list.add("545");
-		msg.setReceiverAcc(list);
-		msg.setSenderAcc("18817800124");
+		msg.setReceiverNo(0);;
+		msg.setSenderNo(1);;
 		
 		Object o = msg;
 		((Message)o).getMsgType();

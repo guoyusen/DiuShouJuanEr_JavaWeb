@@ -29,4 +29,6 @@ public interface MemberMapper {
     int updateByPrimaryKey(Member record);
     
     List<Member> getMemberListByPartyNo(long partyNo);
+    
+    List<Long> getMemberNoListByPartyNo(long partyNo);
 }

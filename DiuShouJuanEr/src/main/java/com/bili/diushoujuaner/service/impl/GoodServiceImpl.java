@@ -51,11 +51,11 @@ public class GoodServiceImpl implements GoodService {
 		msg.setMsgType(ConstantUtils.CHAT_GOOD);
 		msg.setConType(ConstantUtils.CONTENT_TEXT);
 		msg.setMsgTime(from.getPicPath());
-		msg.setSenderAcc(ConstantUtils.SYSTEM_ID_STRING);
-		msg.setReceiverAcc(null);
+		msg.setSenderNo(ConstantUtils.SYSTEM_ID_LONG);
+		msg.setReceiverNo(0);
 		msg.setMsgContent(from.getNickName() + "赞了你");
 		
-		IoSession ioSession = IOSessionManager.getSessionBrowser(to + "");
+		IoSession ioSession = IOSessionManager.getSessionBrowser(to);
 		if(ioSession != null){
 			ioSession.write(CommonUtils.getJSONStringFromObject(msg));
 		}

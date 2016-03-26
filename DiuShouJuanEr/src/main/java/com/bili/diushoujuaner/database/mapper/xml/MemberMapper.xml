@@ -10,6 +10,11 @@
     <result column="Type" property="type" jdbcType="INTEGER" />
     <result column="PicPath" property="picPath" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="getMemberNoListByPartyNo" resultType="long" parameterType="long">
+      select UserNo
+      from Member
+      where partyNo = #{partyNo,jdbcType=BIGINT}
+  </select>
   <select id="getMemberListByPartyNo" resultMap="BaseResultMap" parameterType="long">
       select MemberNo,PartyNo,Member.UserNo,Addtime,MemberName,Type,PicPath
       from Member, User

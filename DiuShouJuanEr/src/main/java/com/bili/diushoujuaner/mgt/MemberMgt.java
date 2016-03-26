@@ -8,4 +8,6 @@ public interface MemberMgt {
 
 	List<Member> getMemberListByPartyNo(long partyNo);
 	
+	List<Long> getMemberNoListByPartyNo(long partyNo);
+	
 }

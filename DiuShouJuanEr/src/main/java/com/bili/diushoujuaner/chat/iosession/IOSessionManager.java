@@ -28,12 +28,12 @@ public class IOSessionManager {
 		}
 	}
 	
-	public static IoSession getSessionMobile(String sessionId){
-		return mapSessionMobile.get(Long.valueOf(sessionId));
+	public static IoSession getSessionMobile(long sessionId){
+		return mapSessionMobile.get(sessionId);
 	}
 	
-    public static IoSession getSessionBrowser(String sessionId){
-    	return mapSessionBrowser.get(Long.valueOf(sessionId));
+    public static IoSession getSessionBrowser(long sessionId){
+    	return mapSessionBrowser.get(sessionId);
 	}
 
 	public static void removeSession(IoSession session) throws Exception {
@@ -60,9 +60,9 @@ public class IOSessionManager {
 		}
 	}
 
-	public static boolean isSessionMobile(IoSession session) throws Exception {
+	public static boolean isSessionMobile(IoSession session) {
 		if (!session.containsAttribute(ConstantUtils.DEVICE_TYPE)) {
-			throw new Exception("会话没有设置客户端类型");
+			throw new RuntimeException("会话没有设置客户端类型");
 		} else if (Short.valueOf(session.getAttribute(ConstantUtils.DEVICE_TYPE).toString()) == ConstantUtils.DEVICE_ANDROID) {
 			return true;
 		} else if (Short.valueOf(session.getAttribute(ConstantUtils.DEVICE_TYPE).toString()) == ConstantUtils.DEVICE_BROWSER) {

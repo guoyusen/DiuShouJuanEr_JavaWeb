@@ -50,7 +50,7 @@ var WebSocketUtil = {
 		}, 20000);*/
 	},
 	onOpen : function(event) {
-		WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(), "",
+		WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(), -1,
 				HomeChatTypeUtil.CHAT_INIT, HomeChatTypeUtil.CONTENT_EMPTY,"", "");
 	},
 	onMessage : function(event) {
@@ -58,13 +58,13 @@ var WebSocketUtil = {
 		var message = JSON.parse(event.data);
 		switch (message.msgType) {
 		case HomeChatTypeUtil.CHAT_PING:
-			WebSocketUtil.sendMessage("",[],HomeChatTypeUtil.CHAT_PONG,HomeChatTypeUtil.CONTENT_EMPTY,"","");
+			WebSocketUtil.sendMessage(-1,-1,HomeChatTypeUtil.CHAT_PONG,HomeChatTypeUtil.CONTENT_EMPTY,"","");
 			break;
 		case HomeChatTypeUtil.CHAT_FRI:
 			HomeChatOperateUtil.playMusicNotice();
 			var messageItem = {
-				chatId : "chat_fri_" + message.senderAcc,
-				fromNo : message.senderAcc,
+				chatId : "chat_fri_" + message.senderNo,
+				fromNo : message.senderNo,
 				time : message.msgTime,
 				content : message.msgContent,
 				conType : message.conType,
@@ -77,14 +77,14 @@ var WebSocketUtil = {
 		case HomeChatTypeUtil.CHAT_PAR:
 			HomeChatOperateUtil.playMusicNotice();
 			var messageItem = {
-				chatId : "chat_par_" + message.receiverAcc[0],
-				fromNo : message.senderAcc,
+				chatId : "chat_par_" + message.receiverNo,
+				fromNo : message.senderNo,
 				time : message.msgTime,
 				content : message.msgContent,
 				conType : message.conType,
 				owner : HomeChatTypeUtil.MESSAGE_YOU,
 				msgType : HomeChatTypeUtil.CHAT_PAR,
-				partyNo : message.receiverAcc[0],
+				partyNo : message.receiverNo,
 				count : 1
 			};
 			MessageUtil.addMessageItem(messageItem);
@@ -102,23 +102,23 @@ var WebSocketUtil = {
 		// 执行关闭之后的一些操作，比如丢手绢是否显示用户在线状态
 	},
 	onError : function(event) {
-		alert("退出了");
+		alert("出错了");
 	},
-	sendMessage : function(senderAcc, receiverAcc, msgType, conType, msgContent, msgTime) {
+	sendMessage : function(senderNo, receiverNo, msgType, conType, msgContent, msgTime) {
 		clearTimeout(WebSocketUtil.timeOuter);
 		var message = {
-			senderAcc : senderAcc,
-			receiverAcc : receiverAcc,
-			msgType : msgType,
-			conType : conType,
-			msgContent : msgContent,
-			msgTime : msgTime,
+				senderNo : senderNo,
+				receiverNo : receiverNo,
+				msgType : msgType,
+				conType : conType,
+				msgContent : msgContent,
+				msgTime : msgTime,
 		};
 		WebSocketUtil.webSocket.send(JSON.stringify(message));
 		WebSocketUtil.initTimeOuter();
 	},
 	disConnection : function() {
-		WebSocketUtil.sendMessage("", "", HomeChatTypeUtil.CHAT_CLOSE, HomeChatTypeUtil.CONTENT_EMPTY,
+		WebSocketUtil.sendMessage(-1, -1, HomeChatTypeUtil.CHAT_CLOSE, HomeChatTypeUtil.CONTENT_EMPTY,
 				"", "");
 	}
 }
@@ -266,30 +266,13 @@ var ContactUtil = {
 		else{
 			alert("home.chat.js中，获取好友性别出错");
 		}
-	},
-	initAcceptIdList : function(contId) {
-		var Contact = ContactUtil.contactMap[contId];
-		if(Contact){
-			ChatUtil.currentReceiverIdList = [];
-			if (Contact.type == HomeChatTypeUtil.TYPE_PARTY) {
-				for(i = 0; i < Contact.memberList.length; i++){
-					if(Contact.memberList[i].userNo != UserInfoUtil.getUserUserNo()){
-						ChatUtil.currentReceiverIdList[ChatUtil.currentReceiverIdList.length] = Contact.memberList[i].userNo + "";
-					}
-				}
-			} else if (Contact.type == HomeChatTypeUtil.TYPE_FRIEND) {
-				ChatUtil.currentReceiverIdList[ChatUtil.currentReceiverIdList.length] = Contact.contNo + "";
-			}
-		}else{
-			alert("无法得到对应的接收Id组");
-		}
 	}
 }
 /* 聊天列表Util */
 var ChatUtil = {
 	chatMap : {},
 	currentChat : null,
-	currentReceiverIdList : [],
+	currentReceiverNo : -1,
 	getCurrentChatType : function(){
 		if(ChatUtil.currentChat.indexOf("par_") > -1){
 			return HomeChatTypeUtil.TYPE_PARTY;
@@ -300,7 +283,6 @@ var ChatUtil = {
 	},
 	setCurrentChat : function(currentChat) {
 		ChatUtil.currentChat = currentChat;
-		ContactUtil.initAcceptIdList(ChatUtil.getCurrentChatContNo());
 	},
 	getCurrentChat : function() {
 		return ChatUtil.currentChat;
@@ -486,39 +468,14 @@ var HomeChatOperateUtil = {
 		HomeOperateUtil.initCustomScrollbar("#chatRoom");
 		HomeOperateUtil.initCustomScrollbar("#userNavChat");
 		HomeOperateUtil.initCustomScrollbar("#userNavCont");
-		HomeOperateUtil.initCustomEditor("#senderBox","HomeChatOperateUtil.senderBoxKeyUp(event)");
-		
-		HomeChatOperateUtil.showChattingInfo();
+		HomeOperateUtil.initCustomEditor("#senderBox", 1000, null, "HomeChatOperateUtil.sendMessage");
 		HomeOperateUtil.homeCloseContextMenu("#userNavChat");
+		HomeChatOperateUtil.showChattingInfo();
 	},
 	mouseDown : function(e){
 		if (!$("#dropMenu").hasClass("vanish") && HomeOperateUtil.isMouseOutRange(e,"#dropMenu")) {
 			HomeChatOperateUtil.homeChatHideMenu();
 		}
-	},
-	homeSenderBoxOnClick : function(){
-		$("#senderBox .mCSB_container").focus();
-	},
-	senderBoxKeyDown : function(e){
-		if (e.which == 13) {
-			e.preventDefault();
-		}
-		if($("#senderBox .mCSB_container").html().length <= 100){
-			$("#senderBox .mCSB_container").css("height","100%");
-		}else{
-			$("#senderBox .mCSB_container").css("height","auto");
-		}
-	},
-	senderBoxKeyUp : function(e){
-		if (e.which == 13) {
-			HomeChatOperateUtil.sendMessage();
-		}
-		if($("#senderBox .mCSB_container").html().length <= 100){
-			$("#senderBox .mCSB_container").css("height","100%");
-		}else{
-			$("#senderBox .mCSB_container").css("height","auto");
-		}
-	    $("#senderBox").mCustomScrollbar("update");
 	},
 	playMusicNotice : function(){
 		$("#chatAudio")[0].play();
@@ -559,9 +516,9 @@ var HomeChatOperateUtil = {
 		MessageUtil.addMessageItem(messageItem);
 		HomeChatOperateUtil.clearMessageSendBox();
 		if(ChatUtil.getCurrentChatType() == HomeChatTypeUtil.TYPE_PARTY){
-			WebSocketUtil.sendMessage(ContactUtil.getConatctContNo(ChatUtil.getCurrentChatContNo()),ChatUtil.currentReceiverIdList,HomeChatTypeUtil.CHAT_PAR,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
+			WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(),ContactUtil.getConatctContNo(ChatUtil.getCurrentChatContNo()),HomeChatTypeUtil.CHAT_PAR,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
 		} else {
-			WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(),ChatUtil.currentReceiverIdList,HomeChatTypeUtil.CHAT_FRI,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
+			WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(),ContactUtil.getConatctContNo(ChatUtil.getCurrentChatContNo()),HomeChatTypeUtil.CHAT_FRI,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
 		}
 	},
 	clearchatRoom : function() {
@@ -569,7 +526,6 @@ var HomeChatOperateUtil = {
 	},
 	clearMessageSendBox : function() {
 		$("#senderBox .mCSB_container").empty();
-		$("#senderBox .mCSB_container").css("height","100%");
 	},
 	setMessagePanelHead : function(title) {
 		$("#chatObjectName").html(title);
@@ -682,7 +638,6 @@ var HomeChatOperateUtil = {
 	},
 	homeChatStartChat : function(contId) {
 		HomeChatOperateUtil.homeChatChangeTab(HomeChatTypeUtil.TAB_INDEX_CHAT);
-		ContactUtil.initAcceptIdList(contId);
 		ChatUtil.setCurrentChat("chat_" + contId);
 		var chatItem;
 		if(ChatUtil.getCurrentChatType() == HomeChatTypeUtil.TYPE_PARTY){

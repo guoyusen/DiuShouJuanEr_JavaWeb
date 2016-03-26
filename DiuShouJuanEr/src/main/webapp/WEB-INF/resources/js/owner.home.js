@@ -135,29 +135,47 @@ var HomeOperateUtil = {
 				releaseDraggableSelectors : false},theme : "minimal-dark",callbacks : {
 				whileScrolling : whileScrollingCallback}});
 	},
-	initCustomEditor : function(editorId, onKeyUp, onKeyDown){
+	initCustomEditor : function(editorId, maxLength, tipId, enterCallback){
+		HomeOperateUtil.initCustomScrollbar(editorId);
 		$(editorId).css("cursor","text");	
 		$(editorId).attr("onClick","HomeOperateUtil.initCustomOnClick('" + editorId + "')");	
 		$(editorId + " .mCSB_container").attr("contenteditable","true");
 		$(editorId + " .mCSB_container").css("height","auto");
 		$(editorId + " .mCSB_container").css("border","none");
 		$(editorId + " .mCSB_container").css("outline","none");
-		if(onKeyDown == undefined){
-			$(editorId + " .mCSB_container").attr("onKeyDown","HomeOperateUtil.initCustomOnKeyDown(event)");
-		}else{
-			$(editorId + " .mCSB_container").attr("onKeyDown",onKeyDown);
-		}
-		if(onKeyUp != undefined){
-			$(editorId + " .mCSB_container").attr("onKeyUp",onKeyUp);
-		}
+		$(editorId + " .mCSB_container").attr("onKeyDown","HomeOperateUtil.initCustomOnKeyDown(event,'"+ editorId + "'," + maxLength +")");
+		$(editorId + " .mCSB_container").attr("onKeyUp","HomeOperateUtil.initCustomOnKeyUp(event,'"+ editorId + "'," + maxLength + "," + tipId + "," + enterCallback +")");
 	},
 	initCustomOnClick : function(editorId){
 		$(editorId + " .mCSB_container").focus();
 	},
-	initCustomOnKeyDown : function(e){
-		if (e.which == 13) {
+	initCustomOnKeyDown : function(e, editorId, maxLength){
+		if (e.which == 13 || ($(editorId + " .mCSB_container").html().length >= maxLength && e.which != 8)) {
 			e.preventDefault();
 		}
+		if($(editorId + " .mCSB_container").html().length > maxLength){
+			var tmpContent = $(editorId + " .mCSB_container").html();
+			$(editorId + " .mCSB_container").html(tmpContent.substring(0,maxLength));
+		}
+	},
+	initCustomOnKeyUp : function(e, editorId, maxLength, tipId, enterCallback){
+		if(e.which == 13 && enterCallback != null){
+			var callbacks = $.Callbacks();
+			callbacks.add(enterCallback);
+			callbacks.fire();
+		}
+		if($(editorId + " .mCSB_container").html().length > maxLength){
+			var tmpContent = $(editorId + " .mCSB_container").html();
+			$(editorId + " .mCSB_container").html(tmpContent.substring(0,maxLength));
+		}
+		if(tipId != null){
+			if($(editorId + " .mCSB_container").html().length > 0){
+				$(tipId).text(maxLength - $(editorId + " .mCSB_container").html().length);
+			}else{
+				$(tipId).text(maxLength);
+			}
+		}
+		$(editorId).mCustomScrollbar("update");
 	},
 	menuShowHideAnimator : function(showMenuItem) {
 		if(HomeOperateUtil.currentMenuItem == showMenuItem)
@@ -275,7 +293,6 @@ var HomeOperateUtil = {
 	},
 	clearHomeAddCommentHtml : function(){
 		if($("#homeAddComment").length > 0 && $("#homeAddCommentContent").text().length > 0){
-			//TODO 显示提示框，提示是否撤销编辑
 			$("#homeAddComment").remove();
 		}
 	},
@@ -314,30 +331,8 @@ var HomeOperateUtil = {
 		outPutHtml += '</div>';
 		return outPutHtml;
 	},
-	homeAddCommentContentKeyDown : function(e){
-		if($("#homeAddCommentContent .mCSB_container").html().length > 500){
-			var tmpContent = $("#homeAddCommentContent .mCSB_container").html();
-			$("#homeAddCommentContent .mCSB_container").html(tmpContent.substring(0,500));
-		}
-		if(!((e.ctrlKey && e.which == 65) || (e.ctrlKey && e.which == 67) || e.which == 8) && $("#homeAddCommentContent .mCSB_container").html().length >= 500){
-			e.preventDefault();
-		}
-		
-	},
-	homeAddCommentContentKeyUp : function(e){
-		if($("#homeAddCommentContent .mCSB_container").html().length > 500){
-			var tmpContent = $("#homeAddCommentContent .mCSB_container").html();
-			$("#homeAddCommentContent .mCSB_container").html(tmpContent.substring(0,500));
-		}
-		if($("#homeAddCommentContent .mCSB_container").html().length > 0){
-			$("#homeAddCommentLeftWord span").text(500 - $("#homeAddCommentContent .mCSB_container").html().length);
-		}else{
-			$("#homeAddCommentLeftWord span").text(500);
-		}
-		$("#homeAddCommentContent").mCustomScrollbar("update");
-	},
 	homeAddRecallPicture : function(){
-		if(HomeOperateUtil.curentRecallPicCount >= 8){
+		if(HomeOperateUtil.curentRecallPicCount >= 9){
 			return;
 		}
 		UploadUtil.choseFile({
@@ -368,7 +363,6 @@ var HomeOperateUtil = {
         });
 	},
 	homeDeleteRecallPic : function(picId){
-		
 		HomeOperateUtil.deleteRecallPicId = picId;
 		AjaxUtil.request({
 			method : "post",
@@ -392,7 +386,6 @@ var HomeOperateUtil = {
 	homeAddRecallPictureCallback : function(result){
 		HomeOperateUtil.homeAddRecallRemoveWait();
 		if (result.retCode == "success") {
-			
 			var picture = result.data;
 			
 			var outPutHtml = '<div class="postPicItem displayInline" id="recallPic_';
@@ -422,9 +415,6 @@ var HomeOperateUtil = {
 			HomeOperateUtil.showNoticeTip(result.message);
 		}
 	},
-	homeAddRecallOnKeyUp : function(e){
-	    $("#postPanelContent").mCustomScrollbar("update");
-	},
 	getRecallFirstRow : function(){
 		var outPutHtml = '<div id="postPanelFirstRow" class="displayInline">';
 		outPutHtml += '<div id="postPanelContent" class="displayInline"></div>';
@@ -435,7 +425,7 @@ var HomeOperateUtil = {
 	getRecallSecondRow : function(){
 		var outPutHtml = '<div id="postPanelSecondRow" class="vanish">';
 		outPutHtml += '<div class="displayInline postPicHead">';
-		outPutHtml += '<div id="postPicTip" class="displayInline"><span id="postPicCount" class="displayInline">图片(0/8)</span></div>';
+		outPutHtml += '<div id="postPicTip" class="displayInline"><span id="postPicCount" class="displayInline">图片(0/9)</span></div>';
 		outPutHtml += '<span id="postPicDelete" class="displayInline" onClick="HomeOperateUtil.homeDeletePanelPics();">删除图片</span>';
 		outPutHtml += '</div>';
 		outPutHtml += '<div id="postPicBody" class="displayInline"></div>';
@@ -460,8 +450,7 @@ var HomeOperateUtil = {
 		if(!HomeOperateUtil.addPanelIsShow){
 			HomeOperateUtil.addPanelIsShow = true;
 			$("#mainRecallList .mCSB_container").prepend(HomeOperateUtil.getHomeAddRecallHtml());
-			HomeOperateUtil.initCustomScrollbar("#postPanelContent");
-			HomeOperateUtil.initCustomEditor("#postPanelContent","HomeOperateUtil.homeAddRecallOnKeyUp(event)");
+			HomeOperateUtil.initCustomEditor("#postPanelContent",5000, null, null);
 			$("#frameAddBtn").removeClass("frameAddBtnPost");
 			$("#frameAddBtn").addClass("frameAddBtnPostClose");
 		}else{
