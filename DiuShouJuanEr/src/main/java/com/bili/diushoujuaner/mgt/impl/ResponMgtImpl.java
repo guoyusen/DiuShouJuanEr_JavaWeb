@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.database.mapper.ResponMapper;
 import com.bili.diushoujuaner.database.model.Respon;
 import com.bili.diushoujuaner.database.model.ResponExample;
-import com.bili.diushoujuaner.database.param.ResponRemoveParam;
+import com.bili.diushoujuaner.database.param.ResponRemoveValidateParam;
 import com.bili.diushoujuaner.mgt.ResponMgt;
 
 @Repository
@@ -51,10 +51,10 @@ public class ResponMgtImpl implements ResponMgt {
 
 	@Override
 	public boolean getPermitionForRemove(long responNo, long userNo) {
-		ResponRemoveParam responRemoveParam = new ResponRemoveParam();
-		responRemoveParam.setResponNo(responNo);
-		responRemoveParam.setUserNo(userNo);
-		long result = responMapper.getPermitionForRemove(responRemoveParam);
+		ResponRemoveValidateParam responRemoveValidateParam = new ResponRemoveValidateParam();
+		responRemoveValidateParam.setResponNo(responNo);
+		responRemoveValidateParam.setUserNo(userNo);
+		long result = responMapper.getPermitionForRemove(responRemoveValidateParam);
 		
 		return result > 0 ? true : false;
 	}

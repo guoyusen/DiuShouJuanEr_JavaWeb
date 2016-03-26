@@ -12,7 +12,7 @@
     <result column="PicPath" property="fromPicPath" jdbcType="VARCHAR" />
     <result column="ToNo" property="toNo" jdbcType="BIGINT" />
   </resultMap>
-  <select id="getPermitionForRemove" resultType="long" parameterType="com.bili.diushoujuaner.database.param.ResponRemoveParam">
+  <select id="getPermitionForRemove" resultType="long" parameterType="com.bili.diushoujuaner.database.param.ResponRemoveValidateParam">
   	SELECT COUNT(DISTINCT Respon.Content)
 	FROM Respon, Comment, Recall
 	WHERE

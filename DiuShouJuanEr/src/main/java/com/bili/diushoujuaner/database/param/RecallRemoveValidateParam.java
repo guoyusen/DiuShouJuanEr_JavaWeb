@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.database.param;
 
-public class RecallRemoveParam {
+public class RecallRemoveValidateParam {
 	
 	private long userNo;
 	private long recallNo;

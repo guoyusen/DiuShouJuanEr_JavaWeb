@@ -20,7 +20,7 @@ public class ResponServiceImpl implements ResponService {
 	@Override
 	public ResponseDto removeResponByResponNo(long responNo, String accessToken) {
 		if(!responMgt.getPermitionForRemove(responNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
+			return CommonUtils.getResponse(ConstantUtils.ERROR, "非法操作", null);
 		}
 		
 		int effectLines = responMgt.removeResponByResponNo(responNo);
@@ -33,6 +33,9 @@ public class ResponServiceImpl implements ResponService {
 
 	@Override
 	public ResponseDto addResponByRecord(long commentNo, long toNo, String content, String accessToken) {
+		if(toNo == CustomSessionManager.getCustomSession(accessToken).getUserNo()){
+			return CommonUtils.getResponse(ConstantUtils.ERROR, "非法操作", null);
+		}
 		Respon respon = responMgt.addResponByRecord(commentNo, toNo, content, CommonUtils.getUserNoFromAccessToken(accessToken));
 		if(respon != null){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Respon成功", respon);

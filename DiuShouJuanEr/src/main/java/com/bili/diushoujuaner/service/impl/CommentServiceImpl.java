@@ -20,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public ResponseDto removeCommentByCommentNo(long commentNo, String accessToken) {
 		if(!commentMgt.getPermitionForRemove(commentNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
+			return CommonUtils.getResponse(ConstantUtils.ERROR, "非法操作", null);
 		}
 		
 		int effectLines = commentMgt.removeCommentByCommentNo(commentNo);

@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.database.param;
 
-public class ResponRemoveParam {
+public class ResponRemoveValidateParam {
 	
 	private long responNo;
 	private long userNo;

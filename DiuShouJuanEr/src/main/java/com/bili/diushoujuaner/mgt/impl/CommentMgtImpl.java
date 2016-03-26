@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.database.mapper.CommentMapper;
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.database.model.CommentExample;
-import com.bili.diushoujuaner.database.param.CommentRemoveParam;
+import com.bili.diushoujuaner.database.param.CommentRemoveValidateParam;
 import com.bili.diushoujuaner.mgt.CommentMgt;
 
 @Repository
@@ -49,11 +49,11 @@ public class CommentMgtImpl implements CommentMgt {
 
 	@Override
 	public boolean getPermitionForRemove(long commentNo, long userNo) {
-		CommentRemoveParam commentRemoveParam = new CommentRemoveParam();
-		commentRemoveParam.setCommentNo(commentNo);
-		commentRemoveParam.setUserNo(userNo);
+		CommentRemoveValidateParam commentRemoveValidateParam = new CommentRemoveValidateParam();
+		commentRemoveValidateParam.setCommentNo(commentNo);
+		commentRemoveValidateParam.setUserNo(userNo);
 		
-		long result = commentMapper.getPermitionForRemove(commentRemoveParam);
+		long result = commentMapper.getPermitionForRemove(commentRemoveValidateParam);
 		return result > 0 ? true : false;
 	}
 

@@ -301,13 +301,15 @@ var HomeUserRecallUtil = {
 			outPutHtml += '<span class="commentItemTime displayInline">';
 			outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].addTime;
 			outPutHtml += '</span>';
-			outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
-			outPutHtml += HomeUserRecallUtil.getCommentNoByIndex(index,j);
-			outPutHtml += ',';
-			outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].fromNo;
-			outPutHtml += ',';
-			outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
-			outPutHtml += ')"></span>';
+			if(HomeUserRecallUtil.recallList[index].commentList[j].fromNo != UserInfoUtil.getUserUserNo()){
+				outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
+				outPutHtml += HomeUserRecallUtil.getCommentNoByIndex(index,j);
+				outPutHtml += ',';
+				outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].fromNo;
+				outPutHtml += ',';
+				outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
+				outPutHtml += ')"></span>';
+			}
 			outPutHtml += ((HomeUserRecallUtil.recallList[index].userNo == UserInfoUtil.getUserUserNo() || HomeUserRecallUtil.recallList[index].commentList[j].fromNo == UserInfoUtil.getUserUserNo())?'<span class="commentItemDelete displayInline" onClick="HomeUserRecallUtil.deleteCommentByCommentNo('+HomeUserRecallUtil.getCommentNoByIndex(index, j)+','+HomeUserRecallUtil.getRecallItemRecallNoByIndex(index)+')"></span>':'');
 			outPutHtml += '</div>';
 			return outPutHtml;
@@ -333,13 +335,15 @@ var HomeUserRecallUtil = {
 			outPutHtml += '<span class="commentItemTime displayInline">';
 			outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].responList[k].addTime;
 			outPutHtml += '</span>';
-			outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
-			outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].responList[k].commentNo;
-			outPutHtml += ',';
-			outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].responList[k].fromNo;
-			outPutHtml += ',';
-			outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
-			outPutHtml += ')"></span>';
+			if(HomeUserRecallUtil.recallList[index].commentList[j].responList[k].fromNo != UserInfoUtil.getUserUserNo()){
+				outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
+				outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].responList[k].commentNo;
+				outPutHtml += ',';
+				outPutHtml += HomeUserRecallUtil.recallList[index].commentList[j].responList[k].fromNo;
+				outPutHtml += ',';
+				outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
+				outPutHtml += ')"></span>';
+			}
 			outPutHtml += ((HomeUserRecallUtil.recallList[index].userNo == UserInfoUtil.getUserUserNo() || HomeUserRecallUtil.recallList[index].commentList[j].responList[k].fromNo == UserInfoUtil.getUserUserNo())?'<span class="commentItemDelete displayInline" onClick="HomeUserRecallUtil.deleteResponByResponNo('+HomeUserRecallUtil.getResponNoByIndex(index,j,k)+')"></span>':'');
 			outPutHtml += '</div><!--info-->';
 			return outPutHtml;
@@ -559,13 +563,15 @@ var HomeUserRecallUtil = {
 						outPutHtml += '<span class="commentItemTime displayInline">';
 						outPutHtml += respon.addTime;
 						outPutHtml += '</span>';
-						outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
-						outPutHtml += respon.commentNo;
-						outPutHtml += ',';
-						outPutHtml += respon.fromNo;
-						outPutHtml += ',';
-						outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
-						outPutHtml += ')"></span>';
+						if(respon.fromNo != UserInfoUtil.getUserUserNo()){
+							outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
+							outPutHtml += respon.commentNo;
+							outPutHtml += ',';
+							outPutHtml += respon.fromNo;
+							outPutHtml += ',';
+							outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
+							outPutHtml += ')"></span>';
+						}
 						outPutHtml += (respon.fromNo == UserInfoUtil.getUserUserNo()?'<span class="commentItemDelete displayInline" onClick="HomeUserRecallUtil.deleteResponByResponNo('+respon.responNo+')"></span>':'');
 						outPutHtml += '</div>';
 						/*info*/
@@ -607,13 +613,15 @@ var HomeUserRecallUtil = {
 						outPutHtml += '<span class="commentItemTime displayInline">';
 						outPutHtml += comment.addTime;
 						outPutHtml += '</span>';
-						outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
-						outPutHtml += comment.commentNo;
-						outPutHtml += ',';
-						outPutHtml += comment.fromNo;
-						outPutHtml += ',';
-						outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
-						outPutHtml += ')"></span>';
+						if(comment.fromNo != UserInfoUtil.getUserUserNo()){
+							outPutHtml += '<span class="commentItemAdd displayInline" onClick="HomeUserRecallUtil.addHomeAddCommentHtml(';
+							outPutHtml += comment.commentNo;
+							outPutHtml += ',';
+							outPutHtml += comment.fromNo;
+							outPutHtml += ',';
+							outPutHtml += HomeTypeUtil.HOME_ADDCOMMENT_MAINRECALL_RESPON;
+							outPutHtml += ')"></span>';
+						}
 						outPutHtml += (comment.fromNo == UserInfoUtil.getUserUserNo()?'<span class="commentItemDelete displayInline" onClick="HomeUserRecallUtil.deleteCommentByCommentNo('+comment.commentNo+','+comment.recallNo+')"></span>':'');
 						outPutHtml += '</div>';
 						/*info*/

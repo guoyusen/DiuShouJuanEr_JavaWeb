@@ -10,7 +10,7 @@
     <result column="NickName" property="nickName" jdbcType="VARCHAR" />
     <result column="PicPath" property="fromPicPath" jdbcType="VARCHAR" />
   </resultMap>
-  <select id="getPermitionForRemove" resultType="long" parameterType="com.bili.diushoujuaner.database.param.CommentRemoveParam">
+  <select id="getPermitionForRemove" resultType="long" parameterType="com.bili.diushoujuaner.database.param.CommentRemoveValidateParam">
   	SELECT COUNT(DISTINCT Comment.Content)
 	FROM Comment, Recall
 	WHERE

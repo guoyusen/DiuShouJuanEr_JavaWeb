@@ -2,7 +2,7 @@ package com.bili.diushoujuaner.database.mapper;
 
 import com.bili.diushoujuaner.database.model.Respon;
 import com.bili.diushoujuaner.database.model.ResponExample;
-import com.bili.diushoujuaner.database.param.ResponRemoveParam;
+import com.bili.diushoujuaner.database.param.ResponRemoveValidateParam;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -34,5 +34,5 @@ public interface ResponMapper {
     
     List<Respon> getResponListByResponNo(long responNo);
     
-    long getPermitionForRemove(ResponRemoveParam responRemoveParam);
+    long getPermitionForRemove(ResponRemoveValidateParam responRemoveValidateParam);
 }

@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.database.param;
 
-public class CommentRemoveParam {
+public class CommentRemoveValidateParam {
 	
 	private long commentNo;
 	private long userNo;
