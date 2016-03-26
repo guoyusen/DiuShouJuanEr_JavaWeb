@@ -349,7 +349,7 @@ var HomeOperateUtil = {
 		HomeOperateUtil.homeAddRecallRemoveWait();
 		$("#postPanelSecondRow").removeClass("vanish");
 		HomeOperateUtil.curentRecallPicCount ++;
-		$("#postPicCount").html('图片(' + HomeOperateUtil.curentRecallPicCount + '/8)');
+		$("#postPicCount").html('图片(' + HomeOperateUtil.curentRecallPicCount + '/9)');
 		$("#postPicBody").append('<div id="postPicWait" class="postPicItem displayInline"><div id="postPic_loading" style="padding-top:38px;"></div></div>');
     	$('#postPic_loading').shCircleLoader({
     		dots : 10,
@@ -376,7 +376,7 @@ var HomeOperateUtil = {
 					if(HomeOperateUtil.curentRecallPicCount <= 0){
 						$("#postPanelSecondRow").addClass("vanish");
 					}
-					$("#postPicCount").html('图片(' + HomeOperateUtil.curentRecallPicCount + '/8)');
+					$("#postPicCount").html('图片(' + HomeOperateUtil.curentRecallPicCount + '/9)');
 				}else if (result.retCode == "fail" || result.retCode == "error") {
 					HomeOperateUtil.showNoticeTip(result.message);
 				}
