@@ -9,6 +9,9 @@
     <result column="PicPath" property="userPicPath" jdbcType="VARCHAR" />
     <result column="NickName" property="userName" jdbcType="VARCHAR"/>
   </resultMap>
+  <select id="getPermitionForRemove" resultType="long" parameterType="com.bili.diushoujuaner.database.param.RecallRemoveParam">
+      SELECT COUNT(*) FROM recall WHERE RecallNo = #{recallNo,jdbcType=BIGINT} and UserNo = #{userNo,jdbcType=BIGINT}
+  </select>
   <select id="getUserNoByRecallNo" parameterType="long" resultType="long">
       select UserNo 
       from Recall

@@ -9,6 +9,7 @@ import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.database.mapper.CommentMapper;
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.database.model.CommentExample;
+import com.bili.diushoujuaner.database.param.CommentRemoveParam;
 import com.bili.diushoujuaner.mgt.CommentMgt;
 
 @Repository
@@ -23,7 +24,7 @@ public class CommentMgtImpl implements CommentMgt {
 	}
 
 	@Override
-	public int deleteCommentByCommentNo(long commentNo) {
+	public int removeCommentByCommentNo(long commentNo) {
 		CommentExample commentExample = new CommentExample();
 		commentExample.createCriteria().andCommentNoEqualTo(commentNo);
 		return commentMapper.deleteByExample(commentExample);
@@ -44,6 +45,16 @@ public class CommentMgtImpl implements CommentMgt {
 			return commentList.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean getPermitionForRemove(long commentNo, long userNo) {
+		CommentRemoveParam commentRemoveParam = new CommentRemoveParam();
+		commentRemoveParam.setCommentNo(commentNo);
+		commentRemoveParam.setUserNo(userNo);
+		
+		long result = commentMapper.getPermitionForRemove(commentRemoveParam);
+		return result > 0 ? true : false;
 	}
 
 }

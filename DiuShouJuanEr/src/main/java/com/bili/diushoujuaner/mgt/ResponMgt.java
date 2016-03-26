@@ -8,8 +8,10 @@ public interface ResponMgt {
 
 	List<Respon> getResponListByCommentNo(long commentNo);
 	
-	int deleteResponByResponNo(long responNo);
+	int removeResponByResponNo(long responNo);
 	
 	Respon addResponByRecord(long commentNo, long toNo, String content, long fromNo);
+	
+	boolean getPermitionForRemove(long responNo, long userNo);
 	
 }

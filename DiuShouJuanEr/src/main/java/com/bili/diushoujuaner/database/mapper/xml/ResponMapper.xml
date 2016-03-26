@@ -12,6 +12,22 @@
     <result column="PicPath" property="fromPicPath" jdbcType="VARCHAR" />
     <result column="ToNo" property="toNo" jdbcType="BIGINT" />
   </resultMap>
+  <select id="getPermitionForRemove" resultType="long" parameterType="com.bili.diushoujuaner.database.param.ResponRemoveParam">
+  	SELECT COUNT(DISTINCT Respon.Content)
+	FROM Respon, Comment, Recall
+	WHERE
+	(
+		Respon.FromNo = #{userNo,jdbcType=BIGINT}
+		AND ResponNo = #{responNo,jdbcType=BIGINT}
+	)
+	OR 
+	(
+	ResponNo = #{responNo,jdbcType=BIGINT}
+	AND Respon.CommentNo = Comment.CommentNo
+	AND Comment.RecallNo = Recall.RecallNo
+	AND Recall.UserNo = #{userNo,jdbcType=BIGINT}
+	)
+  </select>
   <select id="getResponListByCommentNo" resultMap="BaseResultMap" parameterType="long">
   	select ResponNo,CommentNo,Content,AddTime,FromNo,NickName NickNameFrom,tmp.NickNameTo,PicPath,ToNo
   	from Respon,User,(select UserNo UserNoTo, NickName NickNameTo from User) as tmp

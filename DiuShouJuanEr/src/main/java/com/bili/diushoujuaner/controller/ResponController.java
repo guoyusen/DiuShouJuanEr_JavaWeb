@@ -16,18 +16,19 @@ public class ResponController {
 	@Autowired
 	ResponService responService;
 	
-	@RequestMapping(value = "/1.0/respons/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/respons/remove", method = RequestMethod.POST)
 	@ResponseBody
-	public Object deleteResponByResponNo(
-			@RequestParam(value = "responno", required = true, defaultValue = "-1") long responNo){
-		return responService.deleteResponByResponNo(responNo);
+	public Object removeResponByResponNo(
+			@RequestParam(value = "responNo", required = true, defaultValue = "-1") long responNo,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		return responService.removeResponByResponNo(responNo, accessToken);
 	}
 	
-	@RequestMapping(value = "/1.0/respons/respon", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/respons/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addResponByRecord(
-			@RequestParam(value = "commentno", required = true, defaultValue = "-1") long commentNo,
-			@RequestParam(value = "tono", required = true, defaultValue = "-1") long toNo,
+			@RequestParam(value = "commentNo", required = true, defaultValue = "-1") long commentNo,
+			@RequestParam(value = "toNo", required = true, defaultValue = "-1") long toNo,
 			@RequestParam(value = "content", required = true, defaultValue = "0") String content,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
 		return responService.addResponByRecord(commentNo, toNo, content, accessToken);

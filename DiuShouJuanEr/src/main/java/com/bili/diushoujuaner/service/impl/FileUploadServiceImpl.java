@@ -26,7 +26,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 	}
 
 	@Override
-	public ResponseDto deletePostPicByRecord(long picId, String accessToken,
+	public ResponseDto removePostPicByRecord(long picId, String accessToken,
 			String deviceType) {
 		if(RecallPicManager.removePicture(CustomSessionManager.getCustomSession(accessToken).getUserNo() + deviceType, picId)){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除文件成功", null);
@@ -35,7 +35,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 	}
 
 	@Override
-	public ResponseDto deletePostPicListByRecord(String accessToken,
+	public ResponseDto removePostPicListByRecord(String accessToken,
 			String deviceType) {
 		RecallPicManager.clearUserPicture(CustomSessionManager.getCustomSession(accessToken).getUserNo() + deviceType, true);
 		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除文件组成功", null);

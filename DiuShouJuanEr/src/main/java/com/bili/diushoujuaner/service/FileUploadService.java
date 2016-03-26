@@ -10,7 +10,7 @@ public interface FileUploadService {
 
 	ResponseDto uploadPostPicByRecord(MultipartFile file, String accessToken, String deviceType) throws IOException;
 	
-	ResponseDto deletePostPicByRecord(long picId, String accessToken, String deviceType);
+	ResponseDto removePostPicByRecord(long picId, String accessToken, String deviceType);
 	
-	ResponseDto deletePostPicListByRecord(String accessToken, String deviceType);
+	ResponseDto removePostPicListByRecord(String accessToken, String deviceType);
 }

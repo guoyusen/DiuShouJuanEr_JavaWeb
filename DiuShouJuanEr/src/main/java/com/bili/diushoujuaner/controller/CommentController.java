@@ -16,17 +16,18 @@ public class CommentController {
 	@Autowired
 	CommentService commentService;
 	
-	@RequestMapping(value = "/1.0/comments/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/comments/remove", method = RequestMethod.POST)
 	@ResponseBody
-	public Object deleteCommentByCommentNo(
-			@RequestParam(value = "commentno", required = true, defaultValue = "-1") long commentNo){
-		return commentService.deleteCommentByCommentNo(commentNo);
+	public Object removeCommentByCommentNo(
+			@RequestParam(value = "commentNo", required = true, defaultValue = "-1") long commentNo,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		return commentService.removeCommentByCommentNo(commentNo, accessToken);
 	}
 	
-	@RequestMapping(value = "/1.0/comments/comment", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/comments/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addCommentByRecord(
-			@RequestParam(value = "recallno", required = true, defaultValue = "-1") long recallNo,
+			@RequestParam(value = "recallNo", required = true, defaultValue = "-1") long recallNo,
 			@RequestParam(value = "content", required = true, defaultValue = "") String content,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
 		return commentService.addCommentByRecord(recallNo, content, accessToken);

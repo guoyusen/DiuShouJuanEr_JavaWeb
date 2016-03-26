@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.Respon;
 import com.bili.diushoujuaner.mgt.ResponMgt;
 import com.bili.diushoujuaner.service.ResponService;
@@ -17,8 +18,12 @@ public class ResponServiceImpl implements ResponService {
 	ResponMgt responMgt;
 	
 	@Override
-	public ResponseDto deleteResponByResponNo(long responNo) {
-		int effectLines = responMgt.deleteResponByResponNo(responNo);
+	public ResponseDto removeResponByResponNo(long responNo, String accessToken) {
+		if(!responMgt.getPermitionForRemove(responNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
+		}
+		
+		int effectLines = responMgt.removeResponByResponNo(responNo);
 		if(effectLines > 0){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Respon成功", responNo);
 		}else{

@@ -16,8 +16,10 @@ public interface RecallMgt {
 	
 	int addRecall(long userNo, String content, String time, int picCount, String deviceType);
 	
-	int deleteRecallByRecallNo(long recallNo);
+	int removeRecallByRecallNo(long recallNo);
 	
 	long getUserNoByRecallNo(long recallNo);
+	
+	boolean getPermitionForRemove(long recallNo, long userNo);
 	
 }

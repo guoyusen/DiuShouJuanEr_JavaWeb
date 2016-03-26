@@ -8,8 +8,10 @@ public interface CommentMgt {
 
 	List<Comment> getCommentListByRecallNo(long recallNo);
 	
-	int deleteCommentByCommentNo(long commentNo);
+	int removeCommentByCommentNo(long commentNo);
 	
 	Comment addCommentByRecord(long recallNo, String content, long fromNo);
+	
+	boolean getPermitionForRemove(long commentNo, long userNo);
 	
 }

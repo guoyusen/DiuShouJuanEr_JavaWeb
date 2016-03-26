@@ -10,6 +10,12 @@
     <result column="NickName" property="nickName" jdbcType="VARCHAR" />
     <result column="PicPath" property="fromPicPath" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="getPermitionForRemove" resultType="long" parameterType="com.bili.diushoujuaner.database.param.CommentRemoveParam">
+  	SELECT COUNT(DISTINCT Comment.Content)
+	FROM Comment, Recall
+	WHERE
+	(CommentNo = #{commentNo, jdbcType=BIGINT} AND Comment.FromNo = #{userNo, jdbcType=BIGINT}) OR ( CommentNo = #{commentNo, jdbcType=BIGINT} AND Comment.RecallNo = Recall.RecallNo AND Recall.UserNo = #{userNo, jdbcType=BIGINT})
+  </select>
   <select id="getCommentListByRecallNo" resultMap="BaseResultMap" parameterType="long">
   	select CommentNo,RecallNo,Content,AddTime,FromNo,NickName,PicPath
   	from Comment,User

@@ -28,23 +28,23 @@ public class FileUploadController {
 		return fileUploadService.uploadPostPicByRecord(file, accessToken, deviceType);
 	}
 	
-	@RequestMapping(value = "/1.0/file/postpic/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/file/postpic/remove", method = RequestMethod.POST)
 	@ResponseBody
-	public Object deletePostPicByRecord(
-			@RequestParam(value = "picid", required = true, defaultValue = "-1") long picId,
+	public Object removePostPicByRecord(
+			@RequestParam(value = "picId", required = true, defaultValue = "-1") long picId,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
 			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType){
 		
-		return fileUploadService.deletePostPicByRecord(picId, accessToken, deviceType);
+		return fileUploadService.removePostPicByRecord(picId, accessToken, deviceType);
 	}
 	
-	@RequestMapping(value = "/1.0/file/postpic/delete/all", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/file/postpic/removeall", method = RequestMethod.POST)
 	@ResponseBody
-	public Object deletePostPicListByRecord(
+	public Object removePostPicListByRecord(
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
 			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType){
 		
-		return fileUploadService.deletePostPicListByRecord(accessToken, deviceType);
+		return fileUploadService.removePostPicListByRecord(accessToken, deviceType);
 	}
 
 }

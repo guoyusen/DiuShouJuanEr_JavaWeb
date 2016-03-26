@@ -383,8 +383,8 @@ var HomeMainRecallUtil = {
 		HomeMainRecallUtil.deleteRecallNo = recallNo;
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/recalls/delete",
-			params : {recallno:recallNo},
+			url : "1.0/recalls/remove",
+			params : {recallNo:recallNo},
 			type : 'json',
 			callback : function(result){
 				if (result.retCode == "success") {
@@ -401,8 +401,8 @@ var HomeMainRecallUtil = {
 		HomeMainRecallUtil.deleteRecallNo = recallNo;
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/comments/delete",
-			params : {commentno:commentNo},
+			url : "1.0/comments/remove",
+			params : {commentNo:commentNo},
 			type : 'json',
 			callback : function(result){
 				if (result.retCode == "success") {
@@ -419,8 +419,8 @@ var HomeMainRecallUtil = {
 		HomeMainRecallUtil.deleteResponNo = responNo;
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/respons/delete",
-			params : {responno:responNo},
+			url : "1.0/respons/remove",
+			params : {responNo:responNo},
 			type : 'json',
 			callback : function(result){
 				if (result.retCode == "success") {
@@ -466,8 +466,8 @@ var HomeMainRecallUtil = {
 	publishRespon : function(commentNo, toNo){
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/respons/respon",
-			params : {commentno:commentNo,tono:toNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
+			url : "1.0/respons/add",
+			params : {commentNo:commentNo,toNo:toNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
 			type : 'json',
 			callback : function(result){
 				if (result && result.retCode == "success" && result.data) {
@@ -519,8 +519,8 @@ var HomeMainRecallUtil = {
 	publishComment : function(recallNo){
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/comments/comment",
-			params : {recallno:recallNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
+			url : "1.0/comments/add",
+			params : {recallNo:recallNo,content:HomeOperateUtil.HTMLEnCode($("#homeAddCommentContent .mCSB_container").html())},
 			type : 'json',
 			callback : function(result){
 				if (result && result.retCode == "success" && result.data) {
@@ -602,7 +602,7 @@ var HomeMainOperateUtil = {
 		publishRecall : function(){
 			AjaxUtil.request({
 				method : "post",
-				url : "1.0/recalls/recall",
+				url : "1.0/recalls/add",
 				params : {content:HomeOperateUtil.HTMLEnCode($("#postPanelContent .mCSB_container").html()),picount : HomeOperateUtil.curentRecallPicCount},
 				type : 'json',
 				callback : HomeMainOperateUtil.publishRecallCallBack

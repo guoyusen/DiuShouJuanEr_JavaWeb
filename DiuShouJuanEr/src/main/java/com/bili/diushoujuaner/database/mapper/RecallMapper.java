@@ -2,6 +2,7 @@ package com.bili.diushoujuaner.database.mapper;
 
 import com.bili.diushoujuaner.database.model.Recall;
 import com.bili.diushoujuaner.database.model.RecallExample;
+import com.bili.diushoujuaner.database.param.RecallRemoveParam;
 import com.bili.diushoujuaner.database.param.RecallRequestParam;
 
 import java.util.List;
@@ -39,5 +40,7 @@ public interface RecallMapper {
     
     List<Recall> getRecallListByUserNoAndPageParamAndRecall(RecallRequestParam recallRequestParam);
     
-    long getUserNoByRecallNo(long recallNo);
+    List<Long> getUserNoByRecallNo(long recallNo);
+    
+    long getPermitionForRemove(RecallRemoveParam recallRemoveParam);
 }

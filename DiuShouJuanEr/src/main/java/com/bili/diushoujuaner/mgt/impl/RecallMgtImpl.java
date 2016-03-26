@@ -12,6 +12,7 @@ import com.bili.diushoujuaner.database.mapper.RecallMapper;
 import com.bili.diushoujuaner.database.model.Picture;
 import com.bili.diushoujuaner.database.model.Recall;
 import com.bili.diushoujuaner.database.model.RecallExample;
+import com.bili.diushoujuaner.database.param.RecallRemoveParam;
 import com.bili.diushoujuaner.database.param.RecallRequestParam;
 import com.bili.diushoujuaner.mgt.RecallMgt;
 
@@ -83,7 +84,7 @@ public class RecallMgtImpl implements RecallMgt {
 	}
 
 	@Override
-	public int deleteRecallByRecallNo(long recallNo) {
+	public int removeRecallByRecallNo(long recallNo) {
 		RecallExample recallExample = new RecallExample();
 		recallExample.createCriteria().andRecallNoEqualTo(recallNo);
 		return recallMapper.deleteByExample(recallExample);
@@ -91,7 +92,22 @@ public class RecallMgtImpl implements RecallMgt {
 
 	@Override
 	public long getUserNoByRecallNo(long recallNo) {
-		return recallMapper.getUserNoByRecallNo(recallNo);
+		List<Long> resultList = recallMapper.getUserNoByRecallNo(recallNo);
+		if(resultList == null || resultList.isEmpty()){
+			return 0;
+		}
+		return resultList.get(0).longValue();
+	}
+
+	@Override
+	public boolean getPermitionForRemove(long recallNo, long userNo) {
+		RecallRemoveParam recallRemoveParam = new RecallRemoveParam();
+		recallRemoveParam.setRecallNo(recallNo);
+		recallRemoveParam.setUserNo(userNo);
+		
+		long result = recallMapper.getPermitionForRemove(recallRemoveParam);
+
+		return result > 0 ? true : false;
 	}
 
 }

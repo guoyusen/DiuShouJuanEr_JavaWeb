@@ -8,6 +8,6 @@ public interface RecallService {
 
 	ResponseDto addRecallByContAndToken(String content, String accessToken, int picCount, String deviceType);
 	
-	ResponseDto deleteRecallByRecallNo(long recallNo);
+	ResponseDto removeRecallByRecallNo(long recallNo, String accessToken);
 	
 }

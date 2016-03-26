@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.mgt.CommentMgt;
 import com.bili.diushoujuaner.service.CommentService;
@@ -17,8 +18,12 @@ public class CommentServiceImpl implements CommentService {
 	CommentMgt commentMgt;
 
 	@Override
-	public ResponseDto deleteCommentByCommentNo(long commentNo) {
-		int effectLines = commentMgt.deleteCommentByCommentNo(commentNo);
+	public ResponseDto removeCommentByCommentNo(long commentNo, String accessToken) {
+		if(!commentMgt.getPermitionForRemove(commentNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
+		}
+		
+		int effectLines = commentMgt.removeCommentByCommentNo(commentNo);
 		if(effectLines > 0){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Comment成功", commentNo);
 		}else{

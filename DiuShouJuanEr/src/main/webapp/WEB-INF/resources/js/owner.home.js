@@ -372,8 +372,8 @@ var HomeOperateUtil = {
 		HomeOperateUtil.deleteRecallPicId = picId;
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/file/postpic/delete",
-			params : {picid : picId},
+			url : "1.0/file/postpic/remove",
+			params : {picId : picId},
 			type : 'json',
 			callback : function(result){
 				if (result.retCode == "success") {
@@ -481,7 +481,7 @@ var HomeOperateUtil = {
 		$("#postPicCount").html('图片(' + HomeOperateUtil.curentRecallPicCount + '/8)');
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/file/postpic/delete/all",
+			url : "1.0/file/postpic/removeall",
 			params : {},
 			type : 'json',
 			callback : function(){}

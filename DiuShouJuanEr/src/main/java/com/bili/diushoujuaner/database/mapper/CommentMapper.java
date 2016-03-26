@@ -2,6 +2,8 @@ package com.bili.diushoujuaner.database.mapper;
 
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.database.model.CommentExample;
+import com.bili.diushoujuaner.database.param.CommentRemoveParam;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +33,6 @@ public interface CommentMapper {
     List<Comment> getCommentListByRecallNo(long recallNo);
     
     List<Comment> getCommentListByCommentNo(long commentNo);
+    
+    long getPermitionForRemove(CommentRemoveParam commentRemoveParam);
 }

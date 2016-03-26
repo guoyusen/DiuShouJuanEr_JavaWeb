@@ -27,7 +27,7 @@ public class RecallController {
 		return recallService.getRecallListByRecord(type, pageIndex, pageSize, userNo, lastRecall);
 	}
 	
-	@RequestMapping(value = "/1.0/recalls/recall", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/recalls/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addRecallByContAndToken(
 			@RequestParam(value = "content", required = true, defaultValue = "") String content,
@@ -37,11 +37,12 @@ public class RecallController {
 		return recallService.addRecallByContAndToken(content, accessToken, picCount, deviceType);
 	}
 	
-	@RequestMapping(value = "/1.0/recalls/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/recalls/remove", method = RequestMethod.POST)
 	@ResponseBody
-	public Object deleteRecallByPostNo(
-			@RequestParam(value = "recallno", required = true, defaultValue = "-1") long recallNo){
-		return recallService.deleteRecallByRecallNo(recallNo);
+	public Object removeRecallByRecallNo(
+			@RequestParam(value = "recallno", required = true, defaultValue = "-1") long recallNo,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		return recallService.removeRecallByRecallNo(recallNo, accessToken);
 	}
 	
 }

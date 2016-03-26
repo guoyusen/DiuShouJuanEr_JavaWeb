@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.database.model.Picture;
 import com.bili.diushoujuaner.database.model.Recall;
@@ -70,16 +71,18 @@ public class RecallServiceImpl implements RecallService {
 	}
 
 	@Override
-	public ResponseDto deleteRecallByRecallNo(long recallNo) {
-		
-		List<Picture> pictureList = pictureMgt.getPictureListByRecallNo(recallNo);
-		
-		for(Picture picture : pictureList){
-			CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + picture.getPicPath());
+	public ResponseDto removeRecallByRecallNo(long recallNo, String accessToken) {
+		if(!recallMgt.getPermitionForRemove(recallNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
 		}
 		
-		int effectLines = recallMgt.deleteRecallByRecallNo(recallNo);
+		int effectLines = recallMgt.removeRecallByRecallNo(recallNo);
 		if(effectLines > 0){
+			List<Picture> pictureList = pictureMgt.getPictureListByRecallNo(recallNo);
+			for(Picture picture : pictureList){
+				CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + picture.getPicPath());
+			}
+			
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Recall成功", recallNo);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "删除Recall失败" + recallNo, null);
