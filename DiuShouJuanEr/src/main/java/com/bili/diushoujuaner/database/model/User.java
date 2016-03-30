@@ -180,4 +180,13 @@ public class User {
     public void setIsOnline(Boolean isOnline) {
         this.isOnline = isOnline;
     }
+
+	@Override
+	public String toString() {
+		return "User [userNo=" + userNo + ", realName=" + realName + ", nickName=" + nickName + ", userPsd=" + userPsd
+				+ ", mobile=" + mobile + ", autograph=" + autograph + ", gender=" + gender + ", status=" + status
+				+ ", registTime=" + registTime + ", birthday=" + birthday + ", homeTown=" + homeTown + ", location="
+				+ location + ", email=" + email + ", picPath=" + picPath + ", isValid=" + isValid + ", visitType="
+				+ visitType + ", smallNick=" + smallNick + ", isOnline=" + isOnline + "]";
+	}
 }
