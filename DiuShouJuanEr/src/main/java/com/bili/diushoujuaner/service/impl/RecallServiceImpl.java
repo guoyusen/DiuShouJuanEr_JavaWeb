@@ -35,6 +35,16 @@ public class RecallServiceImpl implements RecallService {
 	ResponMgt responMgt;
 
 	@Override
+	public ResponseDto getRecentRecallByUserNo(long userNo) {
+		Recall recall = recallMgt.getRecentRecallByUserNo(userNo);
+		if(recall != null){
+			recall.setPictureList(pictureMgt.getPictureListByRecallNo(recall.getRecallNo()));
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取recentRecall成功", recall);
+		}
+		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取recentRecall失败", null);
+	}
+
+	@Override
 	public ResponseDto getRecallListByRecord(int type, int pageIndex, int pageSize, long userNo, long lastRecall) {
 		
 		List<Recall> recallList = new ArrayList<>();

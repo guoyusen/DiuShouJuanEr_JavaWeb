@@ -22,4 +22,6 @@ public interface RecallMgt {
 	
 	boolean getPermitionForRemove(long recallNo, long userNo);
 	
+	Recall getRecentRecallByUserNo(long userNo);
+	
 }

@@ -43,4 +43,6 @@ public interface RecallMapper {
     List<Long> getUserNoByRecallNo(long recallNo);
     
     long getPermitionForRemove(RecallRemoveValidateParam recallRemoveValidateParam);
+    
+    List<Recall> getRecentRecallByUserNo(long userNo);
 }

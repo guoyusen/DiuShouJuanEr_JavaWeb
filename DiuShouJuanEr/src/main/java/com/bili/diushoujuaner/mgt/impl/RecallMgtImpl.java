@@ -25,6 +25,12 @@ public class RecallMgtImpl implements RecallMgt {
 	PictureMapper pictureMapper;
 	
 	@Override
+	public Recall getRecentRecallByUserNo(long userNo) {
+		List<Recall> recallList = recallMapper.getRecentRecallByUserNo(userNo);
+		return recallList.get(0);
+	}
+
+	@Override
 	public List<Recall> getRecallListByPageParam(int pageIndex, int pageSize) {
 		RecallRequestParam recallRequestParam = new RecallRequestParam();
 		recallRequestParam.setPageStart((pageIndex - 1) * pageSize);

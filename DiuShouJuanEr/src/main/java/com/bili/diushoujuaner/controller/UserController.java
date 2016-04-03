@@ -23,6 +23,12 @@ public class UserController {
 		return userService.getUserInfoByToken(accessToken);
 	}
 	
+	@RequestMapping(value = "/1.0/users/info/user", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getUserInfoByUserNo(@RequestParam(value = "userNo", required = true, defaultValue = "-1") long userNo){
+		return userService.getUserInfoByUserNo(userNo);
+	}
+	
 	@RequestMapping(value = "/1.0/users/login", method = RequestMethod.POST)
 	@ResponseBody
 	public Object getUserLogin(

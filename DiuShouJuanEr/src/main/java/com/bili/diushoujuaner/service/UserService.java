@@ -10,6 +10,8 @@ public interface UserService {
 	
 	ResponseDto getUserInfoByToken(String accessToken);
 	
+	ResponseDto getUserInfoByUserNo(long userNo);
+	
 	ResponseDto getUserRegister(String mobile,String password, String code) throws Exception;
 
 	ResponseDto getPasswordReset(String mobile,String password, String code) throws Exception;

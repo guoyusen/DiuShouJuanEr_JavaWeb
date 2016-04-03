@@ -10,4 +10,6 @@ public interface RecallService {
 	
 	ResponseDto removeRecallByRecallNo(long recallNo, String accessToken);
 	
+	ResponseDto getRecentRecallByUserNo(long userNo);
+	
 }

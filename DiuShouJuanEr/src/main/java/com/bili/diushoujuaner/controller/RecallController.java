@@ -40,9 +40,16 @@ public class RecallController {
 	@RequestMapping(value = "/1.0/recalls/remove", method = RequestMethod.POST)
 	@ResponseBody
 	public Object removeRecallByRecallNo(
-			@RequestParam(value = "recallno", required = true, defaultValue = "-1") long recallNo,
+			@RequestParam(value = "recallNo", required = true, defaultValue = "-1") long recallNo,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
 		return recallService.removeRecallByRecallNo(recallNo, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/recalls/recent", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getRecentRecallByUserNo(
+			@RequestParam(value = "userNo", required = true, defaultValue = "-1") long userNo){
+		return recallService.getRecentRecallByUserNo(userNo);
 	}
 	
 }
