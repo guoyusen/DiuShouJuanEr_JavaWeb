@@ -3,6 +3,9 @@ package com.bili.diushoujuaner.database.model;
 import java.util.List;
 
 public class Comment {
+	
+	private String timeStamp;
+	
     private Long commentNo;
 
     private Long recallNo;
@@ -19,7 +22,15 @@ public class Comment {
     
     private List<Respon> responList;
 
-    public List<Respon> getResponList() {
+    public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public List<Respon> getResponList() {
 		return responList;
 	}
 

@@ -32,10 +32,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public ResponseDto addCommentByRecord(long recallNo, String content,
+	public ResponseDto addCommentByRecord(String timeStamp, long recallNo, String content,
 			String accessToken) {
 		Comment comment = commentMgt.addCommentByRecord(recallNo, content, CommonUtils.getUserNoFromAccessToken(accessToken));
 		if(comment != null){
+			comment.setTimeStamp(timeStamp);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Comment成功", comment);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "添加Comment失败", null);

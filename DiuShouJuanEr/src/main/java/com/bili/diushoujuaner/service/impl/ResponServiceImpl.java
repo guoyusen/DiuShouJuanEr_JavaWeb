@@ -32,12 +32,10 @@ public class ResponServiceImpl implements ResponService {
 	}
 
 	@Override
-	public ResponseDto addResponByRecord(long commentNo, long toNo, String content, String accessToken) {
-		if(toNo == CustomSessionManager.getCustomSession(accessToken).getUserNo()){
-			return CommonUtils.getResponse(ConstantUtils.ERROR, "非法操作", null);
-		}
+	public ResponseDto addResponByRecord(String timeStamp, long commentNo, long toNo, String content, String accessToken) {
 		Respon respon = responMgt.addResponByRecord(commentNo, toNo, content, CommonUtils.getUserNoFromAccessToken(accessToken));
 		if(respon != null){
+			respon.setTimeStamp(timeStamp);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Respon成功", respon);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "添加Respon失败", null);

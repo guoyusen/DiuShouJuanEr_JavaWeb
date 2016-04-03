@@ -18,8 +18,18 @@ public class Respon {
     private String nickNameFrom;
     
     private String nickNameTo;
+    
+    private String timeStamp;
 
-    public String getFromPicPath() {
+    public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public String getFromPicPath() {
 		return fromPicPath;
 	}
 

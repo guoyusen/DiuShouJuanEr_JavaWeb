@@ -6,6 +6,6 @@ public interface ResponService {
 
 	ResponseDto removeResponByResponNo(long responNo, String accessToken);
 	
-	ResponseDto addResponByRecord(long commentNo, long toNo, String content, String accessToken);
+	ResponseDto addResponByRecord(String timeStamp, long commentNo, long toNo, String content, String accessToken);
 	
 }

@@ -27,11 +27,12 @@ public class ResponController {
 	@RequestMapping(value = "/1.0/respons/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addResponByRecord(
+			@RequestParam(value = "timeStamp", required = true, defaultValue = "") String timeStamp,
 			@RequestParam(value = "commentNo", required = true, defaultValue = "-1") long commentNo,
 			@RequestParam(value = "toNo", required = true, defaultValue = "-1") long toNo,
 			@RequestParam(value = "content", required = true, defaultValue = "0") String content,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
-		return responService.addResponByRecord(commentNo, toNo, content, accessToken);
+		return responService.addResponByRecord(timeStamp, commentNo, toNo, content, accessToken);
 	}
 	
 }

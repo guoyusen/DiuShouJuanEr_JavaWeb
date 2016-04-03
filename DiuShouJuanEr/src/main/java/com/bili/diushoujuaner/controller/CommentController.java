@@ -27,10 +27,11 @@ public class CommentController {
 	@RequestMapping(value = "/1.0/comments/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addCommentByRecord(
+			@RequestParam(value = "timeStamp", required = true, defaultValue = "") String timeStamp,
 			@RequestParam(value = "recallNo", required = true, defaultValue = "-1") long recallNo,
 			@RequestParam(value = "content", required = true, defaultValue = "") String content,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
-		return commentService.addCommentByRecord(recallNo, content, accessToken);
+		return commentService.addCommentByRecord(timeStamp, recallNo, content, accessToken);
 	}
 	
 	
