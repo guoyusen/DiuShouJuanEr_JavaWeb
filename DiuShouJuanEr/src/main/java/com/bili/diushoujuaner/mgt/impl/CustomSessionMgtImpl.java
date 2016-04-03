@@ -30,8 +30,8 @@ public class CustomSessionMgtImpl implements CustomSessionMgt {
 		customSession.setLastTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
 		customSession.setUserNo(userNo);
 		
-		List<CustomSession> list = customSessionMapper.selectByExample(customSessionExample);
-		if(list.size() > 0){
+		List<CustomSession> cuList = customSessionMapper.selectByExample(customSessionExample);
+		if(!cuList.isEmpty()){
 			customSessionMapper.updateByExampleSelective(customSession, customSessionExample);
 		}else{
 			customSessionMapper.insertSelective(customSession);
@@ -45,11 +45,8 @@ public class CustomSessionMgtImpl implements CustomSessionMgt {
 		CustomSessionExample customSessionExample = new CustomSessionExample();
 		customSessionExample.createCriteria().andAccessTokenEqualTo(accessToken);
 		
-		List<CustomSession> list = customSessionMapper.selectByExample(customSessionExample);
-		if(list.size() > 0){
-			return list.get(0);
-		}
-		return null;
+		List<CustomSession> cuList = customSessionMapper.selectByExample(customSessionExample);
+		return cuList.isEmpty() ? null : cuList.get(0);
 	}
 
 }

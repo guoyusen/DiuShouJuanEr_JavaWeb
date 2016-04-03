@@ -40,11 +40,8 @@ public class CommentMgtImpl implements CommentMgt {
 		
 		commentMapper.insertSelective(comment);
 		List<Comment> commentList = commentMapper.getCommentListByCommentNo(comment.getCommentNo());
-		
-		if(commentList.size() > 0){
-			return commentList.get(0);
-		}
-		return null;
+
+		return commentList.isEmpty() ? null : commentList.get(0);
 	}
 
 	@Override
@@ -54,7 +51,7 @@ public class CommentMgtImpl implements CommentMgt {
 		commentRemoveValidateParam.setUserNo(userNo);
 		
 		long result = commentMapper.getPermitionForRemove(commentRemoveValidateParam);
-		return result > 0 ? true : false;
+		return result > 0;
 	}
 
 }

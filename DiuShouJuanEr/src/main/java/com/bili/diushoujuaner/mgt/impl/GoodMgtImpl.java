@@ -27,6 +27,7 @@ public class GoodMgtImpl implements GoodMgt {
 		GoodExample goodExample = new GoodExample();
 		goodExample.createCriteria().andRecallNoEqualTo(recallNo).andUserNoEqualTo(userNo);
 		if(goodMapper.selectByExample(goodExample).size() > 0){
+			//避免多次点赞，当然这种情况正常情况不会出现，避免被刷
 			return 1;
 		}
 		Good good = new Good();

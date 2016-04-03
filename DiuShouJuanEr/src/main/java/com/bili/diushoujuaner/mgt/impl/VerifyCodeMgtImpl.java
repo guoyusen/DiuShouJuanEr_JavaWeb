@@ -35,10 +35,7 @@ public class VerifyCodeMgtImpl implements VerifyCodeMgt {
 		verifyCodeExample.createCriteria().andMobileEqualTo(mobile).andTypeEqualTo(type).andValidEqualTo(true);
 		
 		List<VerifyCode> verifyCodeList = verifyCodeMapper.selectByExample(verifyCodeExample);
-		if(verifyCodeList.size() > 0){
-			return verifyCodeList.get(0);
-		}
-		return null;
+		return verifyCodeList.isEmpty() ? null : verifyCodeList.get(0);
 	}
 
 	@Override

@@ -30,11 +30,8 @@ public class UserMgtImpl implements UserMgt {
 		user.setPicPath("images/head/head_default.png");
 		user.setRegistTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
 		user.setVisitType(ConstantUtils.USER_SPACE_VISIT_ALL);
-		if(userMapper.insertSelective(user) > 0){
-			return true;
-		}else{
-		    return false;
-		}
+
+		return userMapper.insertSelective(user) > 0;
 	}
 
 	@Override
@@ -43,11 +40,8 @@ public class UserMgtImpl implements UserMgt {
 		userExample.createCriteria().andMobileEqualTo(mobile);
 		User user = new User();
 		user.setUserPsd(password);
-		if(userMapper.updateByExampleSelective(user, userExample) > 0){
-			return true;
-		}else{
-			return false;
-		}
+		
+		return userMapper.updateByExampleSelective(user, userExample) > 0;
 	}
 
 	@Override
@@ -56,12 +50,7 @@ public class UserMgtImpl implements UserMgt {
 		userExample.createCriteria().andUserNoEqualTo(userNo);
 
 		List<User> userList = userMapper.selectByExample(userExample);
-		if (userList != null && userList.size() > 0){
-			return userList.get(0);
-		}
-		else{
-			return null;
-		}
+		return userList.isEmpty() ? null : userList.get(0);
 	}
 
 	@Override
@@ -70,12 +59,8 @@ public class UserMgtImpl implements UserMgt {
 		userExample.createCriteria().andMobileEqualTo(mobile);
 
 		List<User> userList = userMapper.selectByExample(userExample);
-		if (userList != null && userList.size() > 0){
-			return userList.get(0);
-		}
-		else{
-			return null;
-		}
+		
+		return userList.isEmpty() ? null : userList.get(0);
 	}
 
 	@Override
@@ -86,11 +71,7 @@ public class UserMgtImpl implements UserMgt {
 		UserExample userExample = new UserExample();
 		userExample.createCriteria().andUserNoEqualTo(userNo);
 		
-		if(userMapper.updateByExampleSelective(user, userExample) > 0){
-			return true;
-		}else{
-			return false;
-		}
+		return userMapper.updateByExampleSelective(user, userExample) > 0;
 	}
 
 	@Override
@@ -101,11 +82,7 @@ public class UserMgtImpl implements UserMgt {
 		UserExample userExample = new UserExample();
 		userExample.createCriteria().andUserNoEqualTo(userNo);
 		
-		if(userMapper.updateByExampleSelective(user, userExample) > 0){
-			return true;
-		}else{
-			return false;
-		}
+		return userMapper.updateByExampleSelective(user, userExample) > 0;
 	}
 
 }

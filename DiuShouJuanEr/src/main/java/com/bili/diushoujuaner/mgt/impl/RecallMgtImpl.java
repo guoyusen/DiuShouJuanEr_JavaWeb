@@ -27,7 +27,7 @@ public class RecallMgtImpl implements RecallMgt {
 	@Override
 	public Recall getRecentRecallByUserNo(long userNo) {
 		List<Recall> recallList = recallMapper.getRecentRecallByUserNo(userNo);
-		return recallList.get(0);
+		return recallList.isEmpty() ? null : recallList.get(0);
 	}
 
 	@Override
@@ -99,10 +99,8 @@ public class RecallMgtImpl implements RecallMgt {
 	@Override
 	public long getUserNoByRecallNo(long recallNo) {
 		List<Long> resultList = recallMapper.getUserNoByRecallNo(recallNo);
-		if(resultList == null || resultList.isEmpty()){
-			return 0;
-		}
-		return resultList.get(0).longValue();
+
+		return resultList.isEmpty() ? 0 : resultList.get(0);
 	}
 
 	@Override
@@ -113,7 +111,7 @@ public class RecallMgtImpl implements RecallMgt {
 		
 		long result = recallMapper.getPermitionForRemove(recallRemoveValidateParam);
 
-		return result > 0 ? true : false;
+		return result > 0;
 	}
 
 }

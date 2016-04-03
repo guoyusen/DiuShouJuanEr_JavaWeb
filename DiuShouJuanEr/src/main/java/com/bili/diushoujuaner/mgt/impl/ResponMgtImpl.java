@@ -42,11 +42,7 @@ public class ResponMgtImpl implements ResponMgt {
 		responMapper.insertSelective(respon);
 		
 		List<Respon> responList = responMapper.getResponListByResponNo(respon.getResponNo());
-		
-		if(responList.size() > 0){
-			return responList.get(0);
-		}
-		return null;
+		return responList.isEmpty() ? null : responList.get(0);
 	}
 
 	@Override
@@ -56,7 +52,7 @@ public class ResponMgtImpl implements ResponMgt {
 		responRemoveValidateParam.setUserNo(userNo);
 		long result = responMapper.getPermitionForRemove(responRemoveValidateParam);
 		
-		return result > 0 ? true : false;
+		return result > 0;
 	}
 
 }
