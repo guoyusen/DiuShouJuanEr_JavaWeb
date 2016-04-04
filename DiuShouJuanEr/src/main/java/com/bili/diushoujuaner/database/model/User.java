@@ -3,8 +3,6 @@ package com.bili.diushoujuaner.database.model;
 public class User {
     private Long userNo;
 
-    private String realName;
-
     private String nickName;
 
     private String userPsd;
@@ -31,8 +29,6 @@ public class User {
 
     private Boolean isValid;
 
-    private Short visitType;
-
     private String smallNick;
 
     private Boolean isOnline;
@@ -43,14 +39,6 @@ public class User {
 
     public void setUserNo(Long userNo) {
         this.userNo = userNo;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName == null ? null : realName.trim();
     }
 
     public String getNickName() {
@@ -157,14 +145,6 @@ public class User {
         this.isValid = isValid;
     }
 
-    public Short getVisitType() {
-        return visitType;
-    }
-
-    public void setVisitType(Short visitType) {
-        this.visitType = visitType;
-    }
-
     public String getSmallNick() {
         return smallNick;
     }
@@ -180,13 +160,4 @@ public class User {
     public void setIsOnline(Boolean isOnline) {
         this.isOnline = isOnline;
     }
-
-	@Override
-	public String toString() {
-		return "User [userNo=" + userNo + ", realName=" + realName + ", nickName=" + nickName + ", userPsd=" + userPsd
-				+ ", mobile=" + mobile + ", autograph=" + autograph + ", gender=" + gender + ", status=" + status
-				+ ", registTime=" + registTime + ", birthday=" + birthday + ", homeTown=" + homeTown + ", location="
-				+ location + ", email=" + email + ", picPath=" + picPath + ", isValid=" + isValid + ", visitType="
-				+ visitType + ", smallNick=" + smallNick + ", isOnline=" + isOnline + "]";
-	}
 }

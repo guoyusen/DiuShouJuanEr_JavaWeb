@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bili.diushoujuaner.common.CommonUtils;
-import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.database.mapper.UserMapper;
 import com.bili.diushoujuaner.database.model.User;
 import com.bili.diushoujuaner.database.model.UserExample;
@@ -21,15 +20,13 @@ public class UserMgtImpl implements UserMgt {
 	@Override
 	public boolean registerUserByMobile(String mobile, String password) {
 		User user = new User();
-		user.setRealName("diudiu");
-		user.setNickName("diudiu");
+		user.setNickName(System.currentTimeMillis() + "");
 		user.setMobile(mobile);
 		user.setUserPsd(password);
 		user.setGender((short) 1);
 		user.setIsValid(true);
 		user.setPicPath("images/head/head_default.png");
 		user.setRegistTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
-		user.setVisitType(ConstantUtils.USER_SPACE_VISIT_ALL);
 
 		return userMapper.insertSelective(user) > 0;
 	}

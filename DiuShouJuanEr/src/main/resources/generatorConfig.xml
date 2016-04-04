@@ -18,19 +18,19 @@
 		</jdbcConnection>
 		<!-- 实体类生成的目标package和目标项目 -->
 		<javaModelGenerator targetPackage="com.bili.diushoujuaner.database.model"
-			targetProject="DiuShouJuanEr">
+			targetProject="diushoujuaner">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<!-- sqlxml生成的目标package和目标项目，我本来是想让它自动放到src/main/resources下的sqlMapper文件夹下 -->
 		<!-- 但这个插件总是给生成到上面 src/main/java下，就这样吧，自己复制到下面就是了 -->
 		<sqlMapGenerator targetPackage="com.bili.diushoujuaner.database.mapper.xml"
-			targetProject="DiuShouJuanEr">
+			targetProject="diushoujuaner">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 		<!-- 查询接口mapper生成的目标package和目标项目 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.bili.diushoujuaner.database.mapper" targetProject="DiuShouJuanEr">
+			targetPackage="com.bili.diushoujuaner.database.mapper" targetProject="diushoujuaner">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<table tableName="User" domainObjectName="User">

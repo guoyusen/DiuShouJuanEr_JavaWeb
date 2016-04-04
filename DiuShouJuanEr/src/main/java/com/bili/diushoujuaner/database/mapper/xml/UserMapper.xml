@@ -3,7 +3,6 @@
 <mapper namespace="com.bili.diushoujuaner.database.mapper.UserMapper" >
   <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.User" >
     <id column="UserNo" property="userNo" jdbcType="BIGINT" />
-    <result column="RealName" property="realName" jdbcType="VARCHAR" />
     <result column="NickName" property="nickName" jdbcType="VARCHAR" />
     <result column="UserPsd" property="userPsd" jdbcType="VARCHAR" />
     <result column="Mobile" property="mobile" jdbcType="VARCHAR" />
@@ -17,7 +16,6 @@
     <result column="Email" property="email" jdbcType="VARCHAR" />
     <result column="PicPath" property="picPath" jdbcType="VARCHAR" />
     <result column="IsValid" property="isValid" jdbcType="BIT" />
-    <result column="VisitType" property="visitType" jdbcType="SMALLINT" />
     <result column="SmallNick" property="smallNick" jdbcType="VARCHAR" />
     <result column="IsOnline" property="isOnline" jdbcType="BIT" />
   </resultMap>
@@ -80,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    UserNo, RealName, NickName, UserPsd, Mobile, Autograph, Gender, Status, RegistTime, 
-    Birthday, HomeTown, Location, Email, PicPath, IsValid, VisitType, SmallNick, IsOnline
+    UserNo, NickName, UserPsd, Mobile, Autograph, Gender, Status, RegistTime, Birthday, 
+    HomeTown, Location, Email, PicPath, IsValid, SmallNick, IsOnline
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.UserExample" >
     select
@@ -117,18 +115,18 @@
     <selectKey resultType="java.lang.Long" keyProperty="userNo" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user (RealName, NickName, UserPsd, 
-      Mobile, Autograph, Gender, 
-      Status, RegistTime, Birthday, 
-      HomeTown, Location, Email, 
-      PicPath, IsValid, VisitType, 
-      SmallNick, IsOnline)
-    values (#{realName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{userPsd,jdbcType=VARCHAR}, 
-      #{mobile,jdbcType=VARCHAR}, #{autograph,jdbcType=VARCHAR}, #{gender,jdbcType=SMALLINT}, 
-      #{status,jdbcType=SMALLINT}, #{registTime,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, 
-      #{homeTown,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{picPath,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT}, #{visitType,jdbcType=SMALLINT}, 
-      #{smallNick,jdbcType=VARCHAR}, #{isOnline,jdbcType=BIT})
+    insert into user (NickName, UserPsd, Mobile, 
+      Autograph, Gender, Status, 
+      RegistTime, Birthday, HomeTown, 
+      Location, Email, PicPath, 
+      IsValid, SmallNick, IsOnline
+      )
+    values (#{nickName,jdbcType=VARCHAR}, #{userPsd,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{autograph,jdbcType=VARCHAR}, #{gender,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT}, 
+      #{registTime,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{homeTown,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{picPath,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=BIT}, #{smallNick,jdbcType=VARCHAR}, #{isOnline,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.User" >
     <selectKey resultType="java.lang.Long" keyProperty="userNo" order="AFTER" >
@@ -136,9 +134,6 @@
     </selectKey>
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="realName != null" >
-        RealName,
-      </if>
       <if test="nickName != null" >
         NickName,
       </if>
@@ -178,9 +173,6 @@
       <if test="isValid != null" >
         IsValid,
       </if>
-      <if test="visitType != null" >
-        VisitType,
-      </if>
       <if test="smallNick != null" >
         SmallNick,
       </if>
@@ -189,9 +181,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="realName != null" >
-        #{realName,jdbcType=VARCHAR},
-      </if>
       <if test="nickName != null" >
         #{nickName,jdbcType=VARCHAR},
       </if>
@@ -231,9 +220,6 @@
       <if test="isValid != null" >
         #{isValid,jdbcType=BIT},
       </if>
-      <if test="visitType != null" >
-        #{visitType,jdbcType=SMALLINT},
-      </if>
       <if test="smallNick != null" >
         #{smallNick,jdbcType=VARCHAR},
       </if>
@@ -253,9 +239,6 @@
     <set >
       <if test="record.userNo != null" >
         UserNo = #{record.userNo,jdbcType=BIGINT},
-      </if>
-      <if test="record.realName != null" >
-        RealName = #{record.realName,jdbcType=VARCHAR},
       </if>
       <if test="record.nickName != null" >
         NickName = #{record.nickName,jdbcType=VARCHAR},
@@ -296,9 +279,6 @@
       <if test="record.isValid != null" >
         IsValid = #{record.isValid,jdbcType=BIT},
       </if>
-      <if test="record.visitType != null" >
-        VisitType = #{record.visitType,jdbcType=SMALLINT},
-      </if>
       <if test="record.smallNick != null" >
         SmallNick = #{record.smallNick,jdbcType=VARCHAR},
       </if>
@@ -313,7 +293,6 @@
   <update id="updateByExample" parameterType="map" >
     update user
     set UserNo = #{record.userNo,jdbcType=BIGINT},
-      RealName = #{record.realName,jdbcType=VARCHAR},
       NickName = #{record.nickName,jdbcType=VARCHAR},
       UserPsd = #{record.userPsd,jdbcType=VARCHAR},
       Mobile = #{record.mobile,jdbcType=VARCHAR},
@@ -327,7 +306,6 @@
       Email = #{record.email,jdbcType=VARCHAR},
       PicPath = #{record.picPath,jdbcType=VARCHAR},
       IsValid = #{record.isValid,jdbcType=BIT},
-      VisitType = #{record.visitType,jdbcType=SMALLINT},
       SmallNick = #{record.smallNick,jdbcType=VARCHAR},
       IsOnline = #{record.isOnline,jdbcType=BIT}
     <if test="_parameter != null" >
@@ -337,9 +315,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.User" >
     update user
     <set >
-      <if test="realName != null" >
-        RealName = #{realName,jdbcType=VARCHAR},
-      </if>
       <if test="nickName != null" >
         NickName = #{nickName,jdbcType=VARCHAR},
       </if>
@@ -379,9 +354,6 @@
       <if test="isValid != null" >
         IsValid = #{isValid,jdbcType=BIT},
       </if>
-      <if test="visitType != null" >
-        VisitType = #{visitType,jdbcType=SMALLINT},
-      </if>
       <if test="smallNick != null" >
         SmallNick = #{smallNick,jdbcType=VARCHAR},
       </if>
@@ -393,8 +365,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.User" >
     update user
-    set RealName = #{realName,jdbcType=VARCHAR},
-      NickName = #{nickName,jdbcType=VARCHAR},
+    set NickName = #{nickName,jdbcType=VARCHAR},
       UserPsd = #{userPsd,jdbcType=VARCHAR},
       Mobile = #{mobile,jdbcType=VARCHAR},
       Autograph = #{autograph,jdbcType=VARCHAR},
@@ -407,7 +378,6 @@
       Email = #{email,jdbcType=VARCHAR},
       PicPath = #{picPath,jdbcType=VARCHAR},
       IsValid = #{isValid,jdbcType=BIT},
-      VisitType = #{visitType,jdbcType=SMALLINT},
       SmallNick = #{smallNick,jdbcType=VARCHAR},
       IsOnline = #{isOnline,jdbcType=BIT}
     where UserNo = #{userNo,jdbcType=BIGINT}

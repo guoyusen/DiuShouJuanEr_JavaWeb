@@ -58,9 +58,6 @@ public class UserServiceImpl implements UserService {
 		if (user == null){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "获取用户信息失败", null);
 		}
-		if(CommonUtils.isEmpty(user.getNickName())){
-			user.setNickName(user.getRealName());
-		}
 		user.setUserPsd(null);
 		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取用户信息成功", user);
 	}
@@ -78,9 +75,6 @@ public class UserServiceImpl implements UserService {
 		
 		if (user == null){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "获取用户信息失败", null);
-		}
-		if(CommonUtils.isEmpty(user.getNickName())){
-			user.setNickName(user.getRealName());
 		}
 		user.setUserPsd(null);
 		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取用户信息成功", user);

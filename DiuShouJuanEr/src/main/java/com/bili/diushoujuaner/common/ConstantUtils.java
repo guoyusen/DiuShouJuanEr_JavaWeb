@@ -40,10 +40,6 @@ public interface ConstantUtils {
 	short CONTENT_TEXT = 1;
 	short CONTENT_IMG = 2;
 	short CONTENT_VOICE = 3;
-	// 用户空间的访问类型
-	short USER_SPACE_VISIT_ALL = 1;
-	short USER_SPACE_VISIT_SELF = 2;
-	short USER_SPACE_VISIT_FRIEND = 3;
 	// 验证码超时时间60s
 	int MSG_TIME_LIMIT_60 = 60;
 	// 通讯录身份类型
