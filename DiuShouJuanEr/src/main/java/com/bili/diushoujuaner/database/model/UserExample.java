@@ -1173,6 +1173,76 @@ public class UserExample {
             addCriterion("IsOnline not between", value1, value2, "isOnline");
             return (Criteria) this;
         }
+
+        public Criteria andWallPaperIsNull() {
+            addCriterion("WallPaper is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperIsNotNull() {
+            addCriterion("WallPaper is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperEqualTo(String value) {
+            addCriterion("WallPaper =", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperNotEqualTo(String value) {
+            addCriterion("WallPaper <>", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperGreaterThan(String value) {
+            addCriterion("WallPaper >", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperGreaterThanOrEqualTo(String value) {
+            addCriterion("WallPaper >=", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperLessThan(String value) {
+            addCriterion("WallPaper <", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperLessThanOrEqualTo(String value) {
+            addCriterion("WallPaper <=", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperLike(String value) {
+            addCriterion("WallPaper like", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperNotLike(String value) {
+            addCriterion("WallPaper not like", value, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperIn(List<String> values) {
+            addCriterion("WallPaper in", values, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperNotIn(List<String> values) {
+            addCriterion("WallPaper not in", values, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperBetween(String value1, String value2) {
+            addCriterion("WallPaper between", value1, value2, "wallPaper");
+            return (Criteria) this;
+        }
+
+        public Criteria andWallPaperNotBetween(String value1, String value2) {
+            addCriterion("WallPaper not between", value1, value2, "wallPaper");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

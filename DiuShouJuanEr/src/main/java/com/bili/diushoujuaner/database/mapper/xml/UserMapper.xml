@@ -18,6 +18,7 @@
     <result column="IsValid" property="isValid" jdbcType="BIT" />
     <result column="SmallNick" property="smallNick" jdbcType="VARCHAR" />
     <result column="IsOnline" property="isOnline" jdbcType="BIT" />
+    <result column="WallPaper" property="wallPaper" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List" >
     UserNo, NickName, UserPsd, Mobile, Autograph, Gender, Status, RegistTime, Birthday, 
-    HomeTown, Location, Email, PicPath, IsValid, SmallNick, IsOnline
+    HomeTown, Location, Email, PicPath, IsValid, SmallNick, IsOnline, WallPaper
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.UserExample" >
     select
@@ -119,14 +120,14 @@
       Autograph, Gender, Status, 
       RegistTime, Birthday, HomeTown, 
       Location, Email, PicPath, 
-      IsValid, SmallNick, IsOnline
-      )
+      IsValid, SmallNick, IsOnline, 
+      WallPaper)
     values (#{nickName,jdbcType=VARCHAR}, #{userPsd,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
       #{autograph,jdbcType=VARCHAR}, #{gender,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT}, 
       #{registTime,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{homeTown,jdbcType=VARCHAR}, 
       #{location,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{picPath,jdbcType=VARCHAR}, 
-      #{isValid,jdbcType=BIT}, #{smallNick,jdbcType=VARCHAR}, #{isOnline,jdbcType=BIT}
-      )
+      #{isValid,jdbcType=BIT}, #{smallNick,jdbcType=VARCHAR}, #{isOnline,jdbcType=BIT}, 
+      #{wallPaper,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.User" >
     <selectKey resultType="java.lang.Long" keyProperty="userNo" order="AFTER" >
@@ -179,6 +180,9 @@
       <if test="isOnline != null" >
         IsOnline,
       </if>
+      <if test="wallPaper != null" >
+        WallPaper,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="nickName != null" >
@@ -225,6 +229,9 @@
       </if>
       <if test="isOnline != null" >
         #{isOnline,jdbcType=BIT},
+      </if>
+      <if test="wallPaper != null" >
+        #{wallPaper,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -285,6 +292,9 @@
       <if test="record.isOnline != null" >
         IsOnline = #{record.isOnline,jdbcType=BIT},
       </if>
+      <if test="record.wallPaper != null" >
+        WallPaper = #{record.wallPaper,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -307,7 +317,8 @@
       PicPath = #{record.picPath,jdbcType=VARCHAR},
       IsValid = #{record.isValid,jdbcType=BIT},
       SmallNick = #{record.smallNick,jdbcType=VARCHAR},
-      IsOnline = #{record.isOnline,jdbcType=BIT}
+      IsOnline = #{record.isOnline,jdbcType=BIT},
+      WallPaper = #{record.wallPaper,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +371,9 @@
       <if test="isOnline != null" >
         IsOnline = #{isOnline,jdbcType=BIT},
       </if>
+      <if test="wallPaper != null" >
+        WallPaper = #{wallPaper,jdbcType=VARCHAR},
+      </if>
     </set>
     where UserNo = #{userNo,jdbcType=BIGINT}
   </update>
@@ -379,7 +393,8 @@
       PicPath = #{picPath,jdbcType=VARCHAR},
       IsValid = #{isValid,jdbcType=BIT},
       SmallNick = #{smallNick,jdbcType=VARCHAR},
-      IsOnline = #{isOnline,jdbcType=BIT}
+      IsOnline = #{isOnline,jdbcType=BIT},
+      WallPaper = #{wallPaper,jdbcType=VARCHAR}
     where UserNo = #{userNo,jdbcType=BIGINT}
   </update>
 </mapper>

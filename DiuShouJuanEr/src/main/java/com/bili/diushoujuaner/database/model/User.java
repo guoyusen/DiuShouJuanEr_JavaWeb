@@ -33,6 +33,8 @@ public class User {
 
     private Boolean isOnline;
 
+    private String wallPaper;
+
     public Long getUserNo() {
         return userNo;
     }
@@ -159,5 +161,13 @@ public class User {
 
     public void setIsOnline(Boolean isOnline) {
         this.isOnline = isOnline;
+    }
+
+    public String getWallPaper() {
+        return wallPaper;
+    }
+
+    public void setWallPaper(String wallPaper) {
+        this.wallPaper = wallPaper == null ? null : wallPaper.trim();
     }
 }
