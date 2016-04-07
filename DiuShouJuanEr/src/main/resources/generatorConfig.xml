@@ -33,9 +33,9 @@
 			targetPackage="com.bili.diushoujuaner.database.mapper" targetProject="diushoujuaner">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
-		<table tableName="User" domainObjectName="User">
+		<table tableName="FeedBack" domainObjectName="FeedBack">
 			<property name="useActualColumnNames" value="true" />
-			<generatedKey column="UserNo" sqlStatement="MySql" identity="true" /> 
+			<generatedKey column="feBaNo" sqlStatement="MySql" identity="true" /> 
 		</table>
 	</context>
 </generatorConfiguration> 

@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.service;
 
 import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.database.model.User;
 
 public interface UserService {
 
@@ -17,4 +18,6 @@ public interface UserService {
 	ResponseDto getPasswordReset(String mobile,String password, String code) throws Exception;
 
 	ResponseDto modifyAutographByAutoAndToken(String autograph, String accessToken);
+	
+	ResponseDto updateUserInfo(User user, String accessToken);
 }

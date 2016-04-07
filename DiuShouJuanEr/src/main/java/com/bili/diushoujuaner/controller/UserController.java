@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bili.diushoujuaner.database.model.User;
 import com.bili.diushoujuaner.service.UserService;
 
 @Controller
@@ -70,6 +71,30 @@ public class UserController {
 			@RequestParam(value = "autograph", required = true, defaultValue = "") String autograph,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken) throws Exception {
 		return userService.modifyAutographByAutoAndToken(autograph, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/users/info/update", method = RequestMethod.POST)
+	@ResponseBody
+	public Object updateUserInfo(
+			@RequestParam(value = "nickName", required = true, defaultValue = "") String nickName,
+			@RequestParam(value = "gender", required = true, defaultValue = "1") short gender,
+			@RequestParam(value = "email", required = true, defaultValue = "") String email,
+			@RequestParam(value = "smallNick", required = true, defaultValue = "") String smallNick,
+			@RequestParam(value = "birthday", required = true, defaultValue = "") String birthday,
+			@RequestParam(value = "location", required = true, defaultValue = "") String location,
+			@RequestParam(value = "homeTown", required = true, defaultValue = "") String homeTown,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		User user = new User();
+		user.setNickName(nickName);
+		user.setBirthday(birthday);
+		user.setEmail(email);
+		user.setGender(gender);
+		user.setHomeTown(homeTown);
+		user.setLocation(location);
+		user.setSmallNick(smallNick);
+		user.setLocation(location);
+
+		return userService.updateUserInfo(user, accessToken);
 	}
 	
 	@ExceptionHandler

@@ -27,6 +27,15 @@ public class UserServiceImpl implements UserService {
 	private CustomSessionMgt customSessionMgt;
 
 	@Override
+	public ResponseDto updateUserInfo(User user, String accessToken) {
+		User result = userMgt.updateUserInfo(user, CustomSessionManager.getCustomSession(accessToken).getUserNo());
+		if(result != null){
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "用户信息更新成功", result);
+		}
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "用户信息更新失败", null);
+	}
+
+	@Override
 	public ResponseDto getUserLogin(String mobile, String password, String deviceType) {
 		
 		System.out.println("mobile = " + mobile);

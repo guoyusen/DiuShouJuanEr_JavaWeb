@@ -18,6 +18,18 @@ public class UserMgtImpl implements UserMgt {
 	private UserMapper userMapper;
 
 	@Override
+	public User updateUserInfo(User user, long userNo) {
+		UserExample userExample = new UserExample();
+		userExample.createCriteria().andUserNoEqualTo(userNo);
+		
+		int result = userMapper.updateByExampleSelective(user, userExample);
+		if(result > 0){
+			return getUserByUserNo(userNo);
+		}
+		return null;
+	}
+
+	@Override
 	public boolean registerUserByMobile(String mobile, String password) {
 		User user = new User();
 		user.setNickName(System.currentTimeMillis() + "");

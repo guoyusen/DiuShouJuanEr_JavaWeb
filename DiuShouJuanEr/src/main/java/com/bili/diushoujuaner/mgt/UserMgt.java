@@ -16,4 +16,6 @@ public interface UserMgt {
 	
 	boolean updateUserOnlineStatus(long userNo, boolean isOnline);
 	
+	User updateUserInfo(User user, long userNo);
+	
 }
