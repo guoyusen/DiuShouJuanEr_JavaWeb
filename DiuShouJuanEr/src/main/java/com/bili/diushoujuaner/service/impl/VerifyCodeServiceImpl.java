@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.mgt.UserMgt;
 import com.bili.diushoujuaner.mgt.VerifyCodeMgt;
 import com.bili.diushoujuaner.service.VerifyCodeService;
 
@@ -14,10 +15,15 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 	
 	@Autowired
 	VerifyCodeMgt verifyCodeMgt;
+	@Autowired
+	private UserMgt userMgt;
 
 	@Override
 	public ResponseDto getVerifyCodeByMobileAndType(String mobile, short type) {
 		if(CommonUtils.isMobile(mobile)){
+			if(type == ConstantUtils.VERIFY_CODE_REGIST && userMgt.getUserByMobile(mobile) != null){
+				return CommonUtils.getResponse(ConstantUtils.FAIL, "该手机号已注册", null);
+			}
 			String verifyCode = CommonUtils.getverifycode();
 			System.out.println(verifyCode);
 			verifyCodeMgt.addVerifyCodeByMobileAndTypeAndCode(mobile, type, verifyCode);

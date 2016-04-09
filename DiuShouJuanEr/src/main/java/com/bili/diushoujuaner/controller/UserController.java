@@ -52,8 +52,9 @@ public class UserController {
 	public Object getUserRegister(
 			@RequestParam(value = "mobile", required = true, defaultValue = "") String mobile,
 			@RequestParam(value = "password", required = true, defaultValue = "") String password,
-			@RequestParam(value = "code", required = true, defaultValue = "") String code) throws Exception {
-		return userService.getUserRegister(mobile, password, code);
+			@RequestParam(value = "code", required = true, defaultValue = "") String code,
+			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType) throws Exception {
+		return userService.getUserRegister(mobile, password, code, deviceType);
 	}
 	
 	@RequestMapping(value = "/1.0/users/reset", method = RequestMethod.POST)
@@ -61,8 +62,9 @@ public class UserController {
 	public Object getPasswordReset(
 			@RequestParam(value = "mobile", required = true, defaultValue = "") String mobile,
 			@RequestParam(value = "password", required = true, defaultValue = "") String password,
-			@RequestParam(value = "code", required = true, defaultValue = "") String code) throws Exception {
-		return userService.getPasswordReset(mobile, password, code);
+			@RequestParam(value = "code", required = true, defaultValue = "") String code,
+			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType) throws Exception {
+		return userService.getPasswordReset(mobile, password, code, deviceType);
 	}
 	
 	@RequestMapping(value = "/1.0/users/modify/autograph", method = RequestMethod.POST)

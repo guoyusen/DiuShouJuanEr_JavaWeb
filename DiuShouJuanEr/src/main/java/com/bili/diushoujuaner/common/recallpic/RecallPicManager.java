@@ -1,19 +1,12 @@
 package com.bili.diushoujuaner.common.recallpic;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bili.diushoujuaner.common.CommonUtils;
-import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.database.model.Picture;
 
 public class RecallPicManager {
@@ -31,16 +24,7 @@ public class RecallPicManager {
 		picture.setPicPath(filePath);
 		picture.setRealPath(CommonUtils.getRootDirectory() + filePath);
 		
-		File localFile = new File(picture.getRealPath());
-		
-		try {
-			file.transferTo(localFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return picture;
-		} 
-		
-		setPictureSizeAndOffSet(picture);
+		picture = CommonUtils.processImage(picture, file);
 		addPicture(userNo + deviceType, picture);
 		
 		return picture;
@@ -96,44 +80,9 @@ public class RecallPicManager {
 		}
 	}
 	
-	private static void setPictureSizeAndOffSet(Picture picture){
-		InputStream is = null;
-		try {
-			is = new FileInputStream(picture.getRealPath());
-			BufferedImage sourceImg = ImageIO.read(is);
-			
-			float tmpHeight = sourceImg.getHeight(), tmpWidth = sourceImg.getWidth();
-			
-			if(tmpWidth / tmpHeight <= ConstantUtils.RECALL_PIC_WIDTH / ConstantUtils.RECALL_PIC_HEIGHT){
-				picture.setWidth((int) ConstantUtils.RECALL_PIC_WIDTH);
-				picture.setOffSetTop((int) (-(tmpHeight * ConstantUtils.RECALL_PIC_WIDTH / tmpWidth - ConstantUtils.RECALL_PIC_HEIGHT) / 2));
-			    
-				picture.setHeight(0);
-				picture.setOffSetLeft(0);
-			}else{
-				picture.setHeight((int) ConstantUtils.RECALL_PIC_HEIGHT);
-				picture.setOffSetLeft((int) (-(tmpWidth * ConstantUtils.RECALL_PIC_HEIGHT / tmpHeight - ConstantUtils.RECALL_PIC_WIDTH) / 2));
-			
-				picture.setWidth(0);
-				picture.setOffSetTop(0);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(is != null){
-				try {
-					is.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
 	public static void main(String[] args) {
 		Picture picture = new Picture();
 		picture.setRealPath("D:/ServerData/album/2016/01/18/1.jpg");
-		setPictureSizeAndOffSet(picture);
 		addPicture("10001Client/Borwser", picture);
 		System.out.println(picture);
 	}

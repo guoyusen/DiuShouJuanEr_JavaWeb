@@ -1,6 +1,10 @@
 package com.bili.diushoujuaner.common;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,12 +13,17 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bili.diushoujuaner.chat.message.Message;
 import com.bili.diushoujuaner.common.dto.ResponseDto;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.CustomSession;
+import com.bili.diushoujuaner.database.model.Picture;
 
 public class CommonUtils {
 
@@ -222,6 +231,14 @@ public class CommonUtils {
 		}
 	}
 	
+	public static String getFileTypeFromFileName(String fileName){
+		if(fileName.indexOf('.') < 0){
+			return "";
+		}else{
+			return fileName.substring(fileName.lastIndexOf('.')+1);
+		}
+	}
+	
 	/**
 	 * 根据文件路径进行删除
 	 */
@@ -248,4 +265,75 @@ public class CommonUtils {
 		return result;
 	}
 	
+	public static Picture processImage(Picture picture, MultipartFile file){
+		try {
+			BufferedImage src = ImageIO.read(file.getInputStream());
+			double width = src.getWidth(); // 得到源图宽  
+			double height = src.getHeight(); // 得到源图长  
+            
+			double scale = (ConstantUtils.IMAGE_HEIGHT * ConstantUtils.IMAGE_WIDTH) / (width * height);
+            scale = Math.sqrt(Double.valueOf(scale + ""));
+            width = width * scale;  
+            height = height * scale;    
+            
+            Image image = src.getScaledInstance((int)width, (int)height, Image.SCALE_DEFAULT);  
+            BufferedImage tag = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_RGB);  
+            Graphics g = tag.getGraphics();  
+            g.drawImage(image, 0, 0, null); // 绘制缩小后的图  
+            g.dispose();
+            
+            ImageIO.write(tag, getFileTypeFromFileName(picture.getRealPath()), new File(picture.getRealPath()));// 输出到文件流  
+            
+            if(width / height <= ConstantUtils.RECALL_PIC_WIDTH / ConstantUtils.RECALL_PIC_HEIGHT){
+				picture.setWidth((int) ConstantUtils.RECALL_PIC_WIDTH);
+				picture.setOffSetTop((int) (-(height * ConstantUtils.RECALL_PIC_WIDTH / width - ConstantUtils.RECALL_PIC_HEIGHT) / 2));
+			    
+				picture.setHeight(0);
+				picture.setOffSetLeft(0);
+			}else{
+				picture.setHeight((int) ConstantUtils.RECALL_PIC_HEIGHT);
+				picture.setOffSetLeft((int) (-(width * ConstantUtils.RECALL_PIC_HEIGHT / height - ConstantUtils.RECALL_PIC_WIDTH) / 2));
+			
+				picture.setWidth(0);
+				picture.setOffSetTop(0);
+			}
+            
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		return picture;
+	}
+	
+	 /** *//** 
+     * 缩放图像 
+     * @param srcImageFile 源图像文件地址 
+     * @param result       缩放后的图像地址 
+     * @param scale        缩放比例 
+     * @param flag         缩放选择:true 放大; false 缩小; 
+     */  
+    public static void scale(String srcImageFile) {  
+        try {
+        	File resource = new File(srcImageFile);
+            BufferedImage src = ImageIO.read(resource); // 读入文件  
+            float width = src.getWidth(); // 得到源图宽  
+            float height = src.getHeight(); // 得到源图长  
+            
+            float scale = (ConstantUtils.IMAGE_HEIGHT * ConstantUtils.IMAGE_WIDTH) / (width * height);
+            scale = (float) Math.sqrt(Double.valueOf(scale + ""));
+            width = (int) (width * scale);  
+            height = (int) (height * scale);    
+            Image image = src.getScaledInstance((int)width, (int)height, Image.SCALE_DEFAULT);  
+            BufferedImage tag = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_RGB);  
+            Graphics g = tag.getGraphics();  
+            g.drawImage(image, 0, 0, null); // 绘制缩小后的图  
+            g.dispose();
+            ImageIO.write(tag, getSuffixFromFileName(srcImageFile), new File(srcImageFile));// 输出到文件流  
+        }  
+        catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+    }  
 }

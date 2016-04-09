@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "登录成功", customSession);
 		}
-		return CommonUtils.getResponse(ConstantUtils.FAIL, "账号或密码错误了", null);
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "账号或密码错误", null);
 	
 	}
 
@@ -90,10 +90,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseDto getUserRegister(String mobile, String password, String code) throws Exception {
+	public ResponseDto getUserRegister(String mobile, String password, String code,String deviceType) throws Exception {
 		
 		VerifyCode verifycode = verifyCodeMgt.getVerifyCodeByMobileAndType(mobile,
-				ConstantUtils.VERIFY_CODE_FOR_REG);
+				ConstantUtils.VERIFY_CODE_REGIST);
 		if (!verifycode.getCode().equals(code)) {
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "验证码错误", null);
 		}
@@ -108,9 +108,15 @@ public class UserServiceImpl implements UserService {
 			return CommonUtils.getResponse(ConstantUtils.ERROR, "该手机已注册", null);
 		}
 		
-		if(userMgt.registerUserByMobile(mobile, password)){
-			verifyCodeMgt.updateVerifyCodeByMobileAndTypeAndCode(mobile, ConstantUtils.VERIFY_CODE_FOR_REG, code);
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "您已注册成功", null);
+		user = userMgt.registerUserByMobile(mobile, password);
+		if(user != null){
+			verifyCodeMgt.updateVerifyCodeByMobileAndTypeAndCode(mobile, ConstantUtils.VERIFY_CODE_REGIST, code);
+			
+			String accessToken = CommonUtils.getRandomAccessToken();
+            CustomSession customSession = customSessionMgt.updateCustomSession(accessToken, user.getUserNo(), CommonUtils.getDeviceType(deviceType));
+			
+			CustomSessionManager.addCustomSession(customSession);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "您已注册成功", customSession);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.ERROR, "服务器贪玩去了...", null);
 		}
@@ -118,10 +124,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseDto getPasswordReset(String mobile, String password, String code) throws Exception {
+	public ResponseDto getPasswordReset(String mobile, String password, String code, String deviceType) throws Exception {
 		
 		VerifyCode verifycode = verifyCodeMgt.getVerifyCodeByMobileAndType(mobile,
-				ConstantUtils.VERIFY_CODE_FOR_RET);
+				ConstantUtils.VERIFY_CODE_RESET);
 		if (!verifycode.getCode().equals(code)) {
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "验证码错误", null);
 		}
@@ -136,10 +142,14 @@ public class UserServiceImpl implements UserService {
 			return CommonUtils.getResponse(ConstantUtils.ERROR, "您还没有注册", null);
 		}
 		
-		if(userMgt.resetUserPsdByMobile(mobile, password)){
-			verifyCodeMgt.updateVerifyCodeByMobileAndTypeAndCode(mobile, ConstantUtils.VERIFY_CODE_FOR_RET, code);
+		user = userMgt.resetUserPsdByMobile(mobile, password);
+		if(user != null){
+			verifyCodeMgt.updateVerifyCodeByMobileAndTypeAndCode(mobile, ConstantUtils.VERIFY_CODE_RESET, code);
+			String accessToken = CommonUtils.getRandomAccessToken();
+            CustomSession customSession = customSessionMgt.updateCustomSession(accessToken, user.getUserNo(), CommonUtils.getDeviceType(deviceType));
 			
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "密码重置成功", null);
+			CustomSessionManager.addCustomSession(customSession);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "密码重置成功", customSession);
 		}else{
 			
 			return CommonUtils.getResponse(ConstantUtils.ERROR, "服务器贪玩去了...", null);

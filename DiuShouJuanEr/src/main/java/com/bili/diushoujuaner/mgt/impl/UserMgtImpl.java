@@ -30,7 +30,7 @@ public class UserMgtImpl implements UserMgt {
 	}
 
 	@Override
-	public boolean registerUserByMobile(String mobile, String password) {
+	public User registerUserByMobile(String mobile, String password) {
 		User user = new User();
 		user.setNickName(System.currentTimeMillis() + "");
 		user.setMobile(mobile);
@@ -40,17 +40,21 @@ public class UserMgtImpl implements UserMgt {
 		user.setPicPath("images/head/head_default.png");
 		user.setRegistTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
 
-		return userMapper.insertSelective(user) > 0;
+		return userMapper.insertSelective(user) > 0 ? user : null;
 	}
 
 	@Override
-	public boolean resetUserPsdByMobile(String mobile, String password) {
+	public User resetUserPsdByMobile(String mobile, String password) {
 		UserExample userExample = new UserExample();
 		userExample.createCriteria().andMobileEqualTo(mobile);
 		User user = new User();
 		user.setUserPsd(password);
 		
-		return userMapper.updateByExampleSelective(user, userExample) > 0;
+		if(userMapper.updateByExampleSelective(user, userExample) > 0){
+			List<User> list = userMapper.selectByExample(userExample);
+			return list.isEmpty() ? null : list.get(0);
+		}
+		return null;
 	}
 
 	@Override

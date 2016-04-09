@@ -8,9 +8,9 @@ public interface UserMgt {
 	
 	User getUserByMobile(String mobile);
 	
-	boolean registerUserByMobile(String mobile, String password);
+	User registerUserByMobile(String mobile, String password);
 	
-	boolean resetUserPsdByMobile(String mobile, String password);
+	User resetUserPsdByMobile(String mobile, String password);
 	
 	boolean modifyAutographByUserNo(String autograph, long userNo);
 	

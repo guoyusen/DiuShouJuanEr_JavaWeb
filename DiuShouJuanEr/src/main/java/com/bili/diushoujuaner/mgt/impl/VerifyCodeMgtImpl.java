@@ -33,7 +33,7 @@ public class VerifyCodeMgtImpl implements VerifyCodeMgt {
 		
 		VerifyCodeExample verifyCodeExample = new VerifyCodeExample();
 		verifyCodeExample.createCriteria().andMobileEqualTo(mobile).andTypeEqualTo(type).andValidEqualTo(true);
-		
+		verifyCodeExample.setOrderByClause("addtime desc");
 		List<VerifyCode> verifyCodeList = verifyCodeMapper.selectByExample(verifyCodeExample);
 		return verifyCodeList.isEmpty() ? null : verifyCodeList.get(0);
 	}

@@ -134,7 +134,8 @@ var LoginOperateUtil = {
     				LoginOperateUtil.isRegister = false;
     				if(result.retCode == "success"){
     					LoginOperateUtil.showNoticeTip(result.message);
-    					showFrame("login");
+    					CookieUtil.setCookie("AccessToken", result.data.accessToken);
+    					window.location.href="home";
     				}else if(result.retCode == "fail" || result.retCode == "error"){
     					LoginOperateUtil.showNoticeTip(result.message);
     				}
@@ -168,7 +169,8 @@ var LoginOperateUtil = {
     				LoginOperateUtil.isReset = false;
     				if(result.retCode == "success"){
     					LoginOperateUtil.showNoticeTip(result.message);
-    					LoginOperateUtil.showFrameLogin();
+    					CookieUtil.setCookie("AccessToken", result.data.accessToken);
+    					window.location.href="home";
     				}else if(result.retCode == "fail" || result.retCode == "error"){
     					LoginOperateUtil.showNoticeTip(result.message);
     				}

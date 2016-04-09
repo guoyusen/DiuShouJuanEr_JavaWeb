@@ -37,7 +37,7 @@ var WebSocketUtil = {
 	webSocket : null,
 	timeOuter : null,
 	connect : function() {
-		WebSocketUtil.webSocket = new WebSocket("ws://localhost:1314");
+		WebSocketUtil.webSocket = new WebSocket("ws://192.168.137.1:1314");
 		WebSocketUtil.webSocket.onopen = WebSocketUtil.onOpen;
 		WebSocketUtil.webSocket.onmessage = WebSocketUtil.onMessage;
 		WebSocketUtil.webSocket.onclose = WebSocketUtil.onClose;

@@ -13,9 +13,9 @@ public interface UserService {
 	
 	ResponseDto getUserInfoByUserNo(long userNo);
 	
-	ResponseDto getUserRegister(String mobile,String password, String code) throws Exception;
+	ResponseDto getUserRegister(String mobile,String password, String code, String deviceType) throws Exception;
 
-	ResponseDto getPasswordReset(String mobile,String password, String code) throws Exception;
+	ResponseDto getPasswordReset(String mobile,String password, String code, String deviceType) throws Exception;
 
 	ResponseDto modifyAutographByAutoAndToken(String autograph, String accessToken);
 	

@@ -13,8 +13,8 @@ public interface ConstantUtils {
 	String FAIL = "fail";
 	String ERROR = "error";
 	// 发送验证码的类型
-	short VERIFY_CODE_FOR_REG = 1;
-	short VERIFY_CODE_FOR_RET = 2;
+	short VERIFY_CODE_REGIST = 1;
+	short VERIFY_CODE_RESET = 2;
 	// 客户端的类型
 	String DEVICE_TYPE = "deviceType";
 	short DEVICE_UNKNOW = 0;
@@ -51,4 +51,7 @@ public interface ConstantUtils {
 	
 	float RECALL_PIC_WIDTH = 176;
 	float RECALL_PIC_HEIGHT = 114;
+	
+	int IMAGE_WIDTH = 800;
+	int IMAGE_HEIGHT = 500;
 }

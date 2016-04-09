@@ -376,7 +376,8 @@ var UploadUtil = {
 			callback : function() {
 			},
 			acceptType : '',
-			type : "json"
+			type : "json",
+			params : {}
 		},
 		// 设置基础选项
 		setOptions : function(newOptions) {
@@ -450,7 +451,9 @@ var UploadUtil = {
 		upload : function(){
 			var formData = new FormData();
 			formData.append('file', $('#_ef')[0].files[0]);
-			
+			for ( var pro in newOptions) {
+				formData.append(pro, this.options.params[pro]);
+			}
 			UploadUtil.request(formData);
 		},
 		request : function(formData) {
