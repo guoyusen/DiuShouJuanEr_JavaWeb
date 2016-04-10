@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
 		if(effectLines > 0){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Comment成功", commentNo);
 		}else{
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "删除Comment失败", null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事已经被删除", null);
 		}
 	}
 
@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
 			comment.setTimeStamp(timeStamp);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Comment成功", comment);
 		}else{
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "添加Comment失败", null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事已删除，无法评论", null);
 		}
 	}
 

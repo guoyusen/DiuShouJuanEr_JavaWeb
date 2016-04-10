@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.mgt.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import com.bili.diushoujuaner.common.CommonUtils;
@@ -34,7 +35,11 @@ public class GoodMgtImpl implements GoodMgt {
 		good.setRecallNo(recallNo);
 		good.setUserNo(userNo);
 		good.setGoodTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
-		return goodMapper.insertSelective(good);
+		try{
+			return goodMapper.insertSelective(good);
+		}catch(DataIntegrityViolationException e){
+			return -1;
+		}
 	}
 
 	@Override

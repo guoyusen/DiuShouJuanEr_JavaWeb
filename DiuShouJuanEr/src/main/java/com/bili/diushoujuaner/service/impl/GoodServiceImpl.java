@@ -36,6 +36,8 @@ public class GoodServiceImpl implements GoodService {
 			sendGoodMsgToClient(userMgt.getUserByUserNo(CommonUtils.getUserNoFromAccessToken(accessToken)), recallMgt.getUserNoByRecallNo(recallNo));
 			
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Good成功", null);
+		}else if(effectLines == -1){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事儿已被删除", null);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "添加Good失败", null);
 		}
@@ -67,7 +69,7 @@ public class GoodServiceImpl implements GoodService {
 		if(effectLines > 0){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "取消Good成功", null);
 		}else{
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "取消Good失败", null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事已删除", null);
 		}
 	}
 

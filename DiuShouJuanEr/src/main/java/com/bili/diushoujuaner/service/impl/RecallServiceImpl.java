@@ -95,7 +95,7 @@ public class RecallServiceImpl implements RecallService {
 			
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Recall成功", recallNo);
 		}else{
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "删除Recall失败" + recallNo, null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事已经被删除", null);
 		}
 	}
 

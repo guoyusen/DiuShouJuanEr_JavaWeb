@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.mgt.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import com.bili.diushoujuaner.common.CommonUtils;
@@ -39,10 +40,14 @@ public class ResponMgtImpl implements ResponMgt {
 		respon.setFromNo(fromNo);
 		respon.setToNo(toNo);
 		
-		responMapper.insertSelective(respon);
-		
-		List<Respon> responList = responMapper.getResponListByResponNo(respon.getResponNo());
-		return responList.isEmpty() ? null : responList.get(0);
+		try{
+			responMapper.insertSelective(respon);
+			
+			List<Respon> responList = responMapper.getResponListByResponNo(respon.getResponNo());
+			return responList.isEmpty() ? null : responList.get(0);
+		}catch(DataIntegrityViolationException e){
+			return null;
+		}
 	}
 
 	@Override

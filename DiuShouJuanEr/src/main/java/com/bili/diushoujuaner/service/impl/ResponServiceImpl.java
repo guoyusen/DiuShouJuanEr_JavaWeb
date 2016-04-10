@@ -27,7 +27,7 @@ public class ResponServiceImpl implements ResponService {
 		if(effectLines > 0){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Respon成功", responNo);
 		}else{
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "删除Respon失败", null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事已删除", null);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class ResponServiceImpl implements ResponService {
 			respon.setTimeStamp(timeStamp);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Respon成功", respon);
 		}else{
-			return CommonUtils.getResponse(ConstantUtils.FAIL, "添加Respon失败", null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事已删除，无法发表回复", null);
 		}
 	}
 

@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.mgt.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import com.bili.diushoujuaner.common.CommonUtils;
@@ -38,10 +39,15 @@ public class CommentMgtImpl implements CommentMgt {
 		comment.setFromNo(fromNo);
 		comment.setContent(content);
 		
-		commentMapper.insertSelective(comment);
-		List<Comment> commentList = commentMapper.getCommentListByCommentNo(comment.getCommentNo());
-
-		return commentList.isEmpty() ? null : commentList.get(0);
+		try{
+			commentMapper.insertSelective(comment);
+			List<Comment> commentList = commentMapper.getCommentListByCommentNo(comment.getCommentNo());
+			
+			return commentList.isEmpty() ? null : commentList.get(0);
+		}catch(DataIntegrityViolationException e){
+			//数据不完整，插入失败
+			return null;
+		}
 	}
 
 	@Override

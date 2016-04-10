@@ -152,7 +152,11 @@ var HomeUserRecallUtil = {
 					url : "1.0/goods/remove",
 					params : {recallNo:recallNo},
 					type : 'json',
-					callback : function(){}
+					callback : function(result){
+						if (result.retCode == "fail" || result.retCode == "error") {
+							HomeOperateUtil.showNoticeTip(result.message);
+						}
+					}
 				});
 			}
 		},
@@ -173,7 +177,11 @@ var HomeUserRecallUtil = {
 					url : "1.0/goods/add",
 					params : {recallNo:recallNo},
 					type : 'json',
-					callback : function(){}
+					callback : function(result){
+						if (result.retCode == "fail" || result.retCode == "error") {
+							HomeOperateUtil.showNoticeTip(result.message);
+						}
+					}
 				});
 			}
 		},
@@ -581,7 +589,8 @@ var HomeUserRecallUtil = {
 						$("#user_comment_" + respon.commentNo + " .commentItemRespon").append(outPutHtml);
 						$("#homeAddComment").remove();
 						HomeUserRecallUtil.updateRecallListScrollBar();
-					}else{
+					}else if (result.retCode == "fail" || result.retCode == "error") {
+						HomeOperateUtil.showNoticeTip(result.message);
 					}
 				}
 			});
@@ -636,7 +645,8 @@ var HomeUserRecallUtil = {
 						HomeUserRecallUtil.addRecallItemCommentCount(comment.recallNo);
 						$("#homeAddComment").remove();
 						HomeUserRecallUtil.updateRecallListScrollBar();
-					}else{
+					}else if (result.retCode == "fail" || result.retCode == "error") {
+						HomeOperateUtil.showNoticeTip(result.message);
 					}
 				}
 			});

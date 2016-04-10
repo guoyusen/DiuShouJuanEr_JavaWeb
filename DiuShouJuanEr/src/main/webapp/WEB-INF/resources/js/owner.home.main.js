@@ -515,6 +515,7 @@ var HomeMainRecallUtil = {
 					$("#homeAddComment").remove();
 					HomeMainRecallUtil.updateRecallListScrollBar();
 				}else{
+					HomeOperateUtil.showNoticeTip(result.message);
 				}
 			}
 		});
@@ -570,6 +571,7 @@ var HomeMainRecallUtil = {
 					$("#homeAddComment").remove();
 					HomeMainRecallUtil.updateRecallListScrollBar();
 				}else{
+					HomeOperateUtil.showNoticeTip(result.message);
 				}
 			}
 		});
