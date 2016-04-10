@@ -16,6 +16,17 @@ public class UserMgtImpl implements UserMgt {
 
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Override
+	public boolean updateHead(String path, long userNo) {
+		UserExample userExample = new UserExample();
+		userExample.createCriteria().andUserNoEqualTo(userNo);
+		
+		User user = new User();
+		user.setPicPath(path);
+				
+		return userMapper.updateByExampleSelective(user, userExample) > 0 ? true : false;
+	}
 
 	@Override
 	public User updateUserInfo(User user, long userNo) {

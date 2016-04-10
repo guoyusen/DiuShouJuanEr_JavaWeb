@@ -2,18 +2,23 @@ package com.bili.diushoujuaner.common;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -159,6 +164,13 @@ public class CommonUtils {
 	/**
 	 * 获得相册的路径
 	 */
+	public static String getHeadDirectory(){
+		return "images/head/" + getCurrentTimeDirectory();
+	}
+	
+	/**
+	 * 获得相册的路径
+	 */
 	public static String getAlbumDirectory(){
 		return "images/album/" + getCurrentTimeDirectory();
 	}
@@ -189,6 +201,17 @@ public class CommonUtils {
 	 */
 	public static boolean createAlbumDirectoryByTime(){
 		File tmpFile = new File(getRootDirectory() + getAlbumDirectory());
+		if(!tmpFile.exists()){
+			return tmpFile.mkdirs();
+		}
+		return true;
+	}
+	
+	/**
+	 * 生成对应于头像的相册路径
+	 */
+	public static boolean createHeadDirectoryByTime(){
+		File tmpFile = new File(getRootDirectory() + getHeadDirectory());
 		if(!tmpFile.exists()){
 			return tmpFile.mkdirs();
 		}
@@ -265,13 +288,47 @@ public class CommonUtils {
 		return result;
 	}
 	
-	public static Picture processImage(Picture picture, MultipartFile file){
+	public static String processHeadImage(MultipartFile file){
+		createHeadDirectoryByTime();
+		String filePath = CommonUtils.getHeadDirectory() + "/" + System.currentTimeMillis() + CommonUtils.getSuffixFromFileName(file.getOriginalFilename());
+		ImageInputStream iis;
+		try {
+			Iterator<ImageReader> it = ImageIO  
+                    .getImageReadersByFormatName(getFileTypeFromFileName(filePath));  
+            ImageReader reader = it.next();  
+            iis = ImageIO.createImageInputStream(file.getInputStream()); 
+            reader.setInput(iis, true);  
+            ImageReadParam param = reader.getDefaultReadParam();  
+			
+			BufferedImage src = ImageIO.read(file.getInputStream());
+			int width = src.getWidth(); // 得到源图宽  
+			int height = src.getHeight(); // 得到源图长  
+			
+			int tmpEageLength = width > height ? height : width;
+			tmpEageLength = tmpEageLength > ConstantUtils.IMAGE_HEAD_EAGE ?  ConstantUtils.IMAGE_HEAD_EAGE : tmpEageLength;
+			Rectangle rect = new Rectangle((width - tmpEageLength)/2, (height - tmpEageLength)/2, tmpEageLength, tmpEageLength);
+			param.setSourceRegion(rect);  
+			BufferedImage bi = reader.read(0, param);  
+ 
+            ImageIO.write(bi, getFileTypeFromFileName(filePath), new File(getRootDirectory() + filePath));// 输出到文件流  
+            
+            if(iis != null){
+				iis.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return filePath;
+	}
+	
+	public static Picture processRecallImage(Picture picture, MultipartFile file){
 		try {
 			BufferedImage src = ImageIO.read(file.getInputStream());
 			double width = src.getWidth(); // 得到源图宽  
 			double height = src.getHeight(); // 得到源图长  
             
-			double scale = (ConstantUtils.IMAGE_HEIGHT * ConstantUtils.IMAGE_WIDTH) / (width * height);
+			double scale = (ConstantUtils.IMAGE_RECALL_HEIGHT * ConstantUtils.IMAGE_RECALL_WIDTH) / (width * height);
             scale = Math.sqrt(Double.valueOf(scale + ""));
             width = width * scale;  
             height = height * scale;    
@@ -306,34 +363,5 @@ public class CommonUtils {
 		
 		return picture;
 	}
-	
-	 /** *//** 
-     * 缩放图像 
-     * @param srcImageFile 源图像文件地址 
-     * @param result       缩放后的图像地址 
-     * @param scale        缩放比例 
-     * @param flag         缩放选择:true 放大; false 缩小; 
-     */  
-    public static void scale(String srcImageFile) {  
-        try {
-        	File resource = new File(srcImageFile);
-            BufferedImage src = ImageIO.read(resource); // 读入文件  
-            float width = src.getWidth(); // 得到源图宽  
-            float height = src.getHeight(); // 得到源图长  
-            
-            float scale = (ConstantUtils.IMAGE_HEIGHT * ConstantUtils.IMAGE_WIDTH) / (width * height);
-            scale = (float) Math.sqrt(Double.valueOf(scale + ""));
-            width = (int) (width * scale);  
-            height = (int) (height * scale);    
-            Image image = src.getScaledInstance((int)width, (int)height, Image.SCALE_DEFAULT);  
-            BufferedImage tag = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_RGB);  
-            Graphics g = tag.getGraphics();  
-            g.drawImage(image, 0, 0, null); // 绘制缩小后的图  
-            g.dispose();
-            ImageIO.write(tag, getSuffixFromFileName(srcImageFile), new File(srcImageFile));// 输出到文件流  
-        }  
-        catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    }  
+
 }

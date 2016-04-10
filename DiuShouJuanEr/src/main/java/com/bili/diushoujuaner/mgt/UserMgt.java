@@ -18,4 +18,6 @@ public interface UserMgt {
 	
 	User updateUserInfo(User user, long userNo);
 	
+	boolean updateHead(String path, long userNo);
+	
 }

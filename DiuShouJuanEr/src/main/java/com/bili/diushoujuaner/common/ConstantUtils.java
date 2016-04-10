@@ -52,6 +52,7 @@ public interface ConstantUtils {
 	float RECALL_PIC_WIDTH = 176;
 	float RECALL_PIC_HEIGHT = 114;
 	
-	int IMAGE_WIDTH = 800;
-	int IMAGE_HEIGHT = 500;
+	int IMAGE_RECALL_WIDTH = 800;
+	int IMAGE_RECALL_HEIGHT = 500;
+	int IMAGE_HEAD_EAGE = 800;
 }

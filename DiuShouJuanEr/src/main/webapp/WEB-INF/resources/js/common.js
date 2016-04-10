@@ -451,7 +451,7 @@ var UploadUtil = {
 		upload : function(){
 			var formData = new FormData();
 			formData.append('file', $('#_ef')[0].files[0]);
-			for ( var pro in newOptions) {
+			for ( var pro in this.options.params) {
 				formData.append(pro, this.options.params[pro]);
 			}
 			UploadUtil.request(formData);

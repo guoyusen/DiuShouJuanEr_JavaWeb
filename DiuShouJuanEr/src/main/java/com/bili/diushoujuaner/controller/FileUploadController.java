@@ -28,6 +28,14 @@ public class FileUploadController {
 		return fileUploadService.uploadPostPicByRecord(file, accessToken, deviceType);
 	}
 	
+	@RequestMapping(value = "/1.0/file/headpic", method = RequestMethod.POST)
+	@ResponseBody
+	public Object uploadHeadPic(
+			@RequestParam("file") MultipartFile file,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		return fileUploadService.uploadHeadPic(file, accessToken);
+	}
+	
 	@RequestMapping(value = "/1.0/file/postpic/remove", method = RequestMethod.POST)
 	@ResponseBody
 	public Object removePostPicByRecord(

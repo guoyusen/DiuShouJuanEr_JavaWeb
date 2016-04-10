@@ -13,4 +13,6 @@ public interface FileUploadService {
 	ResponseDto removePostPicByRecord(long picId, String accessToken, String deviceType);
 	
 	ResponseDto removePostPicListByRecord(String accessToken, String deviceType);
+	
+	ResponseDto uploadHeadPic(MultipartFile file, String accessToken);
 }

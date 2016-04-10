@@ -119,7 +119,7 @@
 					<div class="frameUserHead displayInline">
 						<div class="frameUserHeadImg displayInline">
 							<div class="recallItemHeadOutter">
-								<span id="frameUserImageHead"></span>
+								<span id="frameUserImageHead" onClick="HomeUserOperateUtil.updateHeadPic()"></span>
 							</div>
 						</div>
 						<div class="frameUserHeadInfo displayInline">

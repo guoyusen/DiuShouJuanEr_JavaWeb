@@ -24,7 +24,7 @@ public class RecallPicManager {
 		picture.setPicPath(filePath);
 		picture.setRealPath(CommonUtils.getRootDirectory() + filePath);
 		
-		picture = CommonUtils.processImage(picture, file);
+		picture = CommonUtils.processRecallImage(picture, file);
 		addPicture(userNo + deviceType, picture);
 		
 		return picture;

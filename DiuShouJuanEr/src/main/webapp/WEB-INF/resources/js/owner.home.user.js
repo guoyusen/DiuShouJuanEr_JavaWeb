@@ -14,6 +14,20 @@ var HomeUserOperateUtil = {
 			HomeUserRecallUtil.nextPage();
 		}
 	},
+	updateHeadPic : function(){
+		UploadUtil.choseFile({
+			url : '1.0/file/headpic',
+			callbefore : function(){},
+			callback : function(result){
+				if (result && result.retCode == "success"){
+					$("#frameUserImageHead").css("background-image","url(" + result.data + ")");
+				}
+			},
+			acceptType : UploadUtil.acceptImage
+		});
+		
+		
+	},
 	getFrameBottomHtml : function(){
 		var outPutHtml = '<div id="frameUserBottom" class="displayInline">正在加载中...</div>';
 	    return outPutHtml;

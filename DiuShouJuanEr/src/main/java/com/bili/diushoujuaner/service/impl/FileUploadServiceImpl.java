@@ -1,7 +1,9 @@
 package com.bili.diushoujuaner.service.impl;
 
+
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,10 +13,26 @@ import com.bili.diushoujuaner.common.dto.ResponseDto;
 import com.bili.diushoujuaner.common.recallpic.RecallPicManager;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.Picture;
+import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.mgt.UserMgt;
 import com.bili.diushoujuaner.service.FileUploadService;
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
+	
+	@Autowired
+	private UserMgt userMgt;
+
+	@Override
+	public ResponseDto uploadHeadPic(MultipartFile file, String accessToken) {
+		String filePath = CommonUtils.processHeadImage(file);
+		User user = userMgt.getUserByUserNo(CustomSessionManager.getCustomSession(accessToken).getUserNo());
+		CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + user.getPicPath());
+		if(userMgt.updateHead(filePath, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传头像成功", filePath);
+		}
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "上传头像失败", null);
+	}
 
 	@Override
 	public ResponseDto uploadPostPicByRecord(MultipartFile file, String accessToken, String deviceType) throws IOException {
