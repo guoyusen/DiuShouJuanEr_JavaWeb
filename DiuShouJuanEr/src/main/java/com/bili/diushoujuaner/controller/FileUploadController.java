@@ -19,7 +19,7 @@ public class FileUploadController {
 	@Autowired
 	private FileUploadService fileUploadService;
 
-	@RequestMapping(value = "/1.0/file/postpic", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/file/recallpic", method = RequestMethod.POST)
 	@ResponseBody
 	public Object uploadPostPicByRecord(
 			@RequestParam("file") MultipartFile file,
@@ -36,7 +36,15 @@ public class FileUploadController {
 		return fileUploadService.uploadHeadPic(file, accessToken);
 	}
 	
-	@RequestMapping(value = "/1.0/file/postpic/remove", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/file/wallpaper", method = RequestMethod.POST)
+	@ResponseBody
+	public Object uploadWallPaper(
+			@RequestParam("file") MultipartFile file,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		return fileUploadService.uploadWallPaper(file, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/file/recallpic/remove", method = RequestMethod.POST)
 	@ResponseBody
 	public Object removePostPicByRecord(
 			@RequestParam(value = "picId", required = true, defaultValue = "-1") long picId,
@@ -46,7 +54,7 @@ public class FileUploadController {
 		return fileUploadService.removePostPicByRecord(picId, accessToken, deviceType);
 	}
 	
-	@RequestMapping(value = "/1.0/file/postpic/removeall", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/file/recallpic/removeall", method = RequestMethod.POST)
 	@ResponseBody
 	public Object removePostPicListByRecord(
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,

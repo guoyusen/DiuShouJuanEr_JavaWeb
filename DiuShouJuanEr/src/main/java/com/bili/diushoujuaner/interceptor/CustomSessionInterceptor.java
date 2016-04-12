@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
 
 public class CustomSessionInterceptor implements HandlerInterceptor {
@@ -39,24 +40,32 @@ public class CustomSessionInterceptor implements HandlerInterceptor {
             }
         }
         
-        String accessToken = null;
+        String accessToken = null, deviceType = null;
         if(requestUrl.contains("/home")){
         	Cookie[] cookies = request.getCookies();
         	for(int i = 0; cookies!= null && i <cookies.length; i++){
         		if(cookies[i].getName().equals("AccessToken")){
         			accessToken = cookies[i].getValue();
+        			break;
         		}
         	}
+        	//进入home页面，判断权限
+        	if(accessToken == null || CustomSessionManager.getCustomSession(accessToken) == null){
+            	response.sendRedirect("login");
+            	return false;
+            }
         }else{
         	accessToken = request.getHeader("AccessToken");
+        	deviceType = request.getHeader("Device-Type");
+        	if(accessToken == null 
+        			|| CustomSessionManager.getCustomSession(accessToken) == null
+        			|| deviceType == null
+        			|| !CommonUtils.isDeviceTypelegal(deviceType)){
+            	response.sendError(401, "非法请求，请重新登录");
+            	return false;
+            }
         }
-        
-        if(accessToken == null || CustomSessionManager.getCustomSession(accessToken) == null){
-        	response.sendRedirect("login");
-        	return false;
-        }else{
-        	return true;
-        }
+        return true;
 	}
 
 }

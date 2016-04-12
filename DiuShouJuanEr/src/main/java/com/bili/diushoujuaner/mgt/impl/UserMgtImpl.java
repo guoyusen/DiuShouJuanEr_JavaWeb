@@ -18,6 +18,17 @@ public class UserMgtImpl implements UserMgt {
 	private UserMapper userMapper;
 	
 	@Override
+	public boolean updateWallpaper(String path, long userNo) {
+		UserExample userExample = new UserExample();
+		userExample.createCriteria().andUserNoEqualTo(userNo);
+		
+		User user = new User();
+		user.setWallPaper(path);;
+				
+		return userMapper.updateByExampleSelective(user, userExample) > 0 ? true : false;
+	}
+
+	@Override
 	public boolean updateHead(String path, long userNo) {
 		UserExample userExample = new UserExample();
 		userExample.createCriteria().andUserNoEqualTo(userNo);

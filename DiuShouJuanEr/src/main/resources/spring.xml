@@ -35,7 +35,7 @@
 	
 	<mvc:interceptors>
 	    <mvc:interceptor>
-	        <mvc:mapping path="/*"/>
+	        <mvc:mapping path="/**"/>
 	        <bean class="com.bili.diushoujuaner.interceptor.CustomSessionInterceptor">
 	            <property name="allowUrls">
 	                <list>

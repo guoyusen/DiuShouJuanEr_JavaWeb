@@ -9,6 +9,11 @@
     <result column="PicPath" property="userPicPath" jdbcType="VARCHAR" />
     <result column="NickName" property="userName" jdbcType="VARCHAR"/>
   </resultMap>
+  <select id="getRecallByRecallNo" resultMap="BaseResultMap" parameterType="long">
+      select RecallNo, Recall.UserNo, Content, PublishTime, PicPath, NickName 
+      from Recall,User
+      where Recall.UserNo = User.UserNo and RecallNo = #{recallNo,jdbcType=BIGINT}
+  </select>
   <select id="getRecentRecallByUserNo" resultMap="BaseResultMap" parameterType="long">
       select recall.RecallNo, Recall.UserNo, Content, PublishTime
       from recall,(select max(recallNo) RecallNo from recall where UserNo =  #{userNo,jdbcType=BIGINT}) as tmp

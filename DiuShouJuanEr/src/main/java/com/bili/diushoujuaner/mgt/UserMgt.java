@@ -20,4 +20,6 @@ public interface UserMgt {
 	
 	boolean updateHead(String path, long userNo);
 	
+	boolean updateWallpaper(String path, long userNo);
+	
 }

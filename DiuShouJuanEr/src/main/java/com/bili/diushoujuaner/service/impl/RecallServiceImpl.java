@@ -72,9 +72,12 @@ public class RecallServiceImpl implements RecallService {
 
 	@Override
 	public ResponseDto addRecallByContAndToken(String content, String accessToken, int picCount, String deviceType) {
-		int effectLines = recallMgt.addRecall(CommonUtils.getUserNoFromAccessToken(accessToken), content, CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS(), picCount, deviceType);
-		if(effectLines > 0){
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Recall成功", null);
+		long recallNo = recallMgt.addRecall(CommonUtils.getUserNoFromAccessToken(accessToken), content, CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS(), picCount, deviceType);
+		if(recallNo > 0){
+			if(CommonUtils.getDeviceType(deviceType) == ConstantUtils.DEVICE_BROWSER){
+				return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Recall成功", null);
+			}
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Recall成功", recallMgt.getRecallByRecallNo(recallNo));
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "添加Recall失败", null);
 		}
@@ -86,13 +89,12 @@ public class RecallServiceImpl implements RecallService {
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
 		}
 		
+		List<Picture> pictureList = pictureMgt.getPictureListByRecallNo(recallNo);
+		for(Picture picture : pictureList){
+			CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + picture.getPicPath());
+		}
 		int effectLines = recallMgt.removeRecallByRecallNo(recallNo);
 		if(effectLines > 0){
-			List<Picture> pictureList = pictureMgt.getPictureListByRecallNo(recallNo);
-			for(Picture picture : pictureList){
-				CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + picture.getPicPath());
-			}
-			
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "删除Recall成功", recallNo);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "该趣事已经被删除", null);

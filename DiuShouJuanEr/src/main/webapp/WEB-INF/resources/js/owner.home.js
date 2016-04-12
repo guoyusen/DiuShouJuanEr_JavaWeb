@@ -336,7 +336,7 @@ var HomeOperateUtil = {
 			return;
 		}
 		UploadUtil.choseFile({
-			url : '1.0/file/postpic',
+			url : '1.0/file/recallpic',
 			callbefore : HomeOperateUtil.homeAddRecallPictureBefore,
 			callback : HomeOperateUtil.homeAddRecallPictureCallback,
 			acceptType : UploadUtil.acceptImage
@@ -366,7 +366,7 @@ var HomeOperateUtil = {
 		HomeOperateUtil.deleteRecallPicId = picId;
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/file/postpic/remove",
+			url : "1.0/file/recallpic/remove",
 			params : {picId : picId},
 			type : 'json',
 			callback : function(result){
@@ -470,7 +470,7 @@ var HomeOperateUtil = {
 		$("#postPicCount").html('图片(' + HomeOperateUtil.curentRecallPicCount + '/8)');
 		AjaxUtil.request({
 			method : "post",
-			url : "1.0/file/postpic/removeall",
+			url : "1.0/file/recallpic/removeall",
 			params : {},
 			type : 'json',
 			callback : function(){}

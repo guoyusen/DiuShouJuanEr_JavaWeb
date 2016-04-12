@@ -51,6 +51,7 @@ public class RecallPicManager {
 		}
 		
 		pictureMap.remove(userKey);
+		System.out.println(pictureMap.toString());
 	}
 	
 	public static boolean removePicture(String userKey, long picId){
@@ -78,6 +79,7 @@ public class RecallPicManager {
 			
 			pictureMap.put(userKey, tmpMap);
 		}
+		System.out.println(pictureMap.toString());
 	}
 	
 	public static void main(String[] args) {

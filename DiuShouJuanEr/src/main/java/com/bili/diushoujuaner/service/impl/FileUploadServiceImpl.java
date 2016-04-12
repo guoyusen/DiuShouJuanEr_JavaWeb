@@ -24,10 +24,25 @@ public class FileUploadServiceImpl implements FileUploadService {
 	private UserMgt userMgt;
 
 	@Override
+	public ResponseDto uploadWallPaper(MultipartFile file, String accessToken) {
+		String filePath = CommonUtils.processWallPaper(file);
+		
+		User user = userMgt.getUserByUserNo(CustomSessionManager.getCustomSession(accessToken).getUserNo());
+		CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + user.getWallPaper());
+		
+		if(userMgt.updateWallpaper(filePath, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传壁纸成功", filePath);
+		}
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "上传壁纸失败", null);
+	}
+
+	@Override
 	public ResponseDto uploadHeadPic(MultipartFile file, String accessToken) {
 		String filePath = CommonUtils.processHeadImage(file);
+		
 		User user = userMgt.getUserByUserNo(CustomSessionManager.getCustomSession(accessToken).getUserNo());
 		CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + user.getPicPath());
+		
 		if(userMgt.updateHead(filePath, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传头像成功", filePath);
 		}
@@ -38,7 +53,11 @@ public class FileUploadServiceImpl implements FileUploadService {
 	public ResponseDto uploadPostPicByRecord(MultipartFile file, String accessToken, String deviceType) throws IOException {
 		if (file != null) {
 			Picture picture = RecallPicManager.storePictureToLocal(CustomSessionManager.getCustomSession(accessToken).getUserNo(), file, deviceType);
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传图片成功", picture);
+			if(CommonUtils.getDeviceType(deviceType) == ConstantUtils.DEVICE_ANDROID){
+				return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传图片成功", null);
+			}else{
+				return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传图片成功", picture);
+			}
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "不能传输空文件", null);
 	}

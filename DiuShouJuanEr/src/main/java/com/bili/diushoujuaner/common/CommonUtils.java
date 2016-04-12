@@ -162,7 +162,7 @@ public class CommonUtils {
 	}
 	
 	/**
-	 * 获得相册的路径
+	 * 获得头像的路径
 	 */
 	public static String getHeadDirectory(){
 		return "images/head/" + getCurrentTimeDirectory();
@@ -173,6 +173,13 @@ public class CommonUtils {
 	 */
 	public static String getAlbumDirectory(){
 		return "images/album/" + getCurrentTimeDirectory();
+	}
+	
+	/**
+	 * 获得壁纸的路径
+	 */
+	public static String getWallPaperDirectory(){
+		return "images/wallpaper/" + getCurrentTimeDirectory();
 	}
 	
 	/**
@@ -197,7 +204,7 @@ public class CommonUtils {
 	}
 	
 	/**
-	 * 生成对应于时间的相册路径
+	 * 生成对应于相册的目录
 	 */
 	public static boolean createAlbumDirectoryByTime(){
 		File tmpFile = new File(getRootDirectory() + getAlbumDirectory());
@@ -208,10 +215,21 @@ public class CommonUtils {
 	}
 	
 	/**
-	 * 生成对应于头像的相册路径
+	 * 生成对应于头像的目录
 	 */
 	public static boolean createHeadDirectoryByTime(){
 		File tmpFile = new File(getRootDirectory() + getHeadDirectory());
+		if(!tmpFile.exists()){
+			return tmpFile.mkdirs();
+		}
+		return true;
+	}
+	
+	/**
+	 * 生成对应于壁纸的目录
+	 */
+	public static boolean createWallPaperDirectoryByTime(){
+		File tmpFile = new File(getRootDirectory() + getWallPaperDirectory());
 		if(!tmpFile.exists()){
 			return tmpFile.mkdirs();
 		}
@@ -288,9 +306,31 @@ public class CommonUtils {
 		return result;
 	}
 	
+	public static String processWallPaper(MultipartFile file){
+		createWallPaperDirectoryByTime();
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getWallPaperDirectory());
+		stringBuilder.append("/");
+		stringBuilder.append(System.currentTimeMillis() + "");
+		stringBuilder.append(getSuffixFromFileName(file.getOriginalFilename()));
+		
+		return processSquareImage(stringBuilder.toString(), file);
+	}
+	
 	public static String processHeadImage(MultipartFile file){
 		createHeadDirectoryByTime();
-		String filePath = CommonUtils.getHeadDirectory() + "/" + System.currentTimeMillis() + CommonUtils.getSuffixFromFileName(file.getOriginalFilename());
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getHeadDirectory());
+		stringBuilder.append("/");
+		stringBuilder.append(System.currentTimeMillis() + "");
+		stringBuilder.append(getSuffixFromFileName(file.getOriginalFilename()));
+		
+		return processSquareImage(stringBuilder.toString(), file);
+	}
+	
+	private static String processSquareImage(String filePath, MultipartFile file){
 		ImageInputStream iis;
 		try {
 			Iterator<ImageReader> it = ImageIO  
@@ -362,6 +402,10 @@ public class CommonUtils {
 		
 		
 		return picture;
+	}
+	
+	public static boolean isDeviceTypelegal(String deviceType){
+		return deviceType.equals("Client/Browser") || deviceType.equals("Client/Android");
 	}
 
 }

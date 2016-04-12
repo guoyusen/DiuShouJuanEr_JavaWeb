@@ -14,7 +14,7 @@ public interface RecallMgt {
 	
 	List<Recall> getRecallListByUserNoAndPageParamAndRecall(long userNo, int pageIndex,int pageSize, long lastRecall);
 	
-	int addRecall(long userNo, String content, String time, int picCount, String deviceType);
+	long addRecall(long userNo, String content, String time, int picCount, String deviceType);
 	
 	int removeRecallByRecallNo(long recallNo);
 	
@@ -23,5 +23,7 @@ public interface RecallMgt {
 	boolean getPermitionForRemove(long recallNo, long userNo);
 	
 	Recall getRecentRecallByUserNo(long userNo);
+	
+	Recall getRecallByRecallNo(long recallNo);
 	
 }

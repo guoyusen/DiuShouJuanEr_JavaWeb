@@ -610,7 +610,7 @@ var HomeMainOperateUtil = {
 			AjaxUtil.request({
 				method : "post",
 				url : "1.0/recalls/add",
-				params : {content:HomeOperateUtil.HTMLEnCode($("#postPanelContent .mCSB_container").html()),picount : HomeOperateUtil.curentRecallPicCount},
+				params : {content:HomeOperateUtil.HTMLEnCode($("#postPanelContent .mCSB_container").html()),piCount : HomeOperateUtil.curentRecallPicCount},
 				type : 'json',
 				callback : HomeMainOperateUtil.publishRecallCallBack
 			});

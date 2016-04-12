@@ -1,5 +1,6 @@
 package com.bili.diushoujuaner.mgt.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Repository;
 import com.bili.diushoujuaner.common.recallpic.RecallPicManager;
 import com.bili.diushoujuaner.database.mapper.PictureMapper;
 import com.bili.diushoujuaner.database.mapper.RecallMapper;
+import com.bili.diushoujuaner.database.model.Comment;
+import com.bili.diushoujuaner.database.model.Good;
 import com.bili.diushoujuaner.database.model.Picture;
+import com.bili.diushoujuaner.database.model.PictureExample;
 import com.bili.diushoujuaner.database.model.Recall;
 import com.bili.diushoujuaner.database.model.RecallExample;
 import com.bili.diushoujuaner.database.param.RecallRemoveValidateParam;
@@ -24,6 +28,25 @@ public class RecallMgtImpl implements RecallMgt {
 	@Autowired
 	PictureMapper pictureMapper;
 	
+	
+	
+	@Override
+	public Recall getRecallByRecallNo(long recallNo) {
+		List<Recall> recallList = new ArrayList<Recall>();
+		Recall recall = null;
+		
+		recallList.addAll(recallMapper.getRecallByRecallNo(recallNo));
+		if(!recallList.isEmpty()){
+			recall = recallList.get(0);
+			recall.setCommentList(new ArrayList<Comment>());
+			recall.setGoodList(new ArrayList<Good>());
+			PictureExample pictureExample = new PictureExample();
+			pictureExample.createCriteria().andRecallNoEqualTo(recallNo);
+			recall.setPictureList(pictureMapper.selectByExample(pictureExample));
+		}
+		return recall;
+	}
+
 	@Override
 	public Recall getRecentRecallByUserNo(long userNo) {
 		List<Recall> recallList = recallMapper.getRecentRecallByUserNo(userNo);
@@ -69,24 +92,28 @@ public class RecallMgtImpl implements RecallMgt {
 	}
 
 	@Override
-	public int addRecall(long userNo, String content, String time, int picCount, String deviceType) {
+	public long addRecall(long userNo, String content, String time, int picCount, String deviceType) {
 		Recall recall = new Recall();
 		recall.setContent(content);
 		recall.setUserNo(userNo);
 		recall.setPublishTime(time);
 		
-		int effectLines = recallMapper.insertSelective(recall);
-		if(effectLines > 0 && picCount > 0){
-			Map<String, Picture> tmpMap = RecallPicManager.getPictureMap(userNo + deviceType);
-			if(tmpMap != null){
-				for(Picture picture : tmpMap.values()){
-					picture.setRecallNo(recall.getRecallNo());
-					pictureMapper.insertSelective(picture);
+		try{
+			int effectLines = recallMapper.insertSelective(recall);
+			if(effectLines > 0 && picCount > 0){
+				Map<String, Picture> tmpMap = RecallPicManager.getPictureMap(userNo + deviceType);
+				if(tmpMap != null){
+					for(Picture picture : tmpMap.values()){
+						picture.setRecallNo(recall.getRecallNo());
+						pictureMapper.insertSelective(picture);
+					}
 				}
+				RecallPicManager.clearUserPicture(userNo + deviceType, false);
 			}
-			RecallPicManager.clearUserPicture(userNo + deviceType, false);
+		}catch(Exception e){
+			return -1;
 		}
-		return effectLines;
+		return recall.getRecallNo();
 	}
 
 	@Override

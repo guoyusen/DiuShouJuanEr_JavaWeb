@@ -31,7 +31,7 @@ public class RecallController {
 	@ResponseBody
 	public Object addRecallByContAndToken(
 			@RequestParam(value = "content", required = true, defaultValue = "") String content,
-			@RequestParam(value = "picount", required = true, defaultValue = "") int picCount,
+			@RequestParam(value = "piCount", required = true, defaultValue = "") int picCount,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
 			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType){
 		return recallService.addRecallByContAndToken(content, accessToken, picCount, deviceType);
