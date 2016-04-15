@@ -49,7 +49,7 @@ var HomeMainRecallUtil = {
 				$("#frameMainBottom").html("已加载全部数据");
 			}
 		}else if (result.retCode == "fail" || result.retCode == "error") {
-			HomeOperateUtil.showNoticeTip(result.message);
+			HomeOperateUtil.showErrorTip(result.message);
 		}
 	},
 	getGoodCountByRecallNo : function(recallNo){
@@ -392,7 +392,7 @@ var HomeMainRecallUtil = {
 					$("#main_recall_"+HomeMainRecallUtil.deleteRecallNo).remove();
 					HomeMainRecallUtil.updateRecallListScrollBar();
 				}else if (result.retCode == "fail" || result.retCode == "error") {
-					HomeOperateUtil.showNoticeTip(result.message);
+					HomeOperateUtil.showErrorTip(result.message);
 				}
 			}
 		});
@@ -411,7 +411,7 @@ var HomeMainRecallUtil = {
 					$("#main_comment_"+HomeMainRecallUtil.deleteCommentNo).remove();
 					HomeMainRecallUtil.updateRecallListScrollBar();
 				}else if (result.retCode == "fail" || result.retCode == "error") {
-					HomeOperateUtil.showNoticeTip(result.message);
+					HomeOperateUtil.showErrorTip(result.message);
 				}
 			}
 		});
@@ -428,7 +428,7 @@ var HomeMainRecallUtil = {
 					HomeMainRecallUtil.updateRecallListScrollBar();
 					$("#main_respon_"+HomeMainRecallUtil.deleteResponNo).remove();
 				}else if (result.retCode == "fail" || result.retCode == "error") {
-					HomeOperateUtil.showNoticeTip(result.message);
+					HomeOperateUtil.showErrorTip(result.message);
 				}
 			}
 		});
@@ -515,7 +515,7 @@ var HomeMainRecallUtil = {
 					$("#homeAddComment").remove();
 					HomeMainRecallUtil.updateRecallListScrollBar();
 				}else{
-					HomeOperateUtil.showNoticeTip(result.message);
+					HomeOperateUtil.showErrorTip(result.message);
 				}
 			}
 		});
@@ -571,7 +571,7 @@ var HomeMainRecallUtil = {
 					$("#homeAddComment").remove();
 					HomeMainRecallUtil.updateRecallListScrollBar();
 				}else{
-					HomeOperateUtil.showNoticeTip(result.message);
+					HomeOperateUtil.showErrorTip(result.message);
 				}
 			}
 		});
@@ -610,7 +610,7 @@ var HomeMainOperateUtil = {
 			AjaxUtil.request({
 				method : "post",
 				url : "1.0/recalls/add",
-				params : {content:HomeOperateUtil.HTMLEnCode($("#postPanelContent .mCSB_container").html()),piCount : HomeOperateUtil.curentRecallPicCount},
+				params : {content:HomeOperateUtil.HTMLEnCode($("#postPanelContent .mCSB_container").html()),piCount : HomeOperateUtil.curentRecallPicCount, serial : HomeOperateUtil.publishSerial},
 				type : 'json',
 				callback : HomeMainOperateUtil.publishRecallCallBack
 			});
@@ -622,7 +622,7 @@ var HomeMainOperateUtil = {
 				$("#frameAddBtn").addClass("frameAddBtnPost");
 				HomeMainRecallUtil.refresh();
 			}else if (result.retCode == "fail" || result.retCode == "error") {
-				showNoticeTip(result.message);
+				showErrorTip(result.message);
 			}
 		}
 }

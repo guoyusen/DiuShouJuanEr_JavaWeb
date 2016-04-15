@@ -101,7 +101,11 @@ public class UserMgtImpl implements UserMgt {
 	@Override
 	public boolean modifyAutographByUserNo(String autograph, long userNo) {
 		User user = new User();
-		user.setAutograph(autograph);
+		if(autograph.length() >= 100){
+			user.setAutograph(autograph.substring(0,100));
+		}else{
+			user.setAutograph(autograph);
+		}
 		
 		UserExample userExample = new UserExample();
 		userExample.createCriteria().andUserNoEqualTo(userNo);

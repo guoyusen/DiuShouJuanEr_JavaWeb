@@ -50,9 +50,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 	}
 
 	@Override
-	public ResponseDto uploadPostPicByRecord(MultipartFile file, String accessToken, String deviceType) throws IOException {
+	public ResponseDto uploadPostPicByRecord(MultipartFile file,String serial, String accessToken, String deviceType) throws IOException {
 		if (file != null) {
-			Picture picture = RecallPicManager.storePictureToLocal(CustomSessionManager.getCustomSession(accessToken).getUserNo(), file, deviceType);
+			Picture picture = RecallPicManager.storePictureToLocal(CustomSessionManager.getCustomSession(accessToken).getUserNo(), file, serial, deviceType);
 			if(CommonUtils.getDeviceType(deviceType) == ConstantUtils.DEVICE_ANDROID){
 				return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传图片成功", null);
 			}else{

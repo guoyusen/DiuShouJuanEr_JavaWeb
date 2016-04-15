@@ -120,7 +120,7 @@ public class CommonUtils {
 	}
 
 	/**
-	 * 判断得到的消息是否是心跳包
+	 * 判断得到的消息是否是心跳请求包
 	 * @param message
 	 * @return boolean
 	 */

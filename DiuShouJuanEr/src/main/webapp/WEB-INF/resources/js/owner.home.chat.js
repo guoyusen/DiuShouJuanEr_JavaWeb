@@ -166,7 +166,7 @@ var ContactUtil = {
 			OffMsgUtil.refresh();
 			HomeMainRecallUtil.refresh();
 		} else if (result.retCode == "fail" || result.retCode == "error") {
-			HomeOperateUtil.showNoticeTip(result.message);
+			HomeOperateUtil.showErrorTip(result.message);
 		}
 	},
 	getConatctContNo : function(contId){
@@ -255,7 +255,23 @@ var ContactUtil = {
 			return ContactUtil.contactMap["par_" + partyNo].memberMap[userNo].picPath;
 		}
 		else{
-			alert("home.chat.js中，获取群成员头像路径出错");
+			alert("home.chat.js中，获取群成员头像路径失败");
+		}
+	},
+	getMemberName : function(partyNo,userNo){
+		var Contact = ContactUtil.contactMap["par_" + partyNo];
+		if (Contact){
+			if(!Contact.memberMap){
+				ContactUtil.contactMap["par_" + partyNo].memberMap = {};
+				for(var i = 0; i < ContactUtil.contactMap["par_" + partyNo].memberList.length; i++){
+					var member = ContactUtil.contactMap["par_" + partyNo].memberList[i];
+					ContactUtil.contactMap["par_" + partyNo].memberMap[member.userNo] = member;
+				}
+			}
+			return ContactUtil.contactMap["par_" + partyNo].memberMap[userNo].memberName;
+		}
+		else{
+			alert("home.chat.js中，获取群成员昵称失败");
 		}
 	},
 	getFriendGender : function(contId) {
@@ -351,6 +367,7 @@ var ChatUtil = {
 			    + "</div><div class='navItemTime'>"
 			    + TimeFormatUtil.getFormatTime(ChatUtil.chatMap[chatItem.chatId].time)
 			    + "</div><div class='navItemRecent'>"
+			    + (chatItem.msgType == HomeChatTypeUtil.CHAT_PAR ? "[" + ContactUtil.getMemberName(chatItem.partyNo, chatItem.fromNo) + "]:" : "")
 			    + ChatUtil.chatMap[chatItem.chatId].content
 			    + "</div></div></li>");
 	}

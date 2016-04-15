@@ -18,8 +18,18 @@ public class Picture {
     private String realPath;
     
     private int picId;
+    
+    private String serial;
 
-    public String getRealPath() {
+	public String getSerial() {
+		return serial;
+	}
+
+	public void setSerial(String serial) {
+		this.serial = serial;
+	}
+
+	public String getRealPath() {
 		return realPath;
 	}
 

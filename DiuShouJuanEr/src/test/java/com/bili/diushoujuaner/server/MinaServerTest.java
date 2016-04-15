@@ -8,7 +8,7 @@ import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.springframework.stereotype.Service;
 
-import com.bili.diushoujuaner.chat.handler.MinaServerHanlder;
+import com.bili.diushoujuaner.chat.handler.MinaServerHandler;
 import com.bili.diushoujuaner.common.ConstantUtils;
 
 @Service
@@ -24,7 +24,7 @@ public class MinaServerTest {
 		sessionConfig.setKeepAlive(true);
 
 		acceptor.setReuseAddress(true);
-		acceptor.setHandler(new MinaServerHanlder());
+		acceptor.setHandler(new MinaServerHandler());
 		acceptor.bind(new InetSocketAddress(1314));
 	}
 

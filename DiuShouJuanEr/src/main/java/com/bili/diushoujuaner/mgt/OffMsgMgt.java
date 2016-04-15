@@ -10,4 +10,6 @@ public interface OffMsgMgt {
 	
 	OffMsg putOffMsgByRecord(OffMsg offMsg);
 	
+	void deleteOffMsgByUserNo(long userNo);
+	
 }

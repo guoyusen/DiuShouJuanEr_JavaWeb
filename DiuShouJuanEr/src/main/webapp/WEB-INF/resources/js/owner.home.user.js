@@ -59,7 +59,7 @@ var HomeUserOperateUtil = {
 				+ '<span class="frameUserAutographEdit" onClick="HomeUserOperateUtil.homeUserAutographEditClick()">修改</span>');
 	},
 	homeUserAutographEditPublish : function(){
-		var autograph = HomeOperateUtil.HTMLEnCode($("#frameUserAutographEditer").html());
+		var autograph = HomeOperateUtil.HTMLEnCode($("#frameUserAutographEditer .mCSB_container").html());
 		AjaxUtil.request({
 			method : "post",
 			url : "1.0/users/modify/autograph",
@@ -75,7 +75,7 @@ var HomeUserOperateUtil = {
 							+ '</span>'
 							+ '<span class="frameUserAutographEdit" onClick="HomeUserOperateUtil.homeUserAutographEditClick()">修改</span>');
 				}else if (result.retCode == "fail" || result.retCode == "error") {
-					HomeOperateUtil.showNoticeTip(result.message);
+					HomeOperateUtil.showErrorTip(result.message);
 				}
 			}
 		});
@@ -133,7 +133,7 @@ var HomeUserRecallUtil = {
 					$("#frameUserBottom").html("已加载全部数据");
 				}
 			}else if (result.retCode == "fail" || result.retCode == "error") {
-				HomeOperateUtil.showNoticeTip(result.message);
+				HomeOperateUtil.showErrorTip(result.message);
 			}
 		},
 		getGoodCountByRecallNo : function(recallNo){
@@ -168,7 +168,7 @@ var HomeUserRecallUtil = {
 					type : 'json',
 					callback : function(result){
 						if (result.retCode == "fail" || result.retCode == "error") {
-							HomeOperateUtil.showNoticeTip(result.message);
+							HomeOperateUtil.showErrorTip(result.message);
 						}
 					}
 				});
@@ -193,7 +193,7 @@ var HomeUserRecallUtil = {
 					type : 'json',
 					callback : function(result){
 						if (result.retCode == "fail" || result.retCode == "error") {
-							HomeOperateUtil.showNoticeTip(result.message);
+							HomeOperateUtil.showErrorTip(result.message);
 						}
 					}
 				});
@@ -481,7 +481,7 @@ var HomeUserRecallUtil = {
 						HomeUserRecallUtil.updateRecallListScrollBar();
 						$("#user_recall_"+HomeUserRecallUtil.deleteRecallNo).remove();
 					}else if (result.retCode == "fail" || result.retCode == "error") {
-						HomeOperateUtil.showNoticeTip(result.message);
+						HomeOperateUtil.showErrorTip(result.message);
 					}
 				}
 			});
@@ -500,7 +500,7 @@ var HomeUserRecallUtil = {
 						$("#user_comment_"+HomeUserRecallUtil.deleteCommentNo).remove();
 						HomeUserRecallUtil.updateRecallListScrollBar();
 					}else if (result.retCode == "fail" || result.retCode == "error") {
-						HomeOperateUtil.showNoticeTip(result.message);
+						HomeOperateUtil.showErrorTip(result.message);
 					}
 				}
 			});
@@ -517,7 +517,7 @@ var HomeUserRecallUtil = {
 						$("#user_respon_"+HomeUserRecallUtil.deleteResponNo).remove();
 						HomeUserRecallUtil.updateRecallListScrollBar();
 					}else if (result.retCode == "fail" || result.retCode == "error") {
-						HomeOperateUtil.showNoticeTip(result.message);
+						HomeOperateUtil.showErrorTip(result.message);
 					}
 				}
 			});
@@ -604,7 +604,7 @@ var HomeUserRecallUtil = {
 						$("#homeAddComment").remove();
 						HomeUserRecallUtil.updateRecallListScrollBar();
 					}else if (result.retCode == "fail" || result.retCode == "error") {
-						HomeOperateUtil.showNoticeTip(result.message);
+						HomeOperateUtil.showErrorTip(result.message);
 					}
 				}
 			});
@@ -660,7 +660,7 @@ var HomeUserRecallUtil = {
 						$("#homeAddComment").remove();
 						HomeUserRecallUtil.updateRecallListScrollBar();
 					}else if (result.retCode == "fail" || result.retCode == "error") {
-						HomeOperateUtil.showNoticeTip(result.message);
+						HomeOperateUtil.showErrorTip(result.message);
 					}
 				}
 			});

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.recallpic.RecallPicManager;
 import com.bili.diushoujuaner.database.mapper.PictureMapper;
 import com.bili.diushoujuaner.database.mapper.RecallMapper;
@@ -92,7 +93,7 @@ public class RecallMgtImpl implements RecallMgt {
 	}
 
 	@Override
-	public long addRecall(long userNo, String content, String time, int picCount, String deviceType) {
+	public long addRecall(long userNo, String content, String time, int picCount,String serial, String deviceType) {
 		Recall recall = new Recall();
 		recall.setContent(content);
 		recall.setUserNo(userNo);
@@ -104,8 +105,12 @@ public class RecallMgtImpl implements RecallMgt {
 				Map<String, Picture> tmpMap = RecallPicManager.getPictureMap(userNo + deviceType);
 				if(tmpMap != null){
 					for(Picture picture : tmpMap.values()){
-						picture.setRecallNo(recall.getRecallNo());
-						pictureMapper.insertSelective(picture);
+						if(picture.getSerial().equals(serial)){
+							picture.setRecallNo(recall.getRecallNo());
+							pictureMapper.insertSelective(picture);
+						}else{
+							CommonUtils.deleteFileFromPath(picture.getRealPath());
+						}
 					}
 				}
 				RecallPicManager.clearUserPicture(userNo + deviceType, false);

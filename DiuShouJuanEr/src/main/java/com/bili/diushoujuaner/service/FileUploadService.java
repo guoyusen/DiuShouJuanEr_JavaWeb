@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.common.dto.ResponseDto;
 
 public interface FileUploadService {
 
-	ResponseDto uploadPostPicByRecord(MultipartFile file, String accessToken, String deviceType) throws IOException;
+	ResponseDto uploadPostPicByRecord(MultipartFile file, String serial, String accessToken, String deviceType) throws IOException;
 	
 	ResponseDto removePostPicByRecord(long picId, String accessToken, String deviceType);
 	

@@ -20,9 +20,9 @@ import com.bili.diushoujuaner.database.model.CommonInfo;
 import com.bili.diushoujuaner.mgt.OffMsgMgt;
 import com.bili.diushoujuaner.mgt.CommonInfoMgt;
 
-public class MinaServerHanlder extends IoHandlerAdapter {
+public class MinaServerHandler extends IoHandlerAdapter {
 	
-	public static final Logger logger = LoggerFactory.getLogger(MinaServerHanlder.class);
+	public static final Logger logger = LoggerFactory.getLogger(MinaServerHandler.class);
 	
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
@@ -71,28 +71,37 @@ public class MinaServerHanlder extends IoHandlerAdapter {
 		IoSession sessionTmp = null;
 		List<Long> offLineAccList = new ArrayList<>();
 		List<Long> receiverAccList = new ArrayList<>();
-		//msg.getReceiverAcc()得到的是群号
+		//msg.getReceiverNo()得到的是群号
 		receiverAccList.addAll(MemberManager.getMemberNoList(msg.getReceiverNo()));
 		boolean isMobileAccept = false;
 		boolean isBrowserAccept = false;
+		long senderNo = IOSessionManager.getUserNoFromIoSessionToLong(session);
+		boolean senderIsMobile = IOSessionManager.isSessionMobile(session);
 		
 		// 转发群消息给群组员
 		for(Long receiverAcc : receiverAccList){
 			isMobileAccept = false;
 			isBrowserAccept = false;
-    		sessionTmp = IOSessionManager.getSessionBrowser(receiverAcc);
-	    	if(sessionTmp != null && !(receiverAcc == IOSessionManager.getUserNoFromIoSessionToLong(session) && !IOSessionManager.isSessionMobile(session))){
+    		//1.不为空 
+    		//2.账号不和当前session的账号相等，直接发送
+    		//3.账号相等，发送给浏览器的不能是浏览器
+			sessionTmp = IOSessionManager.getSessionBrowser(receiverAcc);
+	    	if(sessionTmp != null && ((receiverAcc != senderNo) || (receiverAcc == senderNo && senderIsMobile))){
 	    		isBrowserAccept = true;
 	    		sessionTmp.write(CommonUtils.getJSONStringFromObject(msg));
 	    	}
 	    	
+	    	//1.不为空 
+    		//2.账号不和当前session的账号相等，直接发送
+    		//3.账号相等，发送给手机的不能是手机
 	    	sessionTmp = IOSessionManager.getSessionMobile(receiverAcc);
-	    	if(sessionTmp != null && !(receiverAcc == IOSessionManager.getUserNoFromIoSessionToLong(session) && IOSessionManager.isSessionMobile(session))){
+	    	if(sessionTmp != null && ((receiverAcc != senderNo) || (receiverAcc == senderNo && !senderIsMobile))){
 	    		isMobileAccept = true;
 	    		sessionTmp.write(CommonUtils.getJSONStringFromObject(msg));
 	    	}
 	    	
-	    	if(!isMobileAccept && !isBrowserAccept){
+	    	// 手机和浏览器都没有被接收，且不是当前发送者的账号，保存
+	    	if(!isMobileAccept && !isBrowserAccept && receiverAcc != senderNo){
 	    		offLineAccList.add(receiverAcc);
 	    	}
     	}

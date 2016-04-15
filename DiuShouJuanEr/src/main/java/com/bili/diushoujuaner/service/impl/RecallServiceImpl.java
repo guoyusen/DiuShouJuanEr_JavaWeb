@@ -71,8 +71,8 @@ public class RecallServiceImpl implements RecallService {
 	}
 
 	@Override
-	public ResponseDto addRecallByContAndToken(String content, String accessToken, int picCount, String deviceType) {
-		long recallNo = recallMgt.addRecall(CommonUtils.getUserNoFromAccessToken(accessToken), content, CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS(), picCount, deviceType);
+	public ResponseDto addRecallByContAndToken(String content, String accessToken,String serial, int picCount, String deviceType) {
+		long recallNo = recallMgt.addRecall(CommonUtils.getUserNoFromAccessToken(accessToken), content, CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS(), picCount, serial, deviceType);
 		if(recallNo > 0){
 			if(CommonUtils.getDeviceType(deviceType) == ConstantUtils.DEVICE_BROWSER){
 				return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Recall成功", null);

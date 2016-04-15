@@ -32,9 +32,10 @@ public class RecallController {
 	public Object addRecallByContAndToken(
 			@RequestParam(value = "content", required = true, defaultValue = "") String content,
 			@RequestParam(value = "piCount", required = true, defaultValue = "") int picCount,
+			@RequestParam(value = "serial", required = true, defaultValue = "") String serial,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
 			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType){
-		return recallService.addRecallByContAndToken(content, accessToken, picCount, deviceType);
+		return recallService.addRecallByContAndToken(content, accessToken, serial, picCount, deviceType);
 	}
 	
 	@RequestMapping(value = "/1.0/recalls/remove", method = RequestMethod.POST)

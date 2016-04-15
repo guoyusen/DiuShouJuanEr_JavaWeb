@@ -63,7 +63,7 @@
 	<!-- 日志过滤器 -->
 	<bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
 	<!-- 服务端事务处理器 -->
-	<bean id="serverHandler" class="com.bili.diushoujuaner.chat.handler.MinaServerHanlder" />
+	<bean id="serverHandler" class="com.bili.diushoujuaner.chat.handler.MinaServerHandler" />
 	<!-- 过滤器链 -->
 	<bean id="filterChainBuilder"
 		class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">

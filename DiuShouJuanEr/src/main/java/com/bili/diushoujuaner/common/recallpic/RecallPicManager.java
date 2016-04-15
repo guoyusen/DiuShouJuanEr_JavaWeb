@@ -13,7 +13,7 @@ public class RecallPicManager {
 
 	private static Map<String,Map<String,Picture>> pictureMap = new HashMap<>();
 	
-	public static Picture storePictureToLocal(long userNo, MultipartFile file, String deviceType){
+	public static Picture storePictureToLocal(long userNo, MultipartFile file,String serial, String deviceType){
 		
 		CommonUtils.createAlbumDirectoryByTime();
 		
@@ -25,6 +25,7 @@ public class RecallPicManager {
 		picture.setRealPath(CommonUtils.getRootDirectory() + filePath);
 		
 		picture = CommonUtils.processRecallImage(picture, file);
+		picture.setSerial(serial);
 		addPicture(userNo + deviceType, picture);
 		
 		return picture;

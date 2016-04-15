@@ -32,7 +32,6 @@ public class GoodServiceImpl implements GoodService {
 		}
 		int effectLines = goodMgt.addGoodByRecallNoAndUserNo(recallNo,CommonUtils.getUserNoFromAccessToken(accessToken));
 		if(effectLines > 0){
-			
 			sendGoodMsgToClient(userMgt.getUserByUserNo(CommonUtils.getUserNoFromAccessToken(accessToken)), recallMgt.getUserNoByRecallNo(recallNo));
 			
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加Good成功", null);

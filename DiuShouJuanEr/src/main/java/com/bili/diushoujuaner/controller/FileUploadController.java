@@ -23,9 +23,10 @@ public class FileUploadController {
 	@ResponseBody
 	public Object uploadPostPicByRecord(
 			@RequestParam("file") MultipartFile file,
+			@RequestParam(value="serial", required = true, defaultValue = "") String serial,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
 			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType) throws IOException {
-		return fileUploadService.uploadPostPicByRecord(file, accessToken, deviceType);
+		return fileUploadService.uploadPostPicByRecord(file, serial, accessToken, deviceType);
 	}
 	
 	@RequestMapping(value = "/1.0/file/headpic", method = RequestMethod.POST)

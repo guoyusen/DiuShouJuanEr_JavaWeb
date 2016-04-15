@@ -84,13 +84,14 @@ var HomeTypeUtil = {
     HOME_MENU_MSG : 4,
     HOME_MENU_NOTICE : 5,
     
-    HOME_STATUS_ERROR : 0,
+    HOME_STATUS_ERROR : 0
 }
 /* Home的所有操作Util */
 var HomeOperateUtil = {
 	statusItemCount : 0,
 	addPanelIsShow : false,
 	frameHeadColor : null,
+	publishSerial : "",
 	deleteRecallPicId : -1,
 	curentRecallPicCount : 0,
 	currentMenuItem : "#frame_main",
@@ -248,7 +249,7 @@ var HomeOperateUtil = {
 			CookieUtil.setCookie("AccessToken", "");
 			window.location.href="login";
 		} else if (result.retCode == "fail" || result.retCode == "error") {
-			HomeOperateUtil.showNoticeTip(result.message);
+			HomeOperateUtil.showErrorTip(result.message);
 		}
 	},
 	clickStatusItem : function(statusItemId, type){
@@ -259,12 +260,20 @@ var HomeOperateUtil = {
 			break;
 		}
 	},
-	showNoticeTip : function(message){
+	showErrorTip : function(message){
 		HomeOperateUtil.showCustomNoticeTip({
 			type : HomeTypeUtil.HOME_STATUS_ERROR,
 			picPath : "images/system/system_tip.png",
 			title : "系统错误通知",
 			content : message
+		});
+	},
+	showNoticeTip : function(message){
+		HomeOperateUtil.showCustomNoticeTip({
+			type : message.type,
+			picPath : message.picPath,
+			title : message.title,
+			content : message.content
 		});
 	},
 	showCustomNoticeTip : function(message){
@@ -339,7 +348,8 @@ var HomeOperateUtil = {
 			url : '1.0/file/recallpic',
 			callbefore : HomeOperateUtil.homeAddRecallPictureBefore,
 			callback : HomeOperateUtil.homeAddRecallPictureCallback,
-			acceptType : UploadUtil.acceptImage
+			acceptType : UploadUtil.acceptImage,
+			params : {serial : HomeOperateUtil.publishSerial}
 		});
 	},
 	homeAddRecallRemoveWait : function(){
@@ -378,7 +388,7 @@ var HomeOperateUtil = {
 					}
 					$("#postPicCount").html('图片(' + HomeOperateUtil.curentRecallPicCount + '/9)');
 				}else if (result.retCode == "fail" || result.retCode == "error") {
-					HomeOperateUtil.showNoticeTip(result.message);
+					HomeOperateUtil.showErrorTip(result.message);
 				}
 			}
 		});
@@ -412,7 +422,7 @@ var HomeOperateUtil = {
 			
 			$("#postPicBody").append(outPutHtml);
 		} else if (result.retCode == "fail" || result.retCode == "error") {
-			HomeOperateUtil.showNoticeTip(result.message);
+			HomeOperateUtil.showErrorTip(result.message);
 		}
 	},
 	getRecallFirstRow : function(){
@@ -453,6 +463,7 @@ var HomeOperateUtil = {
 			HomeOperateUtil.initCustomEditor("#postPanelContent",5000, null, null);
 			$("#frameAddBtn").removeClass("frameAddBtnPost");
 			$("#frameAddBtn").addClass("frameAddBtnPostClose");
+			HomeOperateUtil.publishSerial = (new Date().getTime()) + "Client/Browser";
 		}else{
 			HomeOperateUtil.homeDeletePanelPics();
 			$("#framePostPanel").remove();
@@ -633,7 +644,7 @@ var UserInfoUtil = {
 		    
 		    ContactUtil.refresh();
 		} else if (result.retCode == "fail" || result.retCode == "error") {
-			HomeOperateUtil.showNoticeTip(result.message);
+			HomeOperateUtil.showErrorTip(result.message);
 		}
 	},
 	getUserUserNo : function() {
@@ -689,7 +700,7 @@ var OffMsgUtil = {
 							time : offMsgList[i].time,
 							content : offMsgList[i].content,
 							conType : offMsgList[i].conType,
-							owner : HomeChatTypeUtil.MESSAGE_YOU,
+							owner : offMsgList[i].fromNo == UserInfoUtil.getUserUserNo() ? HomeChatTypeUtil.MESSAGE_ME : HomeChatTypeUtil.MESSAGE_YOU,
 							msgType : HomeChatTypeUtil.CHAT_PAR,
 							partyNo : offMsgList[i].toNo,
 							count : 1
@@ -700,7 +711,7 @@ var OffMsgUtil = {
 				}
 
 			} else if (result.retCode == "fail" || result.retCode == "error") {
-				HomeOperateUtil.showNoticeTip(result.message);
+				HomeOperateUtil.showErrorTip(result.message);
 			}
 			WebSocketUtil.connect();
 		}
