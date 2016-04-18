@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.common.dto;
+package com.bili.diushoujuaner.common.entity;
 
 public class ResponseDto {
 	

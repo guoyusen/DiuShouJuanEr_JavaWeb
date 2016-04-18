@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -24,8 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bili.diushoujuaner.chat.message.Message;
-import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.common.entity.MessageDto;
+import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.CustomSession;
 import com.bili.diushoujuaner.database.model.Picture;
@@ -34,9 +36,25 @@ public class CommonUtils {
 
 	private static Random random = new Random();
 
-	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+	private static SimpleDateFormat sdf_Full = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.CHINA);
 
+	public static String getCurrentTimeFull(){
+        return sdf_Full.format(new Date());
+    }
+	
+	public static int getMilliDifferenceBetweenTime(String start){
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        try{
+            c1.setTime(sdf_Full.parse(start));
+            c2.setTime(sdf_Full.parse(getCurrentTimeFull()));
+            return (int)Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis());
+        }catch(ParseException pe){
+            return 0;
+        }
+    }
+	
 	/**
 	 * 获取消息返回实体
 	 * @param retCode
@@ -114,9 +132,9 @@ public class CommonUtils {
 	 * 将JSONString转成对应的Java对象
 	 * @param JSONString
 	 */
-	public static Message getObjectFromJSONString(String jsonString) {
+	public static MessageDto getObjectFromJSONString(String jsonString) {
 		return JSONObject.toJavaObject(JSON.parseObject(jsonString),
-				Message.class);
+				MessageDto.class);
 	}
 
 	/**
@@ -125,8 +143,23 @@ public class CommonUtils {
 	 * @return boolean
 	 */
 	public static boolean isMessageForHeartBeat(Object message) {
-		Message msg = getObjectFromJSONString(message.toString());
+		MessageDto msg = getObjectFromJSONString(message.toString());
 		return msg.getMsgType() == ConstantUtils.CHAT_PONG;
+	}
+	
+	public static String getSerialNo(){
+        return UUID.randomUUID().toString();
+    }
+	
+	public static MessageDto getCloneMessageDto(MessageDto msg){
+		MessageDto messageDto = null;
+		try {
+		    messageDto = msg.clone();
+			messageDto.setSerialNo(getSerialNo());
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return messageDto;
 	}
 
 	/**
@@ -135,10 +168,21 @@ public class CommonUtils {
 	 * @return getJSONStringFromObject(message)
 	 */
 	public static String getEmptyMessage(short chatType) {
-		Message message = new Message();
+		MessageDto message = new MessageDto();
 		message.setMsgContent("");
 		message.setMsgTime("");
 		message.setMsgType(chatType);
+		message.setReceiverNo(0);
+		message.setSenderNo(0);
+		return getJSONStringFromObject(message);
+	}
+	
+	public static String getSerialMessage(String serialNo){
+		MessageDto message = new MessageDto();
+		message.setSerialNo(serialNo);
+		message.setMsgContent("");
+		message.setMsgTime("");
+		message.setMsgType(ConstantUtils.CHAT_STATUS);
 		message.setReceiverNo(0);
 		message.setSenderNo(0);
 		return getJSONStringFromObject(message);

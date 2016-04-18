@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.bili.diushoujuaner.chat.message.Message;
 import com.bili.diushoujuaner.common.CommonUtils;
+import com.bili.diushoujuaner.common.entity.MessageDto;
 import com.bili.diushoujuaner.common.pinyin.PinyinComparator;
 import com.bili.diushoujuaner.database.model.ContactVo;
 
@@ -63,7 +63,7 @@ public class CommonTest {
 	}
 	
 	public static void testObjectJson(){
-		Message msg = new Message();
+		MessageDto msg = new MessageDto();
 		msg.setMsgContent("今天天气不错");
 		msg.setMsgTime("2015-12-10 12:30:45");
 		msg.setMsgType(ConstantUtils.CHAT_FRI);
@@ -71,11 +71,11 @@ public class CommonTest {
 		msg.setSenderNo(1);;
 		
 		Object o = msg;
-		((Message)o).getMsgType();
+		((MessageDto)o).getMsgType();
 		String content = CommonUtils.getJSONStringFromObject(msg);
 		System.out.println(content);
 		
-		Message msg_1 = CommonUtils.getObjectFromJSONString(content);
+		MessageDto msg_1 = CommonUtils.getObjectFromJSONString(content);
 		msg_1.setMsgContent("====");
 		System.out.println(msg_1.toString());
 	}

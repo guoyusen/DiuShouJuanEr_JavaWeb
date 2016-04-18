@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.mina.core.session.IoSession;
 
-import com.bili.diushoujuaner.chat.message.Message;
 import com.bili.diushoujuaner.common.ConstantUtils;
+import com.bili.diushoujuaner.common.entity.MessageDto;
 
 public class IOSessionManager {
 
@@ -71,7 +71,7 @@ public class IOSessionManager {
 		return false;
 	}
 	
-	public static void broadCastToAllSession(Message message){
+	public static void broadCastToAllSession(MessageDto message){
 	
 	}
 

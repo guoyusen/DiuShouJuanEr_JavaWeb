@@ -21,6 +21,7 @@ var HomeChatTypeUtil = {
 	CHAT_CLOSE : 4,
 	CHAT_PAR : 5,
 	CHAT_GOOD : 6,
+	CHAT_STATUS : 7,
 	// 聊天消息中content的类型
 	CONTENT_EMPTY : 0,
 	CONTENT_TEXT : 1,
@@ -50,7 +51,7 @@ var WebSocketUtil = {
 		}, 20000);*/
 	},
 	onOpen : function(event) {
-		WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(), -1,
+		WebSocketUtil.sendMessage(HomeChatOperateUtil.getSerialNo(), UserInfoUtil.getUserUserNo(), -1,
 				HomeChatTypeUtil.CHAT_INIT, HomeChatTypeUtil.CONTENT_EMPTY,"", "");
 	},
 	onMessage : function(event) {
@@ -58,9 +59,10 @@ var WebSocketUtil = {
 		var message = JSON.parse(event.data);
 		switch (message.msgType) {
 		case HomeChatTypeUtil.CHAT_PING:
-			WebSocketUtil.sendMessage(-1,-1,HomeChatTypeUtil.CHAT_PONG,HomeChatTypeUtil.CONTENT_EMPTY,"","");
+			WebSocketUtil.sendMessage(HomeChatOperateUtil.getSerialNo(),-1,-1,HomeChatTypeUtil.CHAT_PONG,HomeChatTypeUtil.CONTENT_EMPTY,"","");
 			break;
 		case HomeChatTypeUtil.CHAT_FRI:
+			WebSocketUtil.sendMessage(message.serialNo,-1,-1,HomeChatTypeUtil.CHAT_STATUS,HomeChatTypeUtil.CONTENT_EMPTY,"","");
 			HomeChatOperateUtil.playMusicNotice();
 			var messageItem = {
 				chatId : "chat_fri_" + message.senderNo,
@@ -75,6 +77,7 @@ var WebSocketUtil = {
 			MessageUtil.addMessageItem(messageItem);
 			break;
 		case HomeChatTypeUtil.CHAT_PAR:
+			WebSocketUtil.sendMessage(message.serialNo,-1,-1,HomeChatTypeUtil.CHAT_STATUS,HomeChatTypeUtil.CONTENT_EMPTY,"","");
 			HomeChatOperateUtil.playMusicNotice();
 			var messageItem = {
 				chatId : "chat_par_" + message.receiverNo,
@@ -95,6 +98,8 @@ var WebSocketUtil = {
 		case HomeChatTypeUtil.CHAT_GOOD:
 			HomeOperateUtil.showNoticeTip({type:message.msgType,picPath:message.msgTime,title:'系统通知',content:message.msgContent});
 			break;
+		case HomeChatTypeUtil.CHAT_STATUS:
+			break;
 		}
 		WebSocketUtil.initTimeOuter();
 	},
@@ -104,9 +109,10 @@ var WebSocketUtil = {
 	onError : function(event) {
 		alert("出错了");
 	},
-	sendMessage : function(senderNo, receiverNo, msgType, conType, msgContent, msgTime) {
+	sendMessage : function(serialNo, senderNo, receiverNo, msgType, conType, msgContent, msgTime) {
 		clearTimeout(WebSocketUtil.timeOuter);
 		var message = {
+				serialNo : serialNo,
 				senderNo : senderNo,
 				receiverNo : receiverNo,
 				msgType : msgType,
@@ -118,7 +124,7 @@ var WebSocketUtil = {
 		WebSocketUtil.initTimeOuter();
 	},
 	disConnection : function() {
-		WebSocketUtil.sendMessage(-1, -1, HomeChatTypeUtil.CHAT_CLOSE, HomeChatTypeUtil.CONTENT_EMPTY,
+		WebSocketUtil.sendMessage("",-1, -1, HomeChatTypeUtil.CHAT_CLOSE, HomeChatTypeUtil.CONTENT_EMPTY,
 				"", "");
 	}
 }
@@ -494,6 +500,19 @@ var HomeChatOperateUtil = {
 			HomeChatOperateUtil.homeChatHideMenu();
 		}
 	},
+	getSerialNo : function(){
+		var s = [];
+		var hexDigits = "0123456789abcdef";
+		for (var i = 0; i < 36; i++) {
+		s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+		}
+		s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+		s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+		s[8] = s[13] = s[18] = s[23] = "-";
+
+		var uuid = s.join("");
+		return uuid;
+	},
 	playMusicNotice : function(){
 		$("#chatAudio")[0].play();
 	},
@@ -533,9 +552,9 @@ var HomeChatOperateUtil = {
 		MessageUtil.addMessageItem(messageItem);
 		HomeChatOperateUtil.clearMessageSendBox();
 		if(ChatUtil.getCurrentChatType() == HomeChatTypeUtil.TYPE_PARTY){
-			WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(),ContactUtil.getConatctContNo(ChatUtil.getCurrentChatContNo()),HomeChatTypeUtil.CHAT_PAR,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
+			WebSocketUtil.sendMessage(HomeChatOperateUtil.getSerialNo(), UserInfoUtil.getUserUserNo(),ContactUtil.getConatctContNo(ChatUtil.getCurrentChatContNo()),HomeChatTypeUtil.CHAT_PAR,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
 		} else {
-			WebSocketUtil.sendMessage(UserInfoUtil.getUserUserNo(),ContactUtil.getConatctContNo(ChatUtil.getCurrentChatContNo()),HomeChatTypeUtil.CHAT_FRI,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
+			WebSocketUtil.sendMessage(HomeChatOperateUtil.getSerialNo(), UserInfoUtil.getUserUserNo(),ContactUtil.getConatctContNo(ChatUtil.getCurrentChatContNo()),HomeChatTypeUtil.CHAT_FRI,HomeChatTypeUtil.CONTENT_TEXT,messageItem.content,TimeFormatUtil.getCurrentTime());
 		}
 	},
 	clearchatRoom : function() {

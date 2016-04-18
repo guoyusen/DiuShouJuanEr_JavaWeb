@@ -86,4 +86,5 @@
 	</bean>
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	<bean id="SpringContextUtil" class="com.bili.diushoujuaner.common.springcontext.SpringContextUtil" scope="singleton"/>
+	<bean id="transceiver" class="com.bili.diushoujuaner.chat.Transceiver" scope="singleton" init-method="init"></bean>
 </beans>

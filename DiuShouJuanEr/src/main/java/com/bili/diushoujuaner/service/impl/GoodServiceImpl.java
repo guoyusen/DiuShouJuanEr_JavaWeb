@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
-import com.bili.diushoujuaner.chat.message.Message;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.common.entity.MessageDto;
+import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.database.model.User;
 import com.bili.diushoujuaner.mgt.RecallMgt;
 import com.bili.diushoujuaner.mgt.GoodMgt;
@@ -48,7 +48,7 @@ public class GoodServiceImpl implements GoodService {
 			return;
 		}
 		
-		Message msg = new Message();
+		MessageDto msg = new MessageDto();
 		msg.setMsgType(ConstantUtils.CHAT_GOOD);
 		msg.setConType(ConstantUtils.CONTENT_TEXT);
 		msg.setMsgTime(from.getPicPath());

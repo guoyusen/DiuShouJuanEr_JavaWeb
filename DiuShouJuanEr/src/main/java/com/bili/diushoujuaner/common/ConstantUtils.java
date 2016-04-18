@@ -35,6 +35,7 @@ public interface ConstantUtils {
 	short CHAT_CLOSE = 4;
 	short CHAT_PAR = 5;
 	short CHAT_GOOD = 6;
+	short CHAT_STATUS = 7;//消息的状态
 	// 聊天消息中content的类型
 	short CONTENT_EMPTY = 0;
 	short CONTENT_TEXT = 1;
@@ -55,4 +56,12 @@ public interface ConstantUtils {
 	int IMAGE_RECALL_WIDTH = 800;
 	int IMAGE_RECALL_HEIGHT = 500;
 	int IMAGE_HEAD_EAGE = 800;
+	
+	//消息的发送状态
+	int MESSAGE_STATUS_SENDING = 0;
+    int MESSAGE_STATUS_FAIL = 1;
+    int MESSAGE_STATUS_SUCCESS = 2;
+    
+    int MAX_SAND_TIMES = 3;// 最大重发次数
+    int MAX_BETWEEN_TIME = 1000;// 发送和接收之间有1000毫秒的间隔，超过1000毫秒没有接收到则认为发送失败
 }

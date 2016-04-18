@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.dto.ResponseDto;
+import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.database.model.Picture;

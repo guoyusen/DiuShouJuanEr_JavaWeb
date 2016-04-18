@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.chat.message;
+package com.bili.diushoujuaner.common.entity;
 
 import java.io.Serializable;
 
@@ -6,15 +6,24 @@ import java.io.Serializable;
  * 聊天的消息实体
  * @author BILI
  */
-public class Message implements Serializable{
+public class MessageDto implements Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
+	
+	private String serialNo;//标志唯一一个消息；在一个消息发送之后，通过反馈的序列号值判断消息是否发送成功；如果三次没有发送成功，存入离线信息表
 	private long senderNo;
 	private long receiverNo;
 	private short msgType;
 	private short conType;
 	private String msgContent = "";
 	private String msgTime = "";
+	
+	public String getSerialNo() {
+		return serialNo;
+	}
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
 	public long getSenderNo() {
 		return senderNo;
 	}
@@ -51,11 +60,16 @@ public class Message implements Serializable{
 	public void setMsgTime(String msgTime) {
 		this.msgTime = msgTime;
 	}
+	
+	@Override
+	public MessageDto clone() throws CloneNotSupportedException {
+		MessageDto messageDto =  (MessageDto) super.clone();
+		return messageDto;
+	}
 	@Override
 	public String toString() {
-		return "Message [senderNo=" + senderNo + ", receiverNo=" + receiverNo + ", msgType=" + msgType + ", conType="
-				+ conType + ", msgContent=" + msgContent + ", msgTime=" + msgTime + "]";
+		return "Message [serialNo=" + serialNo + ", senderNo=" + senderNo + ", receiverNo=" + receiverNo + ", msgType="
+				+ msgType + ", conType=" + conType + ", msgContent=" + msgContent + ", msgTime=" + msgTime + "]";
 	}
-	
 	
 }
