@@ -63,5 +63,5 @@ public interface ConstantUtils {
     int MESSAGE_STATUS_SUCCESS = 2;
     
     int MAX_SAND_TIMES = 3;// 最大重发次数
-    int MAX_BETWEEN_TIME = 1000;// 发送和接收之间有1000毫秒的间隔，超过1000毫秒没有接收到则认为发送失败
+    int MAX_BETWEEN_TIME = 2000;// 发送和接收之间有1000毫秒的间隔，超过1000毫秒没有接收到则认为发送失败
 }

@@ -21,7 +21,7 @@ public class OffMsgServiceImpl implements OffMsgService {
 	@Override
 	public ResponseDto getOffMsgListByToken(String accessToken) {
 		List<OffMsg> offMsgList = offMsgMgt.getOffMsgListByUserNo(CommonUtils.getUserNoFromAccessToken(accessToken));
-		//offMsgMgt.deleteOffMsgByUserNo(CommonUtils.getUserNoFromAccessToken(accessToken));
+		offMsgMgt.deleteOffMsgByUserNo(CommonUtils.getUserNoFromAccessToken(accessToken));
 		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取离线信息成功", offMsgList);
 	}
 

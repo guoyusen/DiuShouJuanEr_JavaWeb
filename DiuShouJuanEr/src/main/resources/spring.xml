@@ -40,10 +40,9 @@
 	            <property name="allowUrls">
 	                <list>
 	                    <value>/login</value>
-	                    <value>/account/verify</value>
-	                    <value>/account/register</value>
-	                    <value>/account/reset</value>
-	                    <value>/getverifycode</value>
+	                    <value>/users/regist</value>
+	                    <value>/users/reset</value>
+	                    <value>/verify/code</value>
 	                    <value>/css</value>
 	                    <value>/images</value>
 	                    <value>/js</value>
