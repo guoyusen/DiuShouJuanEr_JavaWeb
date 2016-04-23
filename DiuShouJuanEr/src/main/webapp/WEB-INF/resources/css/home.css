@@ -1,11 +1,11 @@
 @charset "utf-8";
 
-#frame_chat, #frame_main, #frame_user, #frame_notice, #frame_setting {
+#frame_chat, #frame_main, #frame_user, #frame_setting {
 	height: 100%;
 	border-radius: 10px;
 }
 
-#frame_main, #frame_user, #frame_notice, #frame_setting {
+#frame_main, #frame_user, #frame_setting {
 	background-color: #eeeeee;
 	position: relative;
 }
@@ -399,11 +399,6 @@
 
 #menuUser {
 	background-image: url(../images/system/user_1.png);
-	background-size: 25px 25px;
-}
-
-#menuNotice {
-	background-image: url(../images/system/notice_1.png);
 	background-size: 25px 25px;
 }
 

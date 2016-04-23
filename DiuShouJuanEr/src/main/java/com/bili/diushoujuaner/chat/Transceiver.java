@@ -48,14 +48,15 @@ public class Transceiver extends Thread {
             TransMessageBo transMessageBo = new TransMessageBo(messageDto, session);
             transMessageBoHashMap.put(messageDto.getSerialNo(), transMessageBo);
             transMessageBoList.add(transMessageBo);
-            transMessageBoList.notify();
-            //执行发送
+            
             session.write(CommonUtils.getJSONStringFromObject(messageDto));
+            transMessageBoList.notify();
         }
 	}
 	
 	public void updateStatusSuccess(String serialNo){
 		synchronized (transMessageBoList) {
+			System.out.println("更新状态");
 			transMessageBoHashMap.get(serialNo).setStatus(ConstantUtils.MESSAGE_STATUS_SUCCESS);
 		}
 	}
@@ -72,39 +73,52 @@ public class Transceiver extends Thread {
                         e.printStackTrace();
                     }
                 }
-                for(TransMessageBo transMessageBo : transMessageBoList){
-                	if(transMessageBo.getStatus() == ConstantUtils.MESSAGE_STATUS_SUCCESS){
-                		//发送成功，删除这条记录
-                		transMessageBoList.remove(transMessageBo);
-                		transMessageBoHashMap.remove(transMessageBo.getMessageDto().getSerialNo());
-                		break;
-                	}else if(transMessageBo.getSendCount() >= ConstantUtils.MAX_SAND_TIMES 
-                			&& CommonUtils.getMilliDifferenceBetweenTime(transMessageBo.getLastTime()) > ConstantUtils.MAX_BETWEEN_TIME 
-                			&& transMessageBo.getStatus() == ConstantUtils.MESSAGE_STATUS_SENDING){
-                		//超过3次，处理为离线
-                		if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRI){
-                			transMessageBoList.remove(transMessageBo);
-                			transMessageBoHashMap.remove(transMessageBo.getMessageDto().getSerialNo());
-                			saveFriMessage(transMessageBo.getMessageDto());
-                			break;
-                		}else if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PAR){
-                			//群消息在三次内没有收到，删除任务并插入数据库
-                			transMessageBoList.remove(transMessageBo);
-                			transMessageBoHashMap.remove(transMessageBo.getMessageDto().getSerialNo());
-                			saveCommonInfo(saveParMessage(transMessageBo.getMessageDto()), IOSessionManager.getUserNoFromIoSessionToLong(transMessageBo.getSession()));
-                			break;
-                		}
-                	}else if(transMessageBo.getSendCount() < ConstantUtils.MAX_SAND_TIMES 
-                			&& CommonUtils.getMilliDifferenceBetweenTime(transMessageBo.getLastTime()) > ConstantUtils.MAX_BETWEEN_TIME 
-                			&& transMessageBo.getStatus() == ConstantUtils.MESSAGE_STATUS_SENDING){
-                		//重新发送，更新时间和次数
-                		transMessageBo.setSendCount(transMessageBo.getSendCount() + 1);
-                		transMessageBo.reSetLastTime();
-                		transMessageBo.getSession().write(CommonUtils.getJSONStringFromObject(transMessageBo.getMessageDto()));
-                	}
-                }
+                executeMessage();
             }
+            try {
+				Thread.sleep(transMessageBoList.size() > 0 ? (100 / transMessageBoList.size()) : 100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+	
+	private void executeMessage(){
+		for(TransMessageBo transMessageBo : transMessageBoList){
+        	if(transMessageBo.getStatus() == ConstantUtils.MESSAGE_STATUS_SUCCESS){
+        		//发送成功，删除这条记录
+        		System.out.println("发送成功");
+        		transMessageBoList.remove(transMessageBo);
+        		transMessageBoHashMap.remove(transMessageBo.getMessageDto().getSerialNo());
+        		break;
+        	}else if(transMessageBo.getSendCount() >= ConstantUtils.MAX_SAND_TIMES 
+        			&& CommonUtils.getMilliDifferenceBetweenTime(transMessageBo.getLastTime()) > ConstantUtils.MAX_BETWEEN_TIME 
+        			&& transMessageBo.getStatus() == ConstantUtils.MESSAGE_STATUS_SENDING){
+        		//超过3次，处理为离线
+        		System.out.println("存储离线");
+        		System.out.println(transMessageBo.getMessageDto().toString());
+        		transMessageBoList.remove(transMessageBo);
+        		transMessageBoHashMap.remove(transMessageBo.getMessageDto().getSerialNo());
+        		if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRI
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_HEAD
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_NAME){
+        			saveFriMessage(transMessageBo.getMessageDto());
+        			break;
+        		}else if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PAR){
+        			//群消息在三次内没有收到，删除任务并插入数据库
+        			saveCommonInfo(saveParMessage(transMessageBo.getMessageDto()), IOSessionManager.getUserNoFromIoSessionToLong(transMessageBo.getSession()));
+        			break;
+        		}
+        	}else if(transMessageBo.getSendCount() < ConstantUtils.MAX_SAND_TIMES 
+        			&& CommonUtils.getMilliDifferenceBetweenTime(transMessageBo.getLastTime()) > ConstantUtils.MAX_BETWEEN_TIME 
+        			&& transMessageBo.getStatus() == ConstantUtils.MESSAGE_STATUS_SENDING){
+        		//重新发送，更新时间和次数
+        		System.out.println("重新发送");
+        		transMessageBo.setSendCount(transMessageBo.getSendCount() + 1);
+        		transMessageBo.reSetLastTime();
+        		transMessageBo.getSession().write(CommonUtils.getJSONStringFromObject(transMessageBo.getMessageDto()));
+        	}
+        }
 	}
 	
 	private void saveCommonInfo(long offMsgNo, long userNo){

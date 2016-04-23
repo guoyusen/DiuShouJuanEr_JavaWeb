@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bili.diushoujuaner.service.ContactService;
@@ -21,4 +22,30 @@ public class ContactController {
 		return contactService.getContactListByToken(accessToken);
 	}
 	
+	@RequestMapping(value = "/1.0/party/modify/name", method = RequestMethod.POST)
+	@ResponseBody
+	public Object modifyPartyName(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestParam(value = "partyName", required = true, defaultValue = "") String partyName,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		
+		return contactService.modifyPartyName(partyNo, partyName, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/party/modify/introduce", method = RequestMethod.POST)
+	@ResponseBody
+	public Object modifyPartyintroduce(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestParam(value = "introduce", required = true, defaultValue = "") String introduce,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		
+		return contactService.modifyPartyIntroduce(partyNo, introduce, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/contacts/search", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getContactsSearch(
+			@RequestParam(value = "paramNo", required = true, defaultValue = "-1") String paramNo){
+		return contactService.getContactsSearch(paramNo);
+	}
 }

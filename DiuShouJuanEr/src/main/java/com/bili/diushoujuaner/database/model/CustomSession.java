@@ -12,6 +12,8 @@ public class CustomSession {
 
     private Long userNo;
     
+    private String passWord;
+    
     private Map<String, Object> attribute = new HashMap<>();
     
     public Object getAttribute(String name){
@@ -22,7 +24,15 @@ public class CustomSession {
     	this.attribute.put(name, value);
     }
 
-    public String getAccessToken() {
+    public String getPassWord() {
+		return passWord;
+	}
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
+
+	public String getAccessToken() {
         return accessToken;
     }
 

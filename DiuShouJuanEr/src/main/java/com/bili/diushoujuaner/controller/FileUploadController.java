@@ -37,6 +37,15 @@ public class FileUploadController {
 		return fileUploadService.uploadHeadPic(file, accessToken);
 	}
 	
+	@RequestMapping(value = "/1.0/file/party/headpic", method = RequestMethod.POST)
+	@ResponseBody
+	public Object uploadPartyHeadPic(
+			@RequestParam("file") MultipartFile file,
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		return fileUploadService.uploadPartyHeadPic(file, partyNo, accessToken);
+	}
+	
 	@RequestMapping(value = "/1.0/file/wallpaper", method = RequestMethod.POST)
 	@ResponseBody
 	public Object uploadWallPaper(

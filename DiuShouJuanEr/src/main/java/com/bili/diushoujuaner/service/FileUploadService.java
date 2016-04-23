@@ -16,5 +16,7 @@ public interface FileUploadService {
 	
 	ResponseDto uploadHeadPic(MultipartFile file, String accessToken);
 	
+	ResponseDto uploadPartyHeadPic(MultipartFile file, long partyNo, String accessToken);
+	
 	ResponseDto uploadWallPaper(MultipartFile file, String accessToken);
 }

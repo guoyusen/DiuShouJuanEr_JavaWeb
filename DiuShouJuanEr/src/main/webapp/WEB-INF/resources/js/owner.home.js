@@ -25,8 +25,10 @@ $(document).mousedown(function(e) {
 var HomeDialogUtil = {
 	options : {
 		title : '',
-		hasContent : false,
-		callBack : function(){}
+		sureText : '',
+		cancleText : '',
+		sureCallBack : function(){},
+		cancleCallBack : function(){}
 	},
 	setOptions : function(newOptions) {
 		for ( var pro in newOptions) {
@@ -52,8 +54,12 @@ var HomeDialogUtil = {
 		outPutHtml += '</div>';
 		
 		outPutHtml += '<div class="homeDialogButton">';
-		outPutHtml += '<span class="homeBtnCancle" onClick="HomeDialogUtil.btnCancle()">取消</span>';
-		outPutHtml += '<span class="homeBtnConfirm" onClick="HomeDialogUtil.btnConfirm()">确认</span>';
+		outPutHtml += '<span class="homeBtnCancle" onClick="HomeDialogUtil.btnCancle()">';
+		outPutHtml += HomeDialogUtil.options.cancleText;
+		outPutHtml += '</span>';
+		outPutHtml += '<span class="homeBtnConfirm" onClick="HomeDialogUtil.btnConfirm()">';
+		outPutHtml += HomeDialogUtil.options.sureText;;
+		outPutHtml += '</span>';
 		outPutHtml += '</div>';
 		
 		outPutHtml += '</div>';
@@ -63,11 +69,12 @@ var HomeDialogUtil = {
 	btnCancle : function(){
 		$("#homeDialogContainer").remove();
 		$("#homeDialogMask").remove();
+		HomeDialogUtil.options.cancleCallBack.call(this);
 	},
 	btnConfirm : function(){
 		$("#homeDialogContainer").remove();
 		$("#homeDialogMask").remove();
-		HomeDialogUtil.options.callBack.call(this);
+		HomeDialogUtil.options.sureCallBack.call(this);
 	}
 }
 
@@ -224,16 +231,14 @@ var HomeOperateUtil = {
 			HomeOperateUtil.menuShowHideAnimator("#frame_user");
 			HomeUserRecallUtil.refresh();
 			break;
-		case 4:
-			HomeOperateUtil.menuShowHideAnimator("#frame_notice");
-			break;
 		}
 	},
 	homeExit : function(){		
 		HomeDialogUtil.createDialog({
 			title : '您确定要离开?',
-			hasContent : false,
-			callBack : function(){
+			sureText : '确定',
+			cancleText : '取消',
+			sureCallBack : function(){
 				AjaxUtil.request({
 					method : "get",
 					url : "1.0/users/logout",

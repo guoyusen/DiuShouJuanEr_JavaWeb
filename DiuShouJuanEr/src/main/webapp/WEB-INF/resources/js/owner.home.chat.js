@@ -22,6 +22,12 @@ var HomeChatTypeUtil = {
 	CHAT_PAR : 5,
 	CHAT_GOOD : 6,
 	CHAT_STATUS : 7,
+	CHAT_PARTY_NAME : 8,
+    CHAT_PARTY_HEAD : 9,
+    CHAT_PARTY_MEMBER_UPDATE : 10,
+    CHAT_PARTY_UNGROUP : 11,
+    CHAT_PARTY_INTRODUCE : 12,
+    CHAT_PARTY_MEMBER_NAME : 13,
 	// 聊天消息中content的类型
 	CONTENT_EMPTY : 0,
 	CONTENT_TEXT : 1,
@@ -37,6 +43,7 @@ var HomeChatTypeUtil = {
 var WebSocketUtil = {
 	webSocket : null,
 	timeOuter : null,
+	isActive : true,
 	connect : function() {
 		WebSocketUtil.webSocket = new WebSocket("ws://localhost:1314");
 		WebSocketUtil.webSocket.onopen = WebSocketUtil.onOpen;
@@ -46,9 +53,9 @@ var WebSocketUtil = {
 		WebSocketUtil.initTimeOuter();
 	},
 	initTimeOuter : function() {
-		/*WebSocketUtil.timeOuter = setTimeout(function() {
-			WebSocketUtil.connect();
-		}, 20000);*/
+		if(WebSocketUtil.isActive){
+			WebSocketUtil.timeOuter = setTimeout("function() {WebSocketUtil.connect();}", 20000);
+		}
 	},
 	onOpen : function(event) {
 		WebSocketUtil.sendMessage(HomeChatOperateUtil.getSerialNo(), UserInfoUtil.getUserUserNo(), -1,
@@ -56,6 +63,7 @@ var WebSocketUtil = {
 	},
 	onMessage : function(event) {
 		clearTimeout(WebSocketUtil.timeOuter);
+		WebSocketUtil.initTimeOuter();
 		var message = JSON.parse(event.data);
 		switch (message.msgType) {
 		case HomeChatTypeUtil.CHAT_PING:
@@ -100,8 +108,32 @@ var WebSocketUtil = {
 			break;
 		case HomeChatTypeUtil.CHAT_STATUS:
 			break;
+		case HomeChatTypeUtil.CHAT_CLOSE:
+			clearTimeout(WebSocketUtil.timeOuter);
+			WebSocketUtil.isActive = false;
+			HomeDialogUtil.createDialog({
+				title : '您已被迫下线',
+				sureText : '重新登录',
+				cancleText : '退出账号',
+				sureCallBack : function(){
+					WebSocketUtil.connect();
+				},
+				cancleCallBack : function(){
+					CookieUtil.setCookie("AccessToken", null);
+					window.location.href="login";
+				}
+			});
+			break;
+		case HomeChatTypeUtil.CHAT_PARTY_HEAD:
+			WebSocketUtil.sendMessage(message.serialNo,-1,-1,HomeChatTypeUtil.CHAT_STATUS,HomeChatTypeUtil.CONTENT_EMPTY,"","");
+			break;
+		case HomeChatTypeUtil.CHAT_PARTY_NAME:
+			WebSocketUtil.sendMessage(message.serialNo,-1,-1,HomeChatTypeUtil.CHAT_STATUS,HomeChatTypeUtil.CONTENT_EMPTY,"","");
+			break;
+		case HomeChatTypeUtil.CHAT_PARTY_MEMBER_NAME:
+			WebSocketUtil.sendMessage(message.serialNo,-1,-1,HomeChatTypeUtil.CHAT_STATUS,HomeChatTypeUtil.CONTENT_EMPTY,"","");
+			break;
 		}
-		WebSocketUtil.initTimeOuter();
 	},
 	onClose : function(event) {
 		// 执行关闭之后的一些操作，比如丢手绢是否显示用户在线状态

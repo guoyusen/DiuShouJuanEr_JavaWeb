@@ -10,4 +10,6 @@ public interface MemberMgt {
 	
 	List<Long> getMemberNoListByPartyNo(long partyNo);
 	
+	int modifyMemberName(long partyNo, long memberNo, String memberName);
+	
 }

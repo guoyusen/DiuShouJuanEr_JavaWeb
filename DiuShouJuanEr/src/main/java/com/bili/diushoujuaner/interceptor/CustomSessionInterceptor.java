@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bili.diushoujuaner.common.CommonUtils;
+import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
 
 public class CustomSessionInterceptor implements HandlerInterceptor {
@@ -61,7 +63,9 @@ public class CustomSessionInterceptor implements HandlerInterceptor {
         			|| CustomSessionManager.getCustomSession(accessToken) == null
         			|| deviceType == null
         			|| !CommonUtils.isDeviceTypelegal(deviceType)){
-            	response.sendError(401, "非法请求，请重新登录");
+        		response.setContentType("text/html;charset=UTF-8");
+        		response.getWriter().write(JSONObject.toJSONString(CommonUtils.getResponse(ConstantUtils.ERROR, "非法请求，请重新登录", null)));
+            	
             	return false;
             }
         }

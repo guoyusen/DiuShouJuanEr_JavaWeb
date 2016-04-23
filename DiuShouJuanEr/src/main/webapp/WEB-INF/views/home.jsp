@@ -139,11 +139,6 @@
 				</div>
 			</div>
 		</div>
-		<div id="frame_notice" class="container_16 vanish">
-			<div class="unFinished">
-				<img src="images/system/shin.png"> <span>通知页面</span> <span>嘿嘿，这里会进步一完成的。</span>
-			</div>
-		</div>
 	</div>
 	<div class="home_menu">
 		<div class="menuHead" onClick="HomeOperateUtil.menuSwitchByIndex(1)"></div>
@@ -154,9 +149,6 @@
 					class="newNoticeOuter"></span></li>
 				<li id="menuUser" class="menuItem"
 					onClick="HomeOperateUtil.menuSwitchByIndex(3)"><span
-					class="newNoticeOuter"></span></li>
-				<li id="menuNotice" class="menuItem"
-					onClick="HomeOperateUtil.menuSwitchByIndex(4)"><span
 					class="newNoticeOuter"></span></li>
 				<li id="menuExit" class="menuItem"
 					onClick="HomeOperateUtil.homeExit()"></li>

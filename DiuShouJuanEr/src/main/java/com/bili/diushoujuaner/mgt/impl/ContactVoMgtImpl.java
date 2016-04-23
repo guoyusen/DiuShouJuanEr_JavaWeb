@@ -25,4 +25,14 @@ public class ContactVoMgtImpl implements ContactVoMgt {
 		return contactVoMapper.getPartyListByUserNo(UserNo);
 	}
 
+	@Override
+	public List<ContactVo> getNewFriendListByMobile(String mobile) {
+		return contactVoMapper.getNewFriendListByMobile(mobile);
+	}
+
+	@Override
+	public List<ContactVo> getNewPartyListByPartyNo(String partyNo) {
+		return contactVoMapper.getNewPartyListByPartyNo(partyNo);
+	}
+
 }

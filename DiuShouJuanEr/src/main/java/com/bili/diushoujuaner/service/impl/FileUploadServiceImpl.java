@@ -7,13 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bili.diushoujuaner.chat.MemberManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.common.recallpic.RecallPicManager;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.database.model.Party;
 import com.bili.diushoujuaner.database.model.Picture;
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.mgt.PartyMgt;
 import com.bili.diushoujuaner.mgt.UserMgt;
 import com.bili.diushoujuaner.service.FileUploadService;
 
@@ -22,6 +25,8 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 	@Autowired
 	private UserMgt userMgt;
+	@Autowired
+	private PartyMgt partyMgt;
 
 	@Override
 	public ResponseDto uploadWallPaper(MultipartFile file, String accessToken) {
@@ -34,6 +39,33 @@ public class FileUploadServiceImpl implements FileUploadService {
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传壁纸成功", filePath);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "上传壁纸失败", null);
+	}
+	
+	@Override
+	public ResponseDto uploadPartyHeadPic(MultipartFile file, long partyNo, String accessToken) {
+		if(!partyMgt.isPermitHeadModify(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+			CommonUtils.getResponse(ConstantUtils.FAIL, "暂无修改群头像权限", null);
+		}
+		String filePath = CommonUtils.processHeadImage(file);
+		
+		Party party = partyMgt.getPartyByPartyNo(partyNo);
+		if(party == null){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该群不存在", null);
+		}
+		CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + party.getPicPath());
+		
+		if(partyMgt.updateHead(filePath, partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+			new Thread(){
+				//开启线程，发送群通知，更改头像了
+				@Override
+				public void run() {
+					MemberManager.broadCastToMember(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), filePath, ConstantUtils.CHAT_PARTY_HEAD, true);
+				}
+				
+			}.start();
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "上传头像成功", filePath);
+		}
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "上传头像失败", null);
 	}
 
 	@Override

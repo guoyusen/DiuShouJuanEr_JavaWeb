@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.mina.core.session.IoSession;
 
+import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.entity.MessageDto;
 
@@ -19,11 +20,37 @@ public class IOSessionManager {
 	public static void addSession(IoSession session) throws Exception {
 		if (isSessionMobile(session)) {
 			synchronized (mapSessionMobile) {
+				IoSession tmpSession = mapSessionMobile.remove(getUserNoFromIoSessionToLong(session));
+				closeSession(tmpSession);
 				mapSessionMobile.put(getUserNoFromIoSessionToLong(session), session);
 			}
 		} else {
 			synchronized (mapSessionBrowser) {
+				IoSession tmpSession = mapSessionBrowser.remove(getUserNoFromIoSessionToLong(session));
+				closeSession(tmpSession);
 				mapSessionBrowser.put(getUserNoFromIoSessionToLong(session), session);
+			}
+		}
+	}
+	
+	public static void closeSession(IoSession session){
+		if(session == null){
+			return;
+		}
+		session.write(CommonUtils.getEmptyMessage(ConstantUtils.CHAT_CLOSE));
+		session.close(false);
+	}
+	
+	public static void closeSession(long userNo, int type){
+		if(type == ConstantUtils.DEVICE_ANDROID){
+			synchronized (mapSessionMobile) {
+				IoSession tmpSession = mapSessionMobile.remove(userNo);
+				closeSession(tmpSession);
+			}
+		}else{
+			synchronized (mapSessionBrowser) {
+				IoSession tmpSession = mapSessionBrowser.remove(userNo);
+				closeSession(tmpSession);
 			}
 		}
 	}

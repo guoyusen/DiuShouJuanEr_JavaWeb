@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.PartyMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.Party" >
+    <id column="PartyNo" property="partyNo" jdbcType="BIGINT" />
+    <result column="UserNo" property="userNo" jdbcType="BIGINT" />
+    <result column="PartyName" property="partyName" jdbcType="VARCHAR" />
+    <result column="Information" property="information" jdbcType="VARCHAR" />
+    <result column="RegistTime" property="registTime" jdbcType="VARCHAR" />
+    <result column="PicPath" property="picPath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    PartyNo, UserNo, PartyName, Information, RegistTime, PicPath
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.PartyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from party
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from party
+    where PartyNo = #{partyNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from party
+    where PartyNo = #{partyNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.PartyExample" >
+    delete from party
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.Party" >
+    <selectKey resultType="java.lang.Long" keyProperty="partyNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into party (UserNo, PartyName, Information, 
+      RegistTime, PicPath)
+    values (#{userNo,jdbcType=BIGINT}, #{partyName,jdbcType=VARCHAR}, #{information,jdbcType=VARCHAR}, 
+      #{registTime,jdbcType=VARCHAR}, #{picPath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.Party" >
+    <selectKey resultType="java.lang.Long" keyProperty="partyNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into party
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userNo != null" >
+        UserNo,
+      </if>
+      <if test="partyName != null" >
+        PartyName,
+      </if>
+      <if test="information != null" >
+        Information,
+      </if>
+      <if test="registTime != null" >
+        RegistTime,
+      </if>
+      <if test="picPath != null" >
+        PicPath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userNo != null" >
+        #{userNo,jdbcType=BIGINT},
+      </if>
+      <if test="partyName != null" >
+        #{partyName,jdbcType=VARCHAR},
+      </if>
+      <if test="information != null" >
+        #{information,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        #{registTime,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.PartyExample" resultType="java.lang.Integer" >
+    select count(*) from party
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update party
+    <set >
+      <if test="record.partyNo != null" >
+        PartyNo = #{record.partyNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.userNo != null" >
+        UserNo = #{record.userNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.partyName != null" >
+        PartyName = #{record.partyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.information != null" >
+        Information = #{record.information,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registTime != null" >
+        RegistTime = #{record.registTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picPath != null" >
+        PicPath = #{record.picPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update party
+    set PartyNo = #{record.partyNo,jdbcType=BIGINT},
+      UserNo = #{record.userNo,jdbcType=BIGINT},
+      PartyName = #{record.partyName,jdbcType=VARCHAR},
+      Information = #{record.information,jdbcType=VARCHAR},
+      RegistTime = #{record.registTime,jdbcType=VARCHAR},
+      PicPath = #{record.picPath,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.Party" >
+    update party
+    <set >
+      <if test="userNo != null" >
+        UserNo = #{userNo,jdbcType=BIGINT},
+      </if>
+      <if test="partyName != null" >
+        PartyName = #{partyName,jdbcType=VARCHAR},
+      </if>
+      <if test="information != null" >
+        Information = #{information,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        RegistTime = #{registTime,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        PicPath = #{picPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PartyNo = #{partyNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.Party" >
+    update party
+    set UserNo = #{userNo,jdbcType=BIGINT},
+      PartyName = #{partyName,jdbcType=VARCHAR},
+      Information = #{information,jdbcType=VARCHAR},
+      RegistTime = #{registTime,jdbcType=VARCHAR},
+      PicPath = #{picPath,jdbcType=VARCHAR}
+    where PartyNo = #{partyNo,jdbcType=BIGINT}
+  </update>
+</mapper>

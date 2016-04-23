@@ -8,6 +8,7 @@ import com.bili.diushoujuaner.mgt.UserMgt;
 import com.bili.diushoujuaner.mgt.VerifyCodeMgt;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.entity.ResponseDto;
+import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.recallpic.RecallPicManager;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
@@ -45,15 +46,12 @@ public class UserServiceImpl implements UserService {
 		
 		User user = userMgt.getUserByMobile(mobile);
 		if (user != null && user.getUserPsd().equals(password)) {
-			
 			userMgt.updateUserOnlineStatus(user.getUserNo(), true);
-			
 			RecallPicManager.clearUserPicture(user.getUserNo() + deviceType, true);
-			
+			IOSessionManager.closeSession(user.getUserNo(), CommonUtils.getDeviceType(deviceType));
 			CustomSession customSession = customSessionMgt.updateCustomSession(accessToken, user.getUserNo(), CommonUtils.getDeviceType(deviceType));
-			
+			customSession.setPassWord(user.getUserPsd());
 			CustomSessionManager.addCustomSession(customSession);
-
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "登录成功", customSession);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "账号或密码错误", null);
@@ -151,8 +149,7 @@ public class UserServiceImpl implements UserService {
 			CustomSessionManager.addCustomSession(customSession);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "密码重置成功", customSession);
 		}else{
-			
-			return CommonUtils.getResponse(ConstantUtils.ERROR, "服务器贪玩去了...", null);
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "密码重置失败", null);
 		}
 	}
 

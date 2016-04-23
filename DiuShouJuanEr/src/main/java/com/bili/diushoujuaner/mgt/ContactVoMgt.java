@@ -9,5 +9,8 @@ public interface ContactVoMgt {
 	List<ContactVo> getFriendListByUserNo(long userNo);
 
 	List<ContactVo> getPartyListByUserNo(long UserNo);
+	
+	List<ContactVo> getNewFriendListByMobile(String mobile);
 
+	List<ContactVo> getNewPartyListByPartyNo(String partyNo);
 }

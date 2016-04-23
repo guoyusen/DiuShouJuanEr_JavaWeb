@@ -15,11 +15,6 @@ import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.common.entity.MessageDto;
-import com.bili.diushoujuaner.common.springcontext.SpringContextUtil;
-import com.bili.diushoujuaner.database.model.OffMsg;
-import com.bili.diushoujuaner.database.model.CommonInfo;
-import com.bili.diushoujuaner.mgt.OffMsgMgt;
-import com.bili.diushoujuaner.mgt.CommonInfoMgt;
 
 public class MinaServerHandler extends IoHandlerAdapter {
 	
@@ -57,8 +52,8 @@ public class MinaServerHandler extends IoHandlerAdapter {
 	    System.out.println(msg);
 	    switch(msg.getMsgType()){
 	    case ConstantUtils.CHAT_INIT:
-	    	session.write(CommonUtils.getSerialMessage(msg.getSerialNo()));
 	    	//只需要回发序列号即可
+	    	session.write(CommonUtils.getSerialMessage(msg.getSerialNo()));
 	    	processMessageInit(session, msg);
 	    	break;
 	    case ConstantUtils.CHAT_FRI:
@@ -119,43 +114,11 @@ public class MinaServerHandler extends IoHandlerAdapter {
 		
 		// 存储群消息，确保非在线用户下次上线可以看到离线信息
 		if(offLineAccList.size() > 0){
-			processMessageStore(session, msg, offLineAccList);
+			CommonUtils.processMessageStore(msg, offLineAccList);
 		}
 	}
 	
-	/**
-	 * 处理离线消息存储
-	 * @param session
-	 * @param msg
-	 */
-	private void processMessageStore(IoSession session, MessageDto msg, List<Long> offMemberList){
-		
-		OffMsg offMsg = new OffMsg();
-		
-		offMsg.setToNo(msg.getReceiverNo());
-		offMsg.setFromNo(msg.getSenderNo());
-		offMsg.setContent(msg.getMsgContent());
-		offMsg.setConType(msg.getConType());
-		offMsg.setMsgType(msg.getMsgType());
-		offMsg.setIsRead(false);
-		offMsg.setTime(msg.getMsgTime());
-		
-		OffMsgMgt offMsgMgt = (OffMsgMgt)SpringContextUtil.getBean("offMsgMgtImpl");
-		
-		offMsg = offMsgMgt.putOffMsgByRecord(offMsg);
-		
-		if(offMemberList != null && offMsg != null){
-			CommonInfoMgt commonInfoMgt = (CommonInfoMgt)SpringContextUtil.getBean("commonInfoMgtImpl");
-			for(long memberNo : offMemberList){
-				CommonInfo commonInfo = new CommonInfo();
-				commonInfo.setIsRead(false);
-				commonInfo.setOffMsgNo(offMsg.getOffMsgNo());
-				commonInfo.setToNo(Long.valueOf(memberNo));
-				
-				commonInfoMgt.addCommonInfoByRecord(commonInfo);
-			}
-		}
-	}
+	
 	
 	/**
 	 * 处理好友初始化逻辑
@@ -186,13 +149,8 @@ public class MinaServerHandler extends IoHandlerAdapter {
     	}
     	
     	if(!isSend){
-    		processMessageStore(session, msg, null);
+    		CommonUtils.processMessageStore(msg, null);
     	}
-	}
-	
-	@Override
-	public void messageSent(IoSession session, Object message) throws Exception {
-		System.out.println("发送消息");
 	}
 	
 }

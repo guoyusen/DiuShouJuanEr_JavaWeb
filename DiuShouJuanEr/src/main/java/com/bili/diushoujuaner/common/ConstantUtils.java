@@ -36,6 +36,12 @@ public interface ConstantUtils {
 	short CHAT_PAR = 5;
 	short CHAT_GOOD = 6;
 	short CHAT_STATUS = 7;//消息的状态
+	short CHAT_PARTY_NAME = 8;//群广播-群名称
+	short CHAT_PARTY_HEAD = 9;//群广播-头像
+	short CHAT_PARTY_MEMBER_UPDATE = 10;//群成员增删
+	short CHAT_PARTY_UNGROUP = 11;//群解散
+	short CHAT_PARTY_INTRODUCE = 12;//修改群介绍
+	short CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
 	// 聊天消息中content的类型
 	short CONTENT_EMPTY = 0;
 	short CONTENT_TEXT = 1;
@@ -63,5 +69,5 @@ public interface ConstantUtils {
     int MESSAGE_STATUS_SUCCESS = 2;
     
     int MAX_SAND_TIMES = 3;// 最大重发次数
-    int MAX_BETWEEN_TIME = 2000;// 发送和接收之间有1000毫秒的间隔，超过1000毫秒没有接收到则认为发送失败
+    int MAX_BETWEEN_TIME = 5000;// 超过5000毫秒没有接收到则认为发送失败
 }

@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
@@ -29,8 +30,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.bili.diushoujuaner.common.entity.MessageDto;
 import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.springcontext.SpringContextUtil;
+import com.bili.diushoujuaner.database.model.CommonInfo;
 import com.bili.diushoujuaner.database.model.CustomSession;
+import com.bili.diushoujuaner.database.model.OffMsg;
 import com.bili.diushoujuaner.database.model.Picture;
+import com.bili.diushoujuaner.mgt.CommonInfoMgt;
+import com.bili.diushoujuaner.mgt.OffMsgMgt;
 
 public class CommonUtils {
 
@@ -450,6 +456,40 @@ public class CommonUtils {
 	
 	public static boolean isDeviceTypelegal(String deviceType){
 		return deviceType.equals("Client/Browser") || deviceType.equals("Client/Android");
+	}
+	
+	/**
+	 * 处理离线消息存储
+	 * @param session
+	 * @param msg
+	 */
+	public static void processMessageStore(MessageDto msg, List<Long> offMemberList){
+		
+		OffMsg offMsg = new OffMsg();
+		
+		offMsg.setToNo(msg.getReceiverNo());
+		offMsg.setFromNo(msg.getSenderNo());
+		offMsg.setContent(msg.getMsgContent());
+		offMsg.setConType(msg.getConType());
+		offMsg.setMsgType(msg.getMsgType());
+		offMsg.setIsRead(false);
+		offMsg.setTime(msg.getMsgTime());
+		
+		OffMsgMgt offMsgMgt = (OffMsgMgt)SpringContextUtil.getBean("offMsgMgtImpl");
+		
+		offMsg = offMsgMgt.putOffMsgByRecord(offMsg);
+		
+		if(offMemberList != null && offMsg != null){
+			CommonInfoMgt commonInfoMgt = (CommonInfoMgt)SpringContextUtil.getBean("commonInfoMgtImpl");
+			for(long memberNo : offMemberList){
+				CommonInfo commonInfo = new CommonInfo();
+				commonInfo.setIsRead(false);
+				commonInfo.setOffMsgNo(offMsg.getOffMsgNo());
+				commonInfo.setToNo(Long.valueOf(memberNo));
+				
+				commonInfoMgt.addCommonInfoByRecord(commonInfo);
+			}
+		}
 	}
 
 }
