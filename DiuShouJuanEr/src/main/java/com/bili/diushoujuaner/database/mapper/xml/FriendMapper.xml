@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bili.diushoujuaner.database.mapper.FriendMapper" >
+  <resultMap id="BaseResultMap" type="com.bili.diushoujuaner.database.model.Friend" >
+    <id column="FriendNo" property="friendNo" jdbcType="BIGINT" />
+    <result column="UserANo" property="userANo" jdbcType="BIGINT" />
+    <result column="UserBNo" property="userBNo" jdbcType="BIGINT" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="StartTime" property="startTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    FriendNo, UserANo, UserBNo, Remark, StartTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.model.FriendExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from friend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from friend
+    where FriendNo = #{friendNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from friend
+    where FriendNo = #{friendNo,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bili.diushoujuaner.database.model.FriendExample" >
+    delete from friend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bili.diushoujuaner.database.model.Friend" >
+    <selectKey resultType="java.lang.Long" keyProperty="friendNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into friend (UserANo, UserBNo, Remark, 
+      StartTime)
+    values (#{userANo,jdbcType=BIGINT}, #{userBNo,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bili.diushoujuaner.database.model.Friend" >
+    <selectKey resultType="java.lang.Long" keyProperty="friendNo" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into friend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userANo != null" >
+        UserANo,
+      </if>
+      <if test="userBNo != null" >
+        UserBNo,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="startTime != null" >
+        StartTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userANo != null" >
+        #{userANo,jdbcType=BIGINT},
+      </if>
+      <if test="userBNo != null" >
+        #{userBNo,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bili.diushoujuaner.database.model.FriendExample" resultType="java.lang.Integer" >
+    select count(*) from friend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update friend
+    <set >
+      <if test="record.friendNo != null" >
+        FriendNo = #{record.friendNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.userANo != null" >
+        UserANo = #{record.userANo,jdbcType=BIGINT},
+      </if>
+      <if test="record.userBNo != null" >
+        UserBNo = #{record.userBNo,jdbcType=BIGINT},
+      </if>
+      <if test="record.remark != null" >
+        Remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null" >
+        StartTime = #{record.startTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update friend
+    set FriendNo = #{record.friendNo,jdbcType=BIGINT},
+      UserANo = #{record.userANo,jdbcType=BIGINT},
+      UserBNo = #{record.userBNo,jdbcType=BIGINT},
+      Remark = #{record.remark,jdbcType=VARCHAR},
+      StartTime = #{record.startTime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bili.diushoujuaner.database.model.Friend" >
+    update friend
+    <set >
+      <if test="userANo != null" >
+        UserANo = #{userANo,jdbcType=BIGINT},
+      </if>
+      <if test="userBNo != null" >
+        UserBNo = #{userBNo,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        StartTime = #{startTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where FriendNo = #{friendNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bili.diushoujuaner.database.model.Friend" >
+    update friend
+    set UserANo = #{userANo,jdbcType=BIGINT},
+      UserBNo = #{userBNo,jdbcType=BIGINT},
+      Remark = #{remark,jdbcType=VARCHAR},
+      StartTime = #{startTime,jdbcType=VARCHAR}
+    where FriendNo = #{friendNo,jdbcType=BIGINT}
+  </update>
+</mapper>

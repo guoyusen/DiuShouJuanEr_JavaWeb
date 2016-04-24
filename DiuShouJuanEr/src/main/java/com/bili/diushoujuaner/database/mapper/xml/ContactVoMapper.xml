@@ -19,6 +19,11 @@
 		<result column="information" property="information" jdbcType="VARCHAR" />
 		<result column="WallPaper" property="wallPaper" jdbcType="VARCHAR" />
 	</resultMap>
+	<select id="getFriendByParam" resultMap="BaseResultMap" parameterType="com.bili.diushoujuaner.database.param.FriendParam">
+		select User.UserNo ContNo,NickName,StartTime,Remark DisplayName,Autograph,Gender,PicPath,HomeTown,SmallNick,2 'Type',
+		WallPaper from User,Friend
+		where Friend.UserANo = #{fromNo,jdbcType=BIGINT} and Friend.UserBNo = #{toNo,jdbcType=BIGINT} and Friend.UserBNo = User.UserNo
+	</select>
 	<select id="getFriendListByUserNo" resultMap="BaseResultMap"
 		parameterType="long">
 		select User.UserNo ContNo,NickName,StartTime,Remark DisplayName,Autograph,Gender,PicPath,HomeTown,SmallNick,2 'Type',
@@ -35,13 +40,13 @@
 		parameterType="String">
 		select UserNo ContNo, NickName, Autograph, Gender, PicPath, 2 'Type', WallPaper
 		from User
-		where Mobile = #{userNo,jdbcType=VARCHAR}
+		where Mobile = #{mobile,jdbcType=VARCHAR}
 	</select>
-	<select id="getNewPartyListByUserNo" resultMap="BaseResultMap"
+	<select id="getNewPartyListByPartyNo" resultMap="BaseResultMap"
 		parameterType="String">
 		select PartyNo ContNo, UserNo OwnerNo, PartyName DisplayName, Information, RegistTime StartTime, PicPath,1 'Type'
 		from Party
-		where PartyNo = #{userNo,jdbcType=VARCHAR}
+		where PartyNo = #{partyNo,jdbcType=VARCHAR}
 	</select>
 </mapper>
 

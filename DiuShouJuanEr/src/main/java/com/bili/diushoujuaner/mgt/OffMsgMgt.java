@@ -6,10 +6,12 @@ import com.bili.diushoujuaner.database.model.OffMsg;
 
 public interface OffMsgMgt {
 
-	List<OffMsg> getOffMsgListByUserNo(long userNo);
+	List<OffMsg> getOffMsgListByUserNo(long userNo, String deviceType);
 	
 	OffMsg putOffMsgByRecord(OffMsg offMsg);
 	
-	void deleteOffMsgByUserNo(long userNo);
+	void deleteMobileOffMsgByUserNo(long userNo);
+	
+	void deleteBrowserOffMsgByUserNo(long userNo);
 	
 }

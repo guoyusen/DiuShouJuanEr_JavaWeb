@@ -28,5 +28,7 @@ public interface OffMsgMapper {
 
     int updateByPrimaryKey(OffMsg record);
     
-    List<OffMsg> getOffMsgListByUserNo(long userNo);
+    List<OffMsg> getMobileOffMsgListByUserNo(long userNo);
+    
+    List<OffMsg> getBrowserOffMsgListByUserNo(long userNo);
 }

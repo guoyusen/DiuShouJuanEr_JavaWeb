@@ -13,4 +13,6 @@ public interface ContactVoMgt {
 	List<ContactVo> getNewFriendListByMobile(String mobile);
 
 	List<ContactVo> getNewPartyListByPartyNo(String partyNo);
+	
+	ContactVo getFriendByParam(long fromNo, long toNo);
 }

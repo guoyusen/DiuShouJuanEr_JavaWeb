@@ -12,4 +12,8 @@ public interface ContactService {
 	
 	ResponseDto getContactsSearch(String paramNo);
 	
+	ResponseDto getFriendAdd(long friendNo, String content, String accessToken);
+	
+	ResponseDto getFriendAgree(long fromNo, long toNo, String accessToken);
+	
 }

@@ -101,7 +101,8 @@ public class Transceiver extends Thread {
         		transMessageBoHashMap.remove(transMessageBo.getMessageDto().getSerialNo());
         		if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRI
         				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_HEAD
-        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_NAME){
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_NAME
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRIEND_ADD){
         			saveFriMessage(transMessageBo.getMessageDto());
         			break;
         		}else if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PAR){

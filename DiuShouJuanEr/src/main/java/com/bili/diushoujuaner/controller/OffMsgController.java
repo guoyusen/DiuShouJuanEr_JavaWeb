@@ -17,8 +17,10 @@ public class OffMsgController {
 	
 	@RequestMapping(value = "/1.0/offmsgs", method = RequestMethod.GET)
 	@ResponseBody
-	public Object getOffMsgListByToken(@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
-		return offMsgService.getOffMsgListByToken(accessToken);
+	public Object getOffMsgListByToken(
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
+			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType){
+		return offMsgService.getOffMsgListByToken(accessToken, deviceType);
 	}
 	
 }

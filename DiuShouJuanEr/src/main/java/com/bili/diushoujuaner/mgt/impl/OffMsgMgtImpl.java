@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bili.diushoujuaner.common.CommonUtils;
+import com.bili.diushoujuaner.common.ConstantUtils;
 import com.bili.diushoujuaner.database.mapper.CommonInfoMapper;
 import com.bili.diushoujuaner.database.mapper.OffMsgMapper;
 import com.bili.diushoujuaner.database.model.CommonInfoExample;
@@ -21,14 +23,33 @@ public class OffMsgMgtImpl implements OffMsgMgt {
 	CommonInfoMapper commonInfoMapper;
 	
 	@Override
-	public List<OffMsg> getOffMsgListByUserNo(long userNo) {
-		return offMsgMapper.getOffMsgListByUserNo(userNo);
+	public List<OffMsg> getOffMsgListByUserNo(long userNo, String deviceType) {
+		if(CommonUtils.getDeviceType(deviceType) == ConstantUtils.DEVICE_ANDROID){
+			return offMsgMapper.getMobileOffMsgListByUserNo(userNo);
+		}else{
+			return offMsgMapper.getBrowserOffMsgListByUserNo(userNo);
+		}
 	}
 	
 	@Override
-	public void deleteOffMsgByUserNo(long userNo){
+	public void deleteMobileOffMsgByUserNo(long userNo){
 		OffMsgExample offMsgExample = new OffMsgExample();
 		offMsgExample.createCriteria().andToNoEqualTo(userNo).andIsReadEqualTo(false);
+		offMsgMapper.deleteByExample(offMsgExample);
+		
+		CommonInfoExample commonInfoExample = new CommonInfoExample();
+		commonInfoExample.createCriteria().andToNoEqualTo(userNo).andIsReadEqualTo(false);
+		commonInfoMapper.deleteByExample(commonInfoExample);
+	}
+	
+	@Override
+	public void deleteBrowserOffMsgByUserNo(long userNo){
+		OffMsgExample offMsgExample = new OffMsgExample();
+		offMsgExample.createCriteria()
+		.andToNoEqualTo(userNo)
+		.andIsReadEqualTo(false)
+		.andMsgTypeEqualTo(ConstantUtils.CHAT_FRI);
+		
 		offMsgMapper.deleteByExample(offMsgExample);
 		
 		CommonInfoExample commonInfoExample = new CommonInfoExample();

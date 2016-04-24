@@ -4,6 +4,6 @@ import com.bili.diushoujuaner.common.entity.ResponseDto;
 
 public interface OffMsgService {
 
-	ResponseDto getOffMsgListByToken(String accessToken);
+	ResponseDto getOffMsgListByToken(String accessToken, String deviceType);
 	
 }

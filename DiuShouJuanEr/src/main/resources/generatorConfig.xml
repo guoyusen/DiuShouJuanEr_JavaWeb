@@ -33,9 +33,9 @@
 			targetPackage="com.bili.diushoujuaner.database.mapper" targetProject="diushoujuaner">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
-		<table tableName="Party" domainObjectName="Party">
+		<table tableName="Friend" domainObjectName="Friend">
 			<property name="useActualColumnNames" value="true" />
-			<generatedKey column="PartyNo" sqlStatement="MySql" identity="true" /> 
+			<generatedKey column="FriendNo" sqlStatement="MySql" identity="true" /> 
 		</table>
 	</context>
 </generatorConfiguration> 

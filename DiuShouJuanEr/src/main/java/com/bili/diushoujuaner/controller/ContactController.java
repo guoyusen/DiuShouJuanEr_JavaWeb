@@ -48,4 +48,22 @@ public class ContactController {
 			@RequestParam(value = "paramNo", required = true, defaultValue = "-1") String paramNo){
 		return contactService.getContactsSearch(paramNo);
 	}
+	
+	@RequestMapping(value = "/1.0/friend/add", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getFriendAdd(
+			@RequestParam(value = "friendNo", required = true, defaultValue = "-1") long friendNo,
+			@RequestParam(value = "content", required = true, defaultValue = "") String content,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		return contactService.getFriendAdd(friendNo, content, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/friend/agree", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getFriendAgree(
+			@RequestParam(value = "fromNo", required = true, defaultValue = "-1") long fromNo,
+			@RequestParam(value = "toNo", required = true, defaultValue = "-1") long toNo,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		return contactService.getFriendAgree(fromNo, toNo, accessToken);
+	}
 }

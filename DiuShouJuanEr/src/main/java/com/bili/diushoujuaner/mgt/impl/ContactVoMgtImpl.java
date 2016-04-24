@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.bili.diushoujuaner.database.mapper.ContactVoMapper;
 import com.bili.diushoujuaner.database.model.ContactVo;
+import com.bili.diushoujuaner.database.param.FriendParam;
 import com.bili.diushoujuaner.mgt.ContactVoMgt;
 
 @Repository
@@ -14,7 +15,16 @@ public class ContactVoMgtImpl implements ContactVoMgt {
 
 	@Autowired
 	ContactVoMapper contactVoMapper;
-	
+
+	@Override
+	public ContactVo getFriendByParam(long fromNo, long toNo) {
+		FriendParam friendParam = new FriendParam();
+		friendParam.setFromNo(fromNo);
+		friendParam.setToNo(toNo);
+		List<ContactVo> contactVoList = contactVoMapper.getFriendByParam(friendParam);
+		return contactVoList.isEmpty() ? null : contactVoList.get(0);
+	}
+
 	@Override
 	public List<ContactVo> getFriendListByUserNo(long userNo) {
 		return contactVoMapper.getFriendListByUserNo(userNo);

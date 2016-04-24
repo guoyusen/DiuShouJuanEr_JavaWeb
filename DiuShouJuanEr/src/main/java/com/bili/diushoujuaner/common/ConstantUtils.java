@@ -42,11 +42,14 @@ public interface ConstantUtils {
 	short CHAT_PARTY_UNGROUP = 11;//群解散
 	short CHAT_PARTY_INTRODUCE = 12;//修改群介绍
 	short CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
+	short CHAT_FRIEND_ADD = 14;//添加童友
+	short CHAT_PARTY_ADD = 15;//申请加群
 	// 聊天消息中content的类型
 	short CONTENT_EMPTY = 0;
 	short CONTENT_TEXT = 1;
 	short CONTENT_IMG = 2;
 	short CONTENT_VOICE = 3;
+	short CONTENT_FRIEND_AGREE = 4;
 	// 验证码超时时间60s
 	int MSG_TIME_LIMIT_60 = 60;
 	// 通讯录身份类型
