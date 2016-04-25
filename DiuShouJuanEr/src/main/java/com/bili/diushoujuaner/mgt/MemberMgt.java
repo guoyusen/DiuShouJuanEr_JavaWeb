@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.mgt;
 import java.util.List;
 
 import com.bili.diushoujuaner.database.model.Member;
+import com.bili.diushoujuaner.database.model.User;
 
 public interface MemberMgt {
 
@@ -10,6 +11,8 @@ public interface MemberMgt {
 	
 	List<Long> getMemberNoListByPartyNo(long partyNo);
 	
-	int modifyMemberName(long partyNo, long memberNo, String memberName);
+	boolean modifyMemberName(long partyNo, long memberNo, String memberName);
+	
+	int addOwnerForParty(long partyNo, User user);
 	
 }

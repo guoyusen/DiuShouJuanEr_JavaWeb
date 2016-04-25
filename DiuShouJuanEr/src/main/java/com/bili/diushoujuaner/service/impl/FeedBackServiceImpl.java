@@ -18,6 +18,7 @@ public class FeedBackServiceImpl implements FeedBackService {
 
 	@Override
 	public ResponseDto addFeedBack(String content, String accessToken) {
+		content = CommonUtils.getLimitContent(content, ConstantUtils.CONTENT_LENGTH_FEEDBACK);
 		if(feedBackMgt.addFeedBack(content, CustomSessionManager.getCustomSession(accessToken).getUserNo()) > 0){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "意见反馈成功", null);
 		}else{

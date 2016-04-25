@@ -22,26 +22,6 @@ public class ContactController {
 		return contactService.getContactListByToken(accessToken);
 	}
 	
-	@RequestMapping(value = "/1.0/party/modify/name", method = RequestMethod.POST)
-	@ResponseBody
-	public Object modifyPartyName(
-			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
-			@RequestParam(value = "partyName", required = true, defaultValue = "") String partyName,
-			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
-		
-		return contactService.modifyPartyName(partyNo, partyName, accessToken);
-	}
-	
-	@RequestMapping(value = "/1.0/party/modify/introduce", method = RequestMethod.POST)
-	@ResponseBody
-	public Object modifyPartyintroduce(
-			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
-			@RequestParam(value = "introduce", required = true, defaultValue = "") String introduce,
-			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
-		
-		return contactService.modifyPartyIntroduce(partyNo, introduce, accessToken);
-	}
-	
 	@RequestMapping(value = "/1.0/contacts/search", method = RequestMethod.GET)
 	@ResponseBody
 	public Object getContactsSearch(
@@ -49,21 +29,4 @@ public class ContactController {
 		return contactService.getContactsSearch(paramNo);
 	}
 	
-	@RequestMapping(value = "/1.0/friend/add", method = RequestMethod.POST)
-	@ResponseBody
-	public Object getFriendAdd(
-			@RequestParam(value = "friendNo", required = true, defaultValue = "-1") long friendNo,
-			@RequestParam(value = "content", required = true, defaultValue = "") String content,
-			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
-		return contactService.getFriendAdd(friendNo, content, accessToken);
-	}
-	
-	@RequestMapping(value = "/1.0/friend/agree", method = RequestMethod.POST)
-	@ResponseBody
-	public Object getFriendAgree(
-			@RequestParam(value = "fromNo", required = true, defaultValue = "-1") long fromNo,
-			@RequestParam(value = "toNo", required = true, defaultValue = "-1") long toNo,
-			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
-		return contactService.getFriendAgree(fromNo, toNo, accessToken);
-	}
 }

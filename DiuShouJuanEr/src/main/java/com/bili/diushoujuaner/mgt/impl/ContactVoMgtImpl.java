@@ -17,6 +17,12 @@ public class ContactVoMgtImpl implements ContactVoMgt {
 	ContactVoMapper contactVoMapper;
 
 	@Override
+	public ContactVo getPartyByPartyNo(long partyNo) {
+		List<ContactVo> contactVos = contactVoMapper.getNewPartyListByPartyNo(String.valueOf(partyNo));
+		return contactVos.isEmpty() ? null : contactVos.get(0);
+	}
+
+	@Override
 	public ContactVo getFriendByParam(long fromNo, long toNo) {
 		FriendParam friendParam = new FriendParam();
 		friendParam.setFromNo(fromNo);

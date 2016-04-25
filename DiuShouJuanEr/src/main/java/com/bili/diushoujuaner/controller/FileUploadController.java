@@ -69,7 +69,6 @@ public class FileUploadController {
 	public Object removePostPicListByRecord(
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
 			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType){
-		
 		return fileUploadService.removePostPicListByRecord(accessToken, deviceType);
 	}
 

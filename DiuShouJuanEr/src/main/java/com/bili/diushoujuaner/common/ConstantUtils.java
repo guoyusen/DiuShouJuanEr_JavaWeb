@@ -44,12 +44,23 @@ public interface ConstantUtils {
 	short CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
 	short CHAT_FRIEND_ADD = 14;//添加童友
 	short CHAT_PARTY_ADD = 15;//申请加群
+	short CHAT_FRIEND_RECOMMEND = 16;//好友推荐
+	short CHAT_FRIEND_DELETE = 17;//删除童友
 	// 聊天消息中content的类型
 	short CONTENT_EMPTY = 0;
 	short CONTENT_TEXT = 1;
 	short CONTENT_IMG = 2;
 	short CONTENT_VOICE = 3;
 	short CONTENT_FRIEND_AGREE = 4;
+	// 文本编辑器对应文本的长度
+    int CONTENT_LENGTH_MEMBER_NAME = 50;
+    int CONTENT_LENGTH_AUTOGRAPH = 50;
+    int CONTENT_LENGTH_PARTY_NAME = 10;
+    int CONTENT_LENGTH_FEEDBACK = 200;
+    int CONTENT_LENGTH_PARTY_INTRODUCE = 100;
+    int CONTENT_LENGTH_FRIEND_ADD = 50;
+    int CONTENT_LENGTH_PARTY_ADD = 50;
+    int CONTENT_LENGTH_FRIEND_REMARK = 50;
 	// 验证码超时时间60s
 	int MSG_TIME_LIMIT_60 = 60;
 	// 通讯录身份类型
@@ -73,4 +84,7 @@ public interface ConstantUtils {
     
     int MAX_SAND_TIMES = 3;// 最大重发次数
     int MAX_BETWEEN_TIME = 5000;// 超过5000毫秒没有接收到则认为发送失败
+    
+    int MEMBER_OWNER = 1;//管理员
+    int MEMBER_MEMBER = 2;//成员
 }

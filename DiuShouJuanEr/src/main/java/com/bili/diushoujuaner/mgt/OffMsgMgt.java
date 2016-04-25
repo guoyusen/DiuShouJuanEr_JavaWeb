@@ -14,4 +14,6 @@ public interface OffMsgMgt {
 	
 	void deleteBrowserOffMsgByUserNo(long userNo);
 	
+	void deleteFriendOffMsg(long fromNo, long toNo);
+	
 }

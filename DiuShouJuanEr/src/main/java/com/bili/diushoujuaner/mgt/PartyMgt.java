@@ -13,5 +13,7 @@ public interface PartyMgt {
 	boolean updateName(long partyNo, String partyName);
 	
 	boolean updateIntroduce(long partyNo, String introduce);
+	
+	Party addParty(long userNo, String partyName, String path);
 
 }

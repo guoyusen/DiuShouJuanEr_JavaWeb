@@ -19,16 +19,17 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ResponseDto modifyMemberName(long partyNo, String memberName, String accessToken) {
-		if(memberMgt.modifyMemberName(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), memberName) > 0){
+		String tmpName = CommonUtils.getLimitContent(memberName, ConstantUtils.CONTENT_LENGTH_MEMBER_NAME);
+		if(memberMgt.modifyMemberName(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), tmpName)){
 			new Thread(){
 				//开启线程，发送群通知，更改群名片了
 				@Override
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), memberName, ConstantUtils.CHAT_PARTY_MEMBER_NAME, false);
+					MemberManager.broadCastToMember(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), tmpName, ConstantUtils.CHAT_PARTY_MEMBER_NAME, false);
 				}
 				
 			}.start();
-			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "修改群名片成功", memberName.length() >= 50 ? memberName.substring(0, 50) : memberName);
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "修改群名片成功", tmpName);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "修改群名片失败", null);
 	}

@@ -15,4 +15,6 @@ public interface ContactVoMgt {
 	List<ContactVo> getNewPartyListByPartyNo(String partyNo);
 	
 	ContactVo getFriendByParam(long fromNo, long toNo);
+	
+	ContactVo getPartyByPartyNo(long partyNo);
 }

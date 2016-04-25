@@ -23,6 +23,17 @@ public class OffMsgMgtImpl implements OffMsgMgt {
 	CommonInfoMapper commonInfoMapper;
 	
 	@Override
+	public void deleteFriendOffMsg(long fromNo, long toNo) {
+		OffMsgExample offMsgExample = new OffMsgExample();
+		offMsgExample.createCriteria().andFromNoEqualTo(fromNo).andToNoEqualTo(toNo);
+		offMsgMapper.deleteByExample(offMsgExample);
+		
+		offMsgExample.clear();
+		offMsgExample.createCriteria().andFromNoEqualTo(toNo).andToNoEqualTo(fromNo);
+		offMsgMapper.deleteByExample(offMsgExample);
+	}
+
+	@Override
 	public List<OffMsg> getOffMsgListByUserNo(long userNo, String deviceType) {
 		if(CommonUtils.getDeviceType(deviceType) == ConstantUtils.DEVICE_ANDROID){
 			return offMsgMapper.getMobileOffMsgListByUserNo(userNo);

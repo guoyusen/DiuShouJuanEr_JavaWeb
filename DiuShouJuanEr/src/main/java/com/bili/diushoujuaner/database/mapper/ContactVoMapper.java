@@ -16,5 +16,5 @@ public interface ContactVoMapper {
 	List<ContactVo> getNewPartyListByPartyNo(String partyNo);
 	
 	List<ContactVo> getFriendByParam(FriendParam friendParam);
-
+	
 }

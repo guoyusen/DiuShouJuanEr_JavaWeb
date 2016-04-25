@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.database.model.User;
 import com.bili.diushoujuaner.service.UserService;
 
@@ -87,13 +88,12 @@ public class UserController {
 			@RequestParam(value = "homeTown", required = true, defaultValue = "") String homeTown,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
 		User user = new User();
-		user.setNickName(nickName);
+		user.setNickName(CommonUtils.getLimitContent(nickName, 10));
+		user.setSmallNick(CommonUtils.getLimitContent(smallNick, 50));
+		user.setEmail(CommonUtils.getLimitContent(email, 50));
 		user.setBirthday(birthday);
-		user.setEmail(email);
 		user.setGender(gender);
 		user.setHomeTown(homeTown);
-		user.setLocation(location);
-		user.setSmallNick(smallNick);
 		user.setLocation(location);
 
 		return userService.updateUserInfo(user, accessToken);

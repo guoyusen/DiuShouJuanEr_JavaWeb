@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.database.mapper.PartyMapper;
 import com.bili.diushoujuaner.database.model.Party;
 import com.bili.diushoujuaner.database.model.PartyExample;
@@ -15,6 +16,20 @@ public class PartyMgtImpl implements PartyMgt {
 	
 	@Autowired
 	PartyMapper partyMapper;
+
+	@Override
+	public Party addParty(long userNo, String partyName, String path) {
+		Party party = new Party();
+		party.setPartyName(partyName);
+		party.setPicPath(path);
+		party.setRegistTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
+		party.setUserNo(userNo);
+		
+		if(partyMapper.insertSelective(party) > 0){
+			return party;
+		}
+		return null;
+	}
 
 	@Override
 	public boolean isPermitHeadModify(long partyNo, long userNo) {

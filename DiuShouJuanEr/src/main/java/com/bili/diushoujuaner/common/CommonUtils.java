@@ -491,5 +491,12 @@ public class CommonUtils {
 			}
 		}
 	}
+	
+	public static String getLimitContent(String content, int length){
+		if(content.length() <= length){
+			return content;
+		}
+		return content.substring(0, length);
+	}
 
 }

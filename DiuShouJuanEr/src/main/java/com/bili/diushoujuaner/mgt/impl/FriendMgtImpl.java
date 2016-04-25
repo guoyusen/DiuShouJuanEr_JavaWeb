@@ -17,6 +17,31 @@ public class FriendMgtImpl implements FriendMgt {
 	FriendMapper friendMapper;
 	
 	@Override
+	public boolean deleteFriendRelationShip(long userANo, long userBNo) {
+		int effectLine = 0;
+		FriendExample friendExample = new FriendExample();
+		friendExample.createCriteria().andUserANoEqualTo(userANo).andUserBNoEqualTo(userBNo);
+		
+		effectLine += friendMapper.deleteByExample(friendExample);
+		
+		friendExample.clear();
+		friendExample.createCriteria().andUserANoEqualTo(userBNo).andUserBNoEqualTo(userANo);
+		
+		effectLine += friendMapper.deleteByExample(friendExample);
+		return effectLine >= 2;
+	}
+
+	@Override
+	public boolean modifyFriendRemark(long userANo, long userBNo, String remark) {
+		FriendExample friendExample = new FriendExample();
+		friendExample.createCriteria().andUserANoEqualTo(userANo).andUserBNoEqualTo(userBNo);
+		
+		Friend friend = new Friend();
+		friend.setRemark(remark);
+		return friendMapper.updateByExampleSelective(friend, friendExample) > 0;
+	}
+
+	@Override
 	public boolean isFriend(long userANo, long userBNo) {
 		FriendExample friendExample = new FriendExample();
 		friendExample.createCriteria().andUserANoEqualTo(userANo).andUserBNoEqualTo(userBNo);

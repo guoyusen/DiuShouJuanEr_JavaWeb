@@ -155,6 +155,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseDto modifyAutographByAutoAndToken(String autograph, String accessToken) {
+		autograph = CommonUtils.getLimitContent(autograph, ConstantUtils.CONTENT_LENGTH_AUTOGRAPH);
 		if(userMgt.modifyAutographByUserNo(autograph, CommonUtils.getUserNoFromAccessToken(accessToken))){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "修改用户签名成功", autograph);
 		}
