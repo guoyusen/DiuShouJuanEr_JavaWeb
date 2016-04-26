@@ -29,10 +29,15 @@ public class MemberManager {
 		return memberSource.get(partyNo);
 	}
 	
+	public static synchronized void clearMember(long partyNo){
+		memberSource.remove(partyNo);
+	}
+	
 	public static void broadCastToMember(long partyNo, long userNo, String content, short msgType, boolean saveOff){
 		MessageDto msg = new MessageDto(); 
 		msg.setReceiverNo(partyNo);
-		if(msgType == ConstantUtils.CHAT_PARTY_MEMBER_NAME){
+		if(msgType == ConstantUtils.CHAT_PARTY_MEMBER_NAME
+				|| msgType == ConstantUtils.CHAT_PARTY_APPLY_AGREE){
 			msg.setSenderNo(userNo);
 		}else{
 			msg.setSenderNo(ConstantUtils.SYSTEM_ID_LONG);

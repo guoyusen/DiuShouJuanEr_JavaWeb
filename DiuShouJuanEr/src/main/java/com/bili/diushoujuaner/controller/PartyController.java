@@ -45,5 +45,25 @@ public class PartyController {
 			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
 		return partyService.addParty(file, partyName, accessToken);
 	}
+	
+	@RequestMapping(value = "/1.0/party/apply", method = RequestMethod.POST)
+	@ResponseBody
+	public Object applyAddParty(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestParam(value = "content", required = true, defaultValue = "-1") String content,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		
+		return partyService.applyAddParty(partyNo, content, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/party/apply/agree", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getPartyApplyAgree(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestParam(value = "memberNo", required = true, defaultValue = "-1") long memberNo,
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken){
+		
+		return partyService.getPartyApplyAgree(partyNo, memberNo, accessToken);
+	}
 
 }

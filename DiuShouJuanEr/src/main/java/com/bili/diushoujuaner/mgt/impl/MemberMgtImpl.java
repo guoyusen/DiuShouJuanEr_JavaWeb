@@ -20,14 +20,35 @@ public class MemberMgtImpl implements MemberMgt {
 	MemberMapper memberMapper;
 	
 	@Override
-	public int addOwnerForParty(long partyNo, User user) {
+	public boolean isMember(long partyNo, long memberNo) {
+		MemberExample memberExample = new MemberExample();
+		memberExample.createCriteria()
+		.andPartyNoEqualTo(partyNo)
+		.andUserNoEqualTo(memberNo);
+
+		return !memberMapper.selectByExample(memberExample).isEmpty();
+	}
+
+	@Override
+	public boolean addMemberForParty(long partyNo, User user) {
+		Member member = new Member();
+		member.setPartyNo(partyNo);
+		member.setUserNo(user.getUserNo());
+		member.setType(ConstantUtils.MEMBER_MEMBER);
+		member.setAddTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
+		member.setMemberName(user.getNickName());
+		return memberMapper.insertSelective(member) > 0;
+	}
+
+	@Override
+	public boolean addOwnerForParty(long partyNo, User user) {
 		Member member = new Member();
 		member.setPartyNo(partyNo);
 		member.setUserNo(user.getUserNo());
 		member.setType(ConstantUtils.MEMBER_OWNER);
 		member.setAddTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
 		member.setMemberName(user.getNickName());
-		return memberMapper.insertSelective(member);
+		return memberMapper.insertSelective(member) > 0;
 	}
 
 	@Override

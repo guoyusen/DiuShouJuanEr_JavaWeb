@@ -8,4 +8,6 @@ public interface ContactService {
 	
 	ResponseDto getContactsSearch(String paramNo);
 	
+	ResponseDto getContactByPartyNo(long partyNo);
+	
 }

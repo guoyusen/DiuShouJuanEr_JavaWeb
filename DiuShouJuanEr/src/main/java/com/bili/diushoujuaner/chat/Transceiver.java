@@ -102,14 +102,13 @@ public class Transceiver extends Thread {
         		if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRI
         				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_HEAD
         				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_NAME
-        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRIEND_ADD){
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRIEND_APPLY){
         			saveFriMessage(transMessageBo.getMessageDto());
-        			break;
         		}else if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PAR){
         			//群消息在三次内没有收到，删除任务并插入数据库
         			saveCommonInfo(saveParMessage(transMessageBo.getMessageDto()), IOSessionManager.getUserNoFromIoSessionToLong(transMessageBo.getSession()));
-        			break;
         		}
+        		break;
         	}else if(transMessageBo.getSendCount() < ConstantUtils.MAX_SAND_TIMES 
         			&& CommonUtils.getMilliDifferenceBetweenTime(transMessageBo.getLastTime()) > ConstantUtils.MAX_BETWEEN_TIME 
         			&& transMessageBo.getStatus() == ConstantUtils.MESSAGE_STATUS_SENDING){

@@ -12,4 +12,8 @@ public interface PartyService {
 	
 	ResponseDto addParty(MultipartFile file, String partyName, String accessToken);
 	
+	ResponseDto applyAddParty(long partyNo, String content, String accessToken);
+	
+	ResponseDto getPartyApplyAgree(long partyNo, long memberNo, String accessToken);
+	
 }

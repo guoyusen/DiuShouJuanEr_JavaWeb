@@ -45,7 +45,7 @@ public class FriendServiceImpl implements FriendService {
 			messageDto.setSenderNo(userNo);
 			messageDto.setReceiverNo(friendNo);
 			messageDto.setSerialNo(CommonUtils.getSerialNo());
-			messageDto.setMsgType(ConstantUtils.CHAT_FRIEND_ADD);
+			messageDto.setMsgType(ConstantUtils.CHAT_FRIEND_APPLY);
 			messageDto.setConType(ConstantUtils.CONTENT_TEXT);
 			messageDto.setMsgContent(content);
 			messageDto.setMsgTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
@@ -58,7 +58,7 @@ public class FriendServiceImpl implements FriendService {
 			offMsg.setContent(content);
 			offMsg.setTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
 			offMsg.setConType(ConstantUtils.CONTENT_TEXT);
-			offMsg.setMsgType(ConstantUtils.CHAT_FRIEND_ADD);
+			offMsg.setMsgType(ConstantUtils.CHAT_FRIEND_APPLY);
 			offMsg.setIsRead(false);
 			offMsgMgt.putOffMsgByRecord(offMsg);
 		}
@@ -132,8 +132,8 @@ public class FriendServiceImpl implements FriendService {
 				messageDto.setSenderNo(userNo);
 				messageDto.setReceiverNo(friendNo);
 				messageDto.setSerialNo(CommonUtils.getSerialNo());
-				messageDto.setMsgType(ConstantUtils.CHAT_FRI);
-				messageDto.setConType(ConstantUtils.CONTENT_FRIEND_AGREE);
+				messageDto.setMsgType(ConstantUtils.CHAT_FRIEND_APPLY_AGREE);
+				messageDto.setConType(ConstantUtils.CONTENT_TEXT);
 				messageDto.setMsgContent("我同意了你的好友申请");
 				messageDto.setMsgTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
 				
@@ -144,8 +144,8 @@ public class FriendServiceImpl implements FriendService {
 				offMsg.setToNo(friendNo);
 				offMsg.setContent("我同意了你的好友申请");
 				offMsg.setTime(CommonUtils.getCurrentTime_YYYYMMDD_HHMMSS());
-				offMsg.setConType(ConstantUtils.CONTENT_FRIEND_AGREE);
-				offMsg.setMsgType(ConstantUtils.CHAT_FRI);
+				offMsg.setConType(ConstantUtils.CONTENT_TEXT);
+				offMsg.setMsgType(ConstantUtils.CHAT_FRIEND_APPLY_AGREE);
 				offMsg.setIsRead(false);
 				offMsgMgt.putOffMsgByRecord(offMsg);
 			}

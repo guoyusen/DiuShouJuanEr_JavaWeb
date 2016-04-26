@@ -42,16 +42,18 @@ public interface ConstantUtils {
 	short CHAT_PARTY_UNGROUP = 11;//群解散
 	short CHAT_PARTY_INTRODUCE = 12;//修改群介绍
 	short CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
-	short CHAT_FRIEND_ADD = 14;//添加童友
-	short CHAT_PARTY_ADD = 15;//申请加群
+	short CHAT_FRIEND_APPLY = 14;//添加童友
+	short CHAT_PARTY_APPLY = 15;//申请加群
 	short CHAT_FRIEND_RECOMMEND = 16;//好友推荐
 	short CHAT_FRIEND_DELETE = 17;//删除童友
+	short CHAT_FRIEND_APPLY_AGREE = 18;//同意添加好友
+	short CHAT_PARTY_APPLY_AGREE = 19;//同意加入群
 	// 聊天消息中content的类型
 	short CONTENT_EMPTY = 0;
 	short CONTENT_TEXT = 1;
 	short CONTENT_IMG = 2;
 	short CONTENT_VOICE = 3;
-	short CONTENT_FRIEND_AGREE = 4;
+	short CONTENT_PARTY_ADD = 4;//我加入了群聊
 	// 文本编辑器对应文本的长度
     int CONTENT_LENGTH_MEMBER_NAME = 50;
     int CONTENT_LENGTH_AUTOGRAPH = 50;

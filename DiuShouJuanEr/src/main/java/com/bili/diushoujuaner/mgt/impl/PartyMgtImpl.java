@@ -18,6 +18,16 @@ public class PartyMgtImpl implements PartyMgt {
 	PartyMapper partyMapper;
 
 	@Override
+	public long getUserNoByPartyNo(long partyNo) {
+		PartyExample partyExample = new PartyExample();
+		partyExample.createCriteria().andPartyNoEqualTo(partyNo);
+		
+		List<Party> partyList = partyMapper.selectByExample(partyExample);
+		
+		return partyList.isEmpty() ? -1 : partyList.get(0).getUserNo();
+	}
+
+	@Override
 	public Party addParty(long userNo, String partyName, String path) {
 		Party party = new Party();
 		party.setPartyName(partyName);

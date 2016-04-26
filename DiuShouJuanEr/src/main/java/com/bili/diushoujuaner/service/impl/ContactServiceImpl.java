@@ -26,6 +26,16 @@ public class ContactServiceImpl implements ContactService {
 	private ContactVoMgt contactVoMgt;
 
 	@Override
+	public ResponseDto getContactByPartyNo(long partyNo) {
+		ContactVo contactVo = contactVoMgt.getPartyByPartyNo(partyNo);
+		if(contactVo != null){
+			contactVo.setMemberList(memberMgt.getMemberListByPartyNo(partyNo));
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "获取群信息成功", contactVo);
+		}
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "获取群信息失败", null);
+	}
+
+	@Override
 	public ResponseDto getContactsSearch(String paramNo) {
 		List<ContactVo> contactList = new ArrayList<>();
 		

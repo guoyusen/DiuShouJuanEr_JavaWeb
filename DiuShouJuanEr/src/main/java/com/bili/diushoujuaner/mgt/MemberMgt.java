@@ -13,6 +13,10 @@ public interface MemberMgt {
 	
 	boolean modifyMemberName(long partyNo, long memberNo, String memberName);
 	
-	int addOwnerForParty(long partyNo, User user);
+	boolean addOwnerForParty(long partyNo, User user);
+	
+	boolean addMemberForParty(long partyNo, User user);
+	
+	boolean isMember(long partyNo, long memberNo);
 	
 }

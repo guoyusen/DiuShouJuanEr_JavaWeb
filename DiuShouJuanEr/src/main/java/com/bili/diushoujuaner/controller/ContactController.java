@@ -29,4 +29,10 @@ public class ContactController {
 		return contactService.getContactsSearch(paramNo);
 	}
 	
+	@RequestMapping(value = "/1.0/contact/party", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getContactByPartyNo(@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo){
+		return contactService.getContactByPartyNo(partyNo);
+	}
+	
 }

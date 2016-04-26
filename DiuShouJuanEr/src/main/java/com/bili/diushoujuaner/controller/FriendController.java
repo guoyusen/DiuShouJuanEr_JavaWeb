@@ -16,7 +16,7 @@ public class FriendController {
 	@Autowired
 	FriendService friendService;
 
-	@RequestMapping(value = "/1.0/friend/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/1.0/friend/apply", method = RequestMethod.POST)
 	@ResponseBody
 	public Object getFriendAdd(
 			@RequestParam(value = "friendNo", required = true, defaultValue = "-1") long friendNo,
