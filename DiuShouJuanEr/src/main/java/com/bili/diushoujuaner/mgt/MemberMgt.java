@@ -19,4 +19,6 @@ public interface MemberMgt {
 	
 	boolean isMember(long partyNo, long memberNo);
 	
+	boolean deleteMember(long partyNo, long memberNo);
+	
 }

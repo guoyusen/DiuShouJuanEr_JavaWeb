@@ -17,6 +17,7 @@ import com.bili.diushoujuaner.database.model.ContactVo;
 import com.bili.diushoujuaner.database.model.OffMsg;
 import com.bili.diushoujuaner.database.model.Party;
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.mgt.CommonInfoMgt;
 import com.bili.diushoujuaner.mgt.ContactVoMgt;
 import com.bili.diushoujuaner.mgt.MemberMgt;
 import com.bili.diushoujuaner.mgt.OffMsgMgt;
@@ -37,7 +38,31 @@ public class PartyServiceImpl implements PartyService {
 	private UserMgt userMgt;
 	@Autowired
 	private OffMsgMgt offMsgMgt;
+	@Autowired
+	private CommonInfoMgt commonInfoMgt;
 	
+	@Override
+	public ResponseDto getMemberExit(long partyNo, String accessToken) {
+		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		if(userNo == partyMgt.getUserNoByPartyNo(partyNo)){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
+		}
+		if(!memberMgt.isMember(partyNo, userNo)){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该群没有这个成员", null);
+		}
+		if(memberMgt.deleteMember(partyNo, userNo)){
+			MemberManager.clearMember(partyNo);
+			commonInfoMgt.deleteCommonInfo(partyNo, userNo);
+			new Thread(){
+				public void run() {
+					MemberManager.broadCastToMember(partyNo, userNo, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true);
+				};
+			}.start();
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "退出成功", null);
+		}
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "退出群失败", null);
+	}
+
 	@Override
 	public ResponseDto getPartyApplyAgree(long partyNo, long memberNo, String accessToken) {
 		//accessToken 作为群主，同意memberNo用户加入群

@@ -50,10 +50,18 @@ public class PartyController {
 	@ResponseBody
 	public Object applyAddParty(
 			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
-			@RequestParam(value = "content", required = true, defaultValue = "-1") String content,
+			@RequestParam(value = "content", required = true, defaultValue = "") String content,
 			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
 		
 		return partyService.applyAddParty(partyNo, content, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/party/exit", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getMemberExit(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		return partyService.getMemberExit(partyNo, accessToken);
 	}
 	
 	@RequestMapping(value = "/1.0/party/apply/agree", method = RequestMethod.POST)

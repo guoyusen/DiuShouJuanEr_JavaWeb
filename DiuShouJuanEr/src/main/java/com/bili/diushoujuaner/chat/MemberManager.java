@@ -37,7 +37,8 @@ public class MemberManager {
 		MessageDto msg = new MessageDto(); 
 		msg.setReceiverNo(partyNo);
 		if(msgType == ConstantUtils.CHAT_PARTY_MEMBER_NAME
-				|| msgType == ConstantUtils.CHAT_PARTY_APPLY_AGREE){
+				|| msgType == ConstantUtils.CHAT_PARTY_APPLY_AGREE
+				|| msgType == ConstantUtils.CHAT_PARTY_MEMBER_EXIT){
 			msg.setSenderNo(userNo);
 		}else{
 			msg.setSenderNo(ConstantUtils.SYSTEM_ID_LONG);

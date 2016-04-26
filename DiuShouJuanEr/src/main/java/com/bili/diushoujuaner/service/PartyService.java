@@ -16,4 +16,6 @@ public interface PartyService {
 	
 	ResponseDto getPartyApplyAgree(long partyNo, long memberNo, String accessToken);
 	
+	ResponseDto getMemberExit(long partyNo, String accessToken);
+	
 }

@@ -18,7 +18,7 @@
 	union
     select OffMsg.OffMsgNo,FromNo,OffMsg.ToNo,Content,Time,OffMsg.IsRead,MsgType,ConType 
     from OffMsg,CommonInfo 
-    where CommonInfo.ToNo = #{userNo,jdbcType=BIGINT} and CommonInfo.IsRead = false and OffMsg.OffMsgNo = CommonInfo.OffMsgNo and MsgType in (5,8,9,13,19)
+    where CommonInfo.ToNo = #{userNo,jdbcType=BIGINT} and CommonInfo.IsRead = false and OffMsg.OffMsgNo = CommonInfo.OffMsgNo and MsgType in (5,8,9,10,13,19)
   </select>
   <select id="getBrowserOffMsgListByUserNo"  resultMap="BaseResultMap" parameterType="long">
     select OffMsgNo,FromNo,ToNo,Content,Time,IsRead,MsgType,ConType from OffMsg

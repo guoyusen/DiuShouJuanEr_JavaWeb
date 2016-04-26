@@ -6,4 +6,6 @@ public interface CommonInfoMgt {
 
 	int addCommonInfoByRecord(CommonInfo commonInfo);
 	
+	void deleteCommonInfo(long partyNo, long memberNo);
+	
 }

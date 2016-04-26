@@ -7,6 +7,10 @@
     <result column="ToNo" property="toNo" jdbcType="BIGINT" />
     <result column="IsRead" property="isRead" jdbcType="BIT" />
   </resultMap>
+  <select id="deleteCommonInfo" parameterType="com.bili.diushoujuaner.database.param.CommonDeleteParam">
+  	delete from commoninfo
+  	where ToNo = #{memberNo,jdbcType=BIGINT} and OffMsgNo in (select OffMsgNo from offMsg where ToNo = #{partyNo,jdbcType=BIGINT})
+  </select>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

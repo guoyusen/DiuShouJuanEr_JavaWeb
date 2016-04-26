@@ -20,11 +20,18 @@ public class MemberMgtImpl implements MemberMgt {
 	MemberMapper memberMapper;
 	
 	@Override
-	public boolean isMember(long partyNo, long memberNo) {
+	public boolean deleteMember(long partyNo, long memberNo) {
 		MemberExample memberExample = new MemberExample();
 		memberExample.createCriteria()
 		.andPartyNoEqualTo(partyNo)
 		.andUserNoEqualTo(memberNo);
+		return memberMapper.deleteByExample(memberExample) > 0;
+	}
+
+	@Override
+	public boolean isMember(long partyNo, long memberNo) {
+		MemberExample memberExample = new MemberExample();
+		memberExample.createCriteria().andPartyNoEqualTo(partyNo).andUserNoEqualTo(memberNo);
 
 		return !memberMapper.selectByExample(memberExample).isEmpty();
 	}

@@ -38,7 +38,7 @@ public interface ConstantUtils {
 	short CHAT_STATUS = 7;//消息的状态
 	short CHAT_PARTY_NAME = 8;//群广播-群名称
 	short CHAT_PARTY_HEAD = 9;//群广播-头像
-	short CHAT_PARTY_MEMBER_UPDATE = 10;//群成员增删
+	short CHAT_PARTY_MEMBER_EXIT = 10;//群成员退出
 	short CHAT_PARTY_UNGROUP = 11;//群解散
 	short CHAT_PARTY_INTRODUCE = 12;//修改群介绍
 	short CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片

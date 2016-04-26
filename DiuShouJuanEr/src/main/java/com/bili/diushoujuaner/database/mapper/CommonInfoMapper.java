@@ -2,6 +2,8 @@ package com.bili.diushoujuaner.database.mapper;
 
 import com.bili.diushoujuaner.database.model.CommonInfo;
 import com.bili.diushoujuaner.database.model.CommonInfoExample;
+import com.bili.diushoujuaner.database.param.CommonDeleteParam;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +29,6 @@ public interface CommonInfoMapper {
     int updateByPrimaryKeySelective(CommonInfo record);
 
     int updateByPrimaryKey(CommonInfo record);
+    
+    void deleteCommonInfo(CommonDeleteParam commonDeleteParam);
 }
