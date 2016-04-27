@@ -33,7 +33,7 @@ public class MemberManager {
 		memberSource.remove(partyNo);
 	}
 	
-	public static void broadCastToMember(long partyNo, long userNo, String content, short msgType, boolean saveOff){
+	public static void broadCastToMember(long partyNo, long userNo, long exceptNo, String content, short msgType, boolean saveOff){
 		MessageDto msg = new MessageDto(); 
 		msg.setReceiverNo(partyNo);
 		if(msgType == ConstantUtils.CHAT_PARTY_MEMBER_NAME
@@ -55,6 +55,9 @@ public class MemberManager {
 		
 		IoSession sessionTmp = null;
 		for(Long memberNo : memberList){
+			if(memberNo == exceptNo){
+				continue;
+			}
 			isMobileAccept = false;
 			isBrowserAccept = false;
     		//1.不为空 

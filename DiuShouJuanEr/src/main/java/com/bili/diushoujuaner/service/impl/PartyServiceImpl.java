@@ -41,10 +41,37 @@ public class PartyServiceImpl implements PartyService {
 	@Autowired
 	private CommonInfoMgt commonInfoMgt;
 	
+	
+	
+	@Override
+	public ResponseDto getMemberForceExit(long partyNo, long memberNo, String accessToken) {
+		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		if(userNo != partyMgt.getUserNoByPartyNo(partyNo)){
+			//非管理员，不能强制推出用户
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
+		}
+		if(!memberMgt.isMember(partyNo, memberNo)){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "该群没有这个成员", null);
+		}
+		if(memberMgt.deleteMember(partyNo, memberNo)){
+			commonInfoMgt.deleteCommonInfo(partyNo, memberNo);
+			new Thread(){
+				public void run() {
+					MemberManager.broadCastToMember(partyNo, memberNo, userNo, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true);
+					//发送出去之后再清除Member列表，否则会造成被删除成员无法收到删除信号
+					MemberManager.clearMember(partyNo);
+				};
+			}.start();
+			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "踢成员操作成功", null);
+		}
+		return CommonUtils.getResponse(ConstantUtils.FAIL, "踢成员操作失败", null);
+	}
+
 	@Override
 	public ResponseDto getMemberExit(long partyNo, String accessToken) {
 		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
 		if(userNo == partyMgt.getUserNoByPartyNo(partyNo)){
+			// 成员退出，不允许管理员退出
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
 		}
 		if(!memberMgt.isMember(partyNo, userNo)){
@@ -55,7 +82,7 @@ public class PartyServiceImpl implements PartyService {
 			commonInfoMgt.deleteCommonInfo(partyNo, userNo);
 			new Thread(){
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, userNo, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true);
+					MemberManager.broadCastToMember(partyNo, userNo, -1, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true);
 				};
 			}.start();
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "退出成功", null);
@@ -80,7 +107,7 @@ public class PartyServiceImpl implements PartyService {
 			//群发添加成功消息
 			new Thread(){
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, memberNo, "", ConstantUtils.CHAT_PARTY_APPLY_AGREE, true);
+					MemberManager.broadCastToMember(partyNo, memberNo, -1, "", ConstantUtils.CHAT_PARTY_APPLY_AGREE, true);
 				};
 			}.start();
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加成功", null);
@@ -136,7 +163,8 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public ResponseDto modifyPartyName(long partyNo, String partyName, String accessToken) {
-		if(!partyMgt.isPermitHeadModify(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		if(!partyMgt.isPermitHeadModify(partyNo, userNo)){
 			CommonUtils.getResponse(ConstantUtils.FAIL, "暂无修改权限", null);
 		}
 		String tmpName = CommonUtils.getLimitContent(partyName, ConstantUtils.CONTENT_LENGTH_PARTY_NAME);
@@ -145,7 +173,7 @@ public class PartyServiceImpl implements PartyService {
 
 				@Override
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), tmpName, ConstantUtils.CHAT_PARTY_NAME, true);
+					MemberManager.broadCastToMember(partyNo, userNo, userNo, tmpName, ConstantUtils.CHAT_PARTY_NAME, true);
 				}
 				
 			}.start();

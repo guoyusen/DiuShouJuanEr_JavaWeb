@@ -64,6 +64,15 @@ public class PartyController {
 		return partyService.getMemberExit(partyNo, accessToken);
 	}
 	
+	@RequestMapping(value = "/1.0/party/exit/force", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getMemberForceExit(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestParam(value = "memberNo", required = true, defaultValue = "-1") long memberNo,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		return partyService.getMemberForceExit(partyNo, memberNo, accessToken);
+	}
+	
 	@RequestMapping(value = "/1.0/party/apply/agree", method = RequestMethod.POST)
 	@ResponseBody
 	public Object getPartyApplyAgree(

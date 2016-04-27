@@ -43,7 +43,8 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 	@Override
 	public ResponseDto uploadPartyHeadPic(MultipartFile file, long partyNo, String accessToken) {
-		if(!partyMgt.isPermitHeadModify(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		if(!partyMgt.isPermitHeadModify(partyNo, userNo)){
 			CommonUtils.getResponse(ConstantUtils.FAIL, "暂无修改群头像权限", null);
 		}
 		String filePath = CommonUtils.processHeadImage(file);
@@ -54,12 +55,12 @@ public class FileUploadServiceImpl implements FileUploadService {
 		}
 		CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + party.getPicPath());
 		
-		if(partyMgt.updateHead(filePath, partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+		if(partyMgt.updateHead(filePath, partyNo, userNo)){
 			new Thread(){
 				//开启线程，发送群通知，更改头像了
 				@Override
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), filePath, ConstantUtils.CHAT_PARTY_HEAD, true);
+					MemberManager.broadCastToMember(partyNo, userNo, userNo, filePath, ConstantUtils.CHAT_PARTY_HEAD, true);
 				}
 				
 			}.start();

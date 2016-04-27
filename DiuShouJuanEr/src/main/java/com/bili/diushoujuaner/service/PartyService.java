@@ -18,4 +18,6 @@ public interface PartyService {
 	
 	ResponseDto getMemberExit(long partyNo, String accessToken);
 	
+	ResponseDto getMemberForceExit(long partyNo, long memberNo, String accessToken);
+	
 }

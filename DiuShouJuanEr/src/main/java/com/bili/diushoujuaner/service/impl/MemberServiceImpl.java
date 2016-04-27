@@ -19,13 +19,14 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ResponseDto modifyMemberName(long partyNo, String memberName, String accessToken) {
+		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
 		String tmpName = CommonUtils.getLimitContent(memberName, ConstantUtils.CONTENT_LENGTH_MEMBER_NAME);
-		if(memberMgt.modifyMemberName(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), tmpName)){
+		if(memberMgt.modifyMemberName(partyNo, userNo, tmpName)){
 			new Thread(){
 				//开启线程，发送群通知，更改群名片了
 				@Override
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo(), tmpName, ConstantUtils.CHAT_PARTY_MEMBER_NAME, false);
+					MemberManager.broadCastToMember(partyNo, userNo, userNo, tmpName, ConstantUtils.CHAT_PARTY_MEMBER_NAME, false);
 				}
 				
 			}.start();
