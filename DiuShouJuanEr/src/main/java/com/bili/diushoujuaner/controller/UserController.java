@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -97,11 +96,6 @@ public class UserController {
 		user.setLocation(location);
 
 		return userService.updateUserInfo(user, accessToken);
-	}
-	
-	@ExceptionHandler
-	public void processException(Exception e){
-		e.printStackTrace();
 	}
 	
 }

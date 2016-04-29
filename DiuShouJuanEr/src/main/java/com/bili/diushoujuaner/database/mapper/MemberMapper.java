@@ -31,4 +31,6 @@ public interface MemberMapper {
     List<Member> getMemberListByPartyNo(long partyNo);
     
     List<Long> getMemberNoListByPartyNo(long partyNo);
+    
+    List<Member> getMemberList(@Param("memberNoList") List<Long> memberNoList, @Param("partyNo") long partyNo );
 }

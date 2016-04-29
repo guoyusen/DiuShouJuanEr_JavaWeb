@@ -20,6 +20,14 @@
     <result column="IsOnline" property="isOnline" jdbcType="BIT" />
     <result column="WallPaper" property="wallPaper" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap type="com.bili.diushoujuaner.database.model.UserBo" id="UserBoMap">
+  <id column="UserNo" property="userNo" jdbcType="BIGINT" />
+  <result column="HomeTown" property="homeTown" jdbcType="VARCHAR" />
+  <result column="NickName" property="nickName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectUserBoList" resultMap="UserBoMap">
+  select UserNo, HomeTown,NickName from user where !isNull(HomeTown)
+  </select>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

@@ -60,7 +60,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 				//开启线程，发送群通知，更改头像了
 				@Override
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, userNo, userNo, filePath, ConstantUtils.CHAT_PARTY_HEAD, true);
+					MemberManager.broadCastToMember(partyNo, userNo, userNo, filePath, ConstantUtils.CHAT_PARTY_HEAD, true, false);
 				}
 				
 			}.start();

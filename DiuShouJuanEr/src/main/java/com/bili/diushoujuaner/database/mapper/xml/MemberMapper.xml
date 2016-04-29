@@ -10,6 +10,13 @@
     <result column="Type" property="type" jdbcType="INTEGER" />
     <result column="PicPath" property="picPath" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="getMemberList" resultMap="BaseResultMap">
+  select MemberNo,PartyNo,Member.UserNo,Addtime,MemberName,Type,PicPath
+  from Member, User
+  where Member.PartyNo = #{partyNo,jdbcType=BIGINT} and Member.UserNo = User.UserNo
+  and Member.UserNo in 
+  <foreach item="item" index="index" collection="memberNoList"  open="(" separator="," close=")"> #{item}</foreach>
+  </select>
   <select id="getMemberNoListByPartyNo" resultType="long" parameterType="long">
       select UserNo
       from Member

@@ -16,4 +16,10 @@ public interface OffMsgMgt {
 	
 	void deleteFriendOffMsg(long fromNo, long toNo);
 	
+	void deletePartyOffMsg(long partyNo);
+	
+	List<OffMsg> getCommonOffMsg();
+	
+	void deleteByOffMsgNo(long offMsgNo);
+	
 }

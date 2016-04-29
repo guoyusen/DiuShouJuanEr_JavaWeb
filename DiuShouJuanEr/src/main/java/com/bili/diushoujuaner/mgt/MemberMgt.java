@@ -21,4 +21,6 @@ public interface MemberMgt {
 	
 	boolean deleteMember(long partyNo, long memberNo);
 	
+	List<Member> getMemberList(List<Long> memberList, long partyNo);
+	
 }

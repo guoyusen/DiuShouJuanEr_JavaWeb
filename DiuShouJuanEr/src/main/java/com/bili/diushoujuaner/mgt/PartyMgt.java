@@ -17,5 +17,7 @@ public interface PartyMgt {
 	Party addParty(long userNo, String partyName, String path);
 	
 	long getUserNoByPartyNo(long partyNo);
+	
+	boolean deleteParty(long partyNo);
 
 }

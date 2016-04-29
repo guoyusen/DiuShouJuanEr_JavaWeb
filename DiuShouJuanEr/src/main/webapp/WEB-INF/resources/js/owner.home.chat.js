@@ -133,6 +133,8 @@ var WebSocketUtil = {
 		case HomeChatTypeUtil.CHAT_PARTY_MEMBER_NAME:
 			WebSocketUtil.sendMessage(message.serialNo,-1,-1,HomeChatTypeUtil.CHAT_STATUS,HomeChatTypeUtil.CONTENT_EMPTY,"","");
 			break;
+		default:WebSocketUtil.sendMessage(message.serialNo,-1,-1,HomeChatTypeUtil.CHAT_STATUS,HomeChatTypeUtil.CONTENT_EMPTY,"","");
+			break;
 		}
 	},
 	onClose : function(event) {

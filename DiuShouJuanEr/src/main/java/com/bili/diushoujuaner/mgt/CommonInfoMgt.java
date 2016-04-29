@@ -8,4 +8,6 @@ public interface CommonInfoMgt {
 	
 	void deleteCommonInfo(long partyNo, long memberNo);
 	
+	int getCommonInfoCount(long offNo);
+	
 }

@@ -1,6 +1,9 @@
 package com.bili.diushoujuaner.mgt;
 
+import java.util.List;
+
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.database.model.UserBo;
 
 public interface UserMgt {
 
@@ -21,5 +24,7 @@ public interface UserMgt {
 	boolean updateHead(String path, long userNo);
 	
 	boolean updateWallpaper(String path, long userNo);
+	
+	List<UserBo> selectUserBoList();
 	
 }

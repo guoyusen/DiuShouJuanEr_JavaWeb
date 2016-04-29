@@ -33,12 +33,13 @@ public class MemberManager {
 		memberSource.remove(partyNo);
 	}
 	
-	public static void broadCastToMember(long partyNo, long userNo, long exceptNo, String content, short msgType, boolean saveOff){
+	public static void broadCastToMember(long partyNo, long userNo, long exceptNo, String content, short msgType, boolean saveOff, boolean isSystem){
 		MessageDto msg = new MessageDto(); 
 		msg.setReceiverNo(partyNo);
 		if(msgType == ConstantUtils.CHAT_PARTY_MEMBER_NAME
 				|| msgType == ConstantUtils.CHAT_PARTY_APPLY_AGREE
-				|| msgType == ConstantUtils.CHAT_PARTY_MEMBER_EXIT){
+				|| msgType == ConstantUtils.CHAT_PARTY_MEMBER_EXIT
+				|| msgType == ConstantUtils.CHAT_MEMBER_BATCH_ADD){
 			msg.setSenderNo(userNo);
 		}else{
 			msg.setSenderNo(ConstantUtils.SYSTEM_ID_LONG);
@@ -60,6 +61,10 @@ public class MemberManager {
 			}
 			isMobileAccept = false;
 			isBrowserAccept = false;
+			if(isSystem){
+				//如果是系统群发消息，接收id应该为对应的用户账号
+				msg.setReceiverNo(memberNo);
+			}
     		//1.不为空 
     		//2.账号不和当前session的账号相等，直接发送
     		//3.账号相等，发送给浏览器的不能是浏览器
@@ -85,8 +90,10 @@ public class MemberManager {
     	}
 		
 		// 存储群消息，确保非在线用户下次上线可以看到离线信息
-		if(saveOff && !offMemberNoList.isEmpty()){
+		if(!isSystem && saveOff && !offMemberNoList.isEmpty()){
 			CommonUtils.processMessageStore(msg, offMemberNoList);
+		}else if(isSystem && saveOff && !offMemberNoList.isEmpty()){
+			CommonUtils.processSystemMessageStore(msg, offMemberNoList);
 		}
 	}
 

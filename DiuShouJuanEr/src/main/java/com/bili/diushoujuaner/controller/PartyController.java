@@ -64,6 +64,14 @@ public class PartyController {
 		return partyService.getMemberExit(partyNo, accessToken);
 	}
 	
+	@RequestMapping(value = "/1.0/party/ungroup", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getPartyUnGroup(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		return partyService.getPartyUnGroup(partyNo, accessToken);
+	}
+	
 	@RequestMapping(value = "/1.0/party/exit/force", method = RequestMethod.POST)
 	@ResponseBody
 	public Object getMemberForceExit(
@@ -71,6 +79,15 @@ public class PartyController {
 			@RequestParam(value = "memberNo", required = true, defaultValue = "-1") long memberNo,
 			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
 		return partyService.getMemberForceExit(partyNo, memberNo, accessToken);
+	}
+	
+	@RequestMapping(value = "/1.0/party/members/batch", method = RequestMethod.POST)
+	@ResponseBody
+	public Object addMembersToParty(
+			@RequestParam(value = "partyNo", required = true, defaultValue = "-1") long partyNo,
+			@RequestParam(value = "members", required = true, defaultValue = "-1") String members,
+			@RequestHeader(value = "AccessToken", required = true, defaultValue = "") String accessToken){
+		return partyService.addMembersToParty(partyNo, members, accessToken);
 	}
 	
 	@RequestMapping(value = "/1.0/party/apply/agree", method = RequestMethod.POST)

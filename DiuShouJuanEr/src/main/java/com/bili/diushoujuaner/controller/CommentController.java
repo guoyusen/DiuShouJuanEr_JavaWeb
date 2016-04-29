@@ -34,5 +34,11 @@ public class CommentController {
 		return commentService.addCommentByRecord(timeStamp, recallNo, content, accessToken);
 	}
 	
+	@RequestMapping(value = "/1.0/guoyusen", method = RequestMethod.GET)
+	@ResponseBody
+	public Object guoyusen(
+			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken) throws Exception{
+	    throw new Exception("dfhsfdsafds");
+	}
 	
 }

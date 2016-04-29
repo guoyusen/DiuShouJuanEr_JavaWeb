@@ -18,6 +18,13 @@ public class PartyMgtImpl implements PartyMgt {
 	PartyMapper partyMapper;
 
 	@Override
+	public boolean deleteParty(long partyNo) {
+		PartyExample partyExample = new PartyExample();
+		partyExample.createCriteria().andPartyNoEqualTo(partyNo);
+		return partyMapper.deleteByExample(partyExample) > 0;
+	}
+
+	@Override
 	public long getUserNoByPartyNo(long partyNo) {
 		PartyExample partyExample = new PartyExample();
 		partyExample.createCriteria().andPartyNoEqualTo(partyNo);

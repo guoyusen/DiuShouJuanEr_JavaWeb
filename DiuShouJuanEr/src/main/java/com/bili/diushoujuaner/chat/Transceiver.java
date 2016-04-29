@@ -102,9 +102,14 @@ public class Transceiver extends Thread {
         		if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRI
         				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_HEAD
         				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_NAME
-        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRIEND_APPLY){
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_FRIEND_APPLY
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_UNGROUP){
         			saveFriMessage(transMessageBo.getMessageDto());
-        		}else if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PAR){
+        		}else if(transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PAR
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_NAME
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_HEAD
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_PARTY_MEMBER_EXIT
+        				|| transMessageBo.getMessageDto().getMsgType() == ConstantUtils.CHAT_MEMBER_BATCH_ADD){
         			//群消息在三次内没有收到，删除任务并插入数据库
         			saveCommonInfo(saveParMessage(transMessageBo.getMessageDto()), IOSessionManager.getUserNoFromIoSessionToLong(transMessageBo.getSession()));
         		}

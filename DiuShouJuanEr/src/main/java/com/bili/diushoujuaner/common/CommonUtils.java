@@ -458,16 +458,10 @@ public class CommonUtils {
 		return deviceType.equals("Client/Browser") || deviceType.equals("Client/Android");
 	}
 	
-	/**
-	 * 处理离线消息存储
-	 * @param session
-	 * @param msg
-	 */
-	public static void processMessageStore(MessageDto msg, List<Long> offMemberList){
-		
+	public static OffMsg saveOffMessage(MessageDto msg, long receiverNo){
 		OffMsg offMsg = new OffMsg();
 		
-		offMsg.setToNo(msg.getReceiverNo());
+		offMsg.setToNo(receiverNo);
 		offMsg.setFromNo(msg.getSenderNo());
 		offMsg.setContent(msg.getMsgContent());
 		offMsg.setConType(msg.getConType());
@@ -478,6 +472,24 @@ public class CommonUtils {
 		OffMsgMgt offMsgMgt = (OffMsgMgt)SpringContextUtil.getBean("offMsgMgtImpl");
 		
 		offMsg = offMsgMgt.putOffMsgByRecord(offMsg);
+		
+		return offMsg;
+	}
+	
+	public static void processSystemMessageStore(MessageDto msg, List<Long> offMemberList){
+		for(Long item : offMemberList){
+			saveOffMessage(msg, item);
+		}
+	}
+	
+	/**
+	 * 处理离线消息存储
+	 * @param session
+	 * @param msg
+	 */
+	public static void processMessageStore(MessageDto msg, List<Long> offMemberList){
+		
+		OffMsg offMsg = saveOffMessage(msg, msg.getReceiverNo());
 		
 		if(offMemberList != null && offMsg != null){
 			CommonInfoMgt commonInfoMgt = (CommonInfoMgt)SpringContextUtil.getBean("commonInfoMgtImpl");

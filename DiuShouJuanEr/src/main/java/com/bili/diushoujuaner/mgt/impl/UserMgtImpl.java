@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.database.mapper.UserMapper;
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.database.model.UserBo;
 import com.bili.diushoujuaner.database.model.UserExample;
 import com.bili.diushoujuaner.mgt.UserMgt;
 
@@ -17,6 +18,11 @@ public class UserMgtImpl implements UserMgt {
 	@Autowired
 	private UserMapper userMapper;
 	
+	@Override
+	public List<UserBo> selectUserBoList() {
+		return userMapper.selectUserBoList();
+	}
+
 	@Override
 	public boolean updateWallpaper(String path, long userNo) {
 		UserExample userExample = new UserExample();

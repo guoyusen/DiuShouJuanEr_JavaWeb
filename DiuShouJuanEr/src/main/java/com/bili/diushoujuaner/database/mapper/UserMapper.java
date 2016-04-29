@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.database.mapper;
 
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.database.model.UserBo;
 import com.bili.diushoujuaner.database.model.UserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +28,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+    
+    List<UserBo> selectUserBoList();
 }

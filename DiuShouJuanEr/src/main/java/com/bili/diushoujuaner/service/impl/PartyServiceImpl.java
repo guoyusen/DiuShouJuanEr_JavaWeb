@@ -1,10 +1,15 @@
 package com.bili.diushoujuaner.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.mina.core.session.IoSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.bili.diushoujuaner.chat.MemberManager;
 import com.bili.diushoujuaner.chat.Transceiver;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
@@ -14,6 +19,7 @@ import com.bili.diushoujuaner.common.entity.MessageDto;
 import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.ContactVo;
+import com.bili.diushoujuaner.database.model.Member;
 import com.bili.diushoujuaner.database.model.OffMsg;
 import com.bili.diushoujuaner.database.model.Party;
 import com.bili.diushoujuaner.database.model.User;
@@ -41,8 +47,61 @@ public class PartyServiceImpl implements PartyService {
 	@Autowired
 	private CommonInfoMgt commonInfoMgt;
 	
-	
-	
+	@Override
+	public ResponseDto getPartyUnGroup(long partyNo, String accessToken) {
+		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		if(userNo != partyMgt.getUserNoByPartyNo(partyNo)){
+			//非管理员，不能解散
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
+		}
+		Party party = partyMgt.getPartyByPartyNo(partyNo);
+		CommonUtils.deleteFileFromPath(CommonUtils.getRootDirectory() + party.getPicPath());
+		new Thread(){
+			@Override
+			public void run() {
+				MemberManager.broadCastToMember(partyNo, userNo, userNo, String.valueOf(partyNo), ConstantUtils.CHAT_PARTY_UNGROUP, false, true);
+				offMsgMgt.deletePartyOffMsg(partyNo);
+				partyMgt.deleteParty(partyNo);
+				MemberManager.clearMember(partyNo);
+			}
+			
+		}.start();
+		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "群解散成功", null);
+	}
+
+	@Override
+	public ResponseDto addMembersToParty(long partyNo, String members, String accessToken) {
+		List<Long> memberNoList = JSON.parseObject(members, new TypeReference<List<Long>>(){}.getType());
+		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		if(!memberMgt.isMember(partyNo, userNo)){
+			return CommonUtils.getResponse(ConstantUtils.FAIL, "非群成员不能执行添加操作", null);
+		}
+		List<Member> memberList = memberMgt.getMemberListByPartyNo(partyNo);
+		HashMap<Long, Member> hashMap = new HashMap<>();
+		for(Member member : memberList){
+			hashMap.put(member.getUserNo(), member);
+		}
+		for(Long item : memberNoList){
+			if(hashMap.get(item) != null){
+				//已经有该成员
+				continue;
+			}
+			User user = userMgt.getUserByUserNo(item);
+			if(user != null){
+				memberMgt.addMemberForParty(partyNo, user);
+			}
+		}
+		ContactVo contactVo = contactVoMgt.getPartyByPartyNo(partyNo);
+		contactVo.setMemberList(memberMgt.getMemberList(memberNoList, partyNo));
+		new Thread(){
+			public void run() {
+				MemberManager.clearMember(partyNo);
+				MemberManager.broadCastToMember(partyNo, userNo, userNo, CommonUtils.getJSONStringFromObject(contactVo), ConstantUtils.CHAT_MEMBER_BATCH_ADD, true, false);
+			};
+		}.start();
+		return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加群成员成功", contactVo);
+	}
+
 	@Override
 	public ResponseDto getMemberForceExit(long partyNo, long memberNo, String accessToken) {
 		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
@@ -53,11 +112,13 @@ public class PartyServiceImpl implements PartyService {
 		if(!memberMgt.isMember(partyNo, memberNo)){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "该群没有这个成员", null);
 		}
+		//删除该成员的离线群消息
+		commonInfoMgt.deleteCommonInfo(partyNo, memberNo);
 		if(memberMgt.deleteMember(partyNo, memberNo)){
 			commonInfoMgt.deleteCommonInfo(partyNo, memberNo);
 			new Thread(){
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, memberNo, userNo, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true);
+					MemberManager.broadCastToMember(partyNo, memberNo, userNo, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true, false);
 					//发送出去之后再清除Member列表，否则会造成被删除成员无法收到删除信号
 					MemberManager.clearMember(partyNo);
 				};
@@ -82,7 +143,7 @@ public class PartyServiceImpl implements PartyService {
 			commonInfoMgt.deleteCommonInfo(partyNo, userNo);
 			new Thread(){
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, userNo, -1, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true);
+					MemberManager.broadCastToMember(partyNo, userNo, -1, "", ConstantUtils.CHAT_PARTY_MEMBER_EXIT, true, false);
 				};
 			}.start();
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "退出成功", null);
@@ -107,7 +168,7 @@ public class PartyServiceImpl implements PartyService {
 			//群发添加成功消息
 			new Thread(){
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, memberNo, -1, "", ConstantUtils.CHAT_PARTY_APPLY_AGREE, true);
+					MemberManager.broadCastToMember(partyNo, memberNo, -1, "", ConstantUtils.CHAT_PARTY_APPLY_AGREE, true, false);
 				};
 			}.start();
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "添加成功", null);
@@ -173,7 +234,7 @@ public class PartyServiceImpl implements PartyService {
 
 				@Override
 				public void run() {
-					MemberManager.broadCastToMember(partyNo, userNo, userNo, tmpName, ConstantUtils.CHAT_PARTY_NAME, true);
+					MemberManager.broadCastToMember(partyNo, userNo, userNo, tmpName, ConstantUtils.CHAT_PARTY_NAME, true, false);
 				}
 				
 			}.start();

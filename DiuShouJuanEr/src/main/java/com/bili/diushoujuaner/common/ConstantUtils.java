@@ -48,6 +48,7 @@ public interface ConstantUtils {
 	short CHAT_FRIEND_DELETE = 17;//删除童友
 	short CHAT_FRIEND_APPLY_AGREE = 18;//同意添加好友
 	short CHAT_PARTY_APPLY_AGREE = 19;//同意加入群
+	short CHAT_MEMBER_BATCH_ADD = 20;//批量添加群成员
 	// 聊天消息中content的类型
 	short CONTENT_EMPTY = 0;
 	short CONTENT_TEXT = 1;
