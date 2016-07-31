@@ -9,10 +9,10 @@ import com.bili.diushoujuaner.mgt.CustomSessionMgt;
 
 public class CustomSessionManager {
 
-	private static Map<String, Object> customSessionFactory = new HashMap<String, Object>();
+	private static Map<String, Object> customSessionMap = new HashMap<String, Object>();
 	
 	public static CustomSession getCustomSession(String accessToken){
-		CustomSession customSession = (CustomSession) customSessionFactory.get(accessToken);
+		CustomSession customSession = (CustomSession) customSessionMap.get(accessToken);
 		CustomSessionMgt customSessionMgt;
 		if(customSession == null){
 			customSessionMgt = (CustomSessionMgt)SpringContextUtil.getBean("customSessionMgtImpl");
@@ -26,11 +26,11 @@ public class CustomSessionManager {
 	}
 	
 	public static void addCustomSession(CustomSession customSession){
-		customSessionFactory.put(customSession.getAccessToken(), customSession);
+		customSessionMap.put(customSession.getAccessToken(), customSession);
 	}
 	
 	public static void removeCustomSession(String accessToken){
-		customSessionFactory.remove(accessToken);
+		customSessionMap.remove(accessToken);
 	}
 	
 }

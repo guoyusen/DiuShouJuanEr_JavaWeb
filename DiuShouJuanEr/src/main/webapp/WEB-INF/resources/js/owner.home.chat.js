@@ -516,7 +516,6 @@ var MessageUtil = {
 	clearMessageByChatId : function(chatId) {
          
 	}
-// TODO 窗口侧边滚动条的滑动回调
 }
 /* 聊天板块用户操作Util */
 var HomeChatOperateUtil = {
@@ -675,6 +674,7 @@ var HomeChatOperateUtil = {
 			$("#chatInfoNickname").html("");
 			$("#chatInfoNickname").removeClass("chatInfoGenderFemale");
 			$("#chatInfoNickname").removeClass("chatInfoGenderMale");
+			$("#signature").text("");
 			$("#signature").text(ContactUtil.getPartyInformation(contId));
 			$("#metaRemarkTip").text("群名称：");
 			$("#metaRemarkCon").text(ContactUtil.getContactDisplayName(contId));
