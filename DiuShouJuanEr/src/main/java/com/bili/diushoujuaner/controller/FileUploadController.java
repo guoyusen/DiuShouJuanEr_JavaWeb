@@ -1,9 +1,6 @@
 package com.bili.diushoujuaner.controller;
 
 import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
-import com.bili.diushoujuaner.common.FileUtil;
 import com.bili.diushoujuaner.service.FileUploadService;
 
 @Controller
@@ -27,15 +21,11 @@ public class FileUploadController {
 	@RequestMapping(value = "/1.0/file/recallpic", method = RequestMethod.POST)
 	@ResponseBody
 	public Object uploadPostPicByRecord(
-			HttpServletRequest request,
+			@RequestParam("file") MultipartFile file,
 			@RequestParam(value="serial", required = true, defaultValue = "") String serial,
 			@RequestHeader(value="AccessToken", required = true, defaultValue = "") String accessToken,
 			@RequestHeader(value="Device-Type", required = true, defaultValue = "") String deviceType) throws IOException {
-//		return fileUploadService.uploadPostPicByRecord(file, serial, accessToken, deviceType);
-		List<MultipartFile> list = FileUtil.getMultipartFileList(request);
-		return "";
-		
-		
+		return fileUploadService.uploadPostPicByRecord(file, serial, accessToken, deviceType);
 	}
 	
 	@RequestMapping(value = "/1.0/file/headpic", method = RequestMethod.POST)
