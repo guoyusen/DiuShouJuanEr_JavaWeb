@@ -45,7 +45,7 @@ var WebSocketUtil = {
 	timeOuter : null,
 	isActive : true,
 	connect : function() {
-		WebSocketUtil.webSocket = new WebSocket("ws://localhost:1314");
+		WebSocketUtil.webSocket = new WebSocket("ws://localhost:1315");
 		WebSocketUtil.webSocket.onopen = WebSocketUtil.onOpen;
 		WebSocketUtil.webSocket.onmessage = WebSocketUtil.onMessage;
 		WebSocketUtil.webSocket.onclose = WebSocketUtil.onClose;

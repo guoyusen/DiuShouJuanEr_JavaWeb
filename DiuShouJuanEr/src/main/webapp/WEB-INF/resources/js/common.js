@@ -393,6 +393,7 @@ var UploadUtil = {
 	         inputObj.setAttribute('id','_ef');
 	         inputObj.setAttribute('type','file');
 	         inputObj.setAttribute("style",'display:none');
+	         inputObj.setAttribute("multiple",'multiple');
 			 inputObj.setAttribute('accept',this.options.acceptType);
 			 inputObj.setAttribute("onChange",'UploadUtil.upload()');
 	         document.body.appendChild(inputObj);
@@ -450,7 +451,9 @@ var UploadUtil = {
 		},
 		upload : function(){
 			var formData = new FormData();
-			formData.append('file', $('#_ef')[0].files[0]);
+			for(var i = 0; i < $('#_ef')[0].files.length; i++){
+				formData.append('file' + i, $('#_ef')[0].files[i]);
+			}
 			for ( var pro in this.options.params) {
 				formData.append(pro, this.options.params[pro]);
 			}

@@ -201,6 +201,11 @@ public class CommonUtils {
 		return simpleDateFormat.format(new Date());
 	}
 	
+	public static void main(String[] args) throws ParseException {
+		System.out.println(getCurrentTime_YYYYMMDD_HHMMSS());
+		System.out.println(simpleDateFormat.parse(getCurrentTime_YYYYMMDD_HHMMSS()).toString());;
+	}
+	
 	/**
 	 * 获得当前时间的路径
 	 */
