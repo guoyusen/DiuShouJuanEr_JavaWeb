@@ -1,13 +1,12 @@
-package com.bili.diushoujuaner.common.session;
+package com.bili.diushoujuaner.common;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bili.diushoujuaner.common.springcontext.SpringContextUtil;
 import com.bili.diushoujuaner.database.model.CustomSession;
 import com.bili.diushoujuaner.mgt.CustomSessionMgt;
 
-public class CustomSessionManager {
+public class CustomSessionUtil {
 
 	private static Map<String, Object> customSessionMap = new HashMap<String, Object>();
 	

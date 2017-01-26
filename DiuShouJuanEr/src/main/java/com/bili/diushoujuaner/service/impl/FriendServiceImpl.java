@@ -8,11 +8,11 @@ import com.bili.diushoujuaner.chat.Transceiver;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.MessageDto;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
 import com.bili.diushoujuaner.database.model.OffMsg;
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.entity.MessageDto;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.ContactVoMgt;
 import com.bili.diushoujuaner.mgt.FriendMgt;
 import com.bili.diushoujuaner.mgt.OffMsgMgt;
@@ -35,7 +35,7 @@ public class FriendServiceImpl implements FriendService {
 	public ResponseDto getFriendAdd(long friendNo, String content, String accessToken) {
 		// accessToken用户想添加friendNo为好友
 		content = CommonUtils.getLimitContent(content, ConstantUtils.CONTENT_LENGTH_FRIEND_ADD);
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(friendMgt.isFriend(friendNo, userNo)){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "不能重复添加好友", null);
 		}
@@ -67,7 +67,7 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public ResponseDto getFriendDelete(long friendNo, String accessToken) {
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(friendMgt.deleteFriendRelationShip(userNo, friendNo)){
 			//删除相关离线数据，给friendNo发送及时通知消息，通知更新联系人
 			offMsgMgt.deleteFriendOffMsg(userNo, friendNo);
@@ -103,7 +103,7 @@ public class FriendServiceImpl implements FriendService {
 	public ResponseDto modifyFriendRemark(long friendNo, String remark, String accessToken) {
 		//accessToken 用户要修改 friendNo的备注
 		remark = CommonUtils.getLimitContent(remark, ConstantUtils.CONTENT_LENGTH_FRIEND_REMARK);
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(!friendMgt.isFriend(userNo, friendNo)){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "您没有该权限", null);
 		}
@@ -116,7 +116,7 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public ResponseDto getFriendAgree(long friendNo, String accessToken) {
 		// userNo 同意了 friendNo 的请求
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(friendMgt.isFriend(userNo, friendNo)){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "不能重复添加", null);
 		}

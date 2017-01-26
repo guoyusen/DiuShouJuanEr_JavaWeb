@@ -8,7 +8,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bili.diushoujuaner.common.springcontext.SpringContextUtil;
+import com.bili.diushoujuaner.common.SpringContextUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration 

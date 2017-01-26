@@ -2,7 +2,7 @@ package com.bili.diushoujuaner.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bili.diushoujuaner.common.entity.ResponseDto;
+import com.bili.diushoujuaner.entity.ResponseDto;
 
 public interface PartyService {
 

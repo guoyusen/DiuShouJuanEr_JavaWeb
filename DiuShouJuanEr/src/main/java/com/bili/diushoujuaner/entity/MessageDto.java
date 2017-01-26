@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.common.entity;
+package com.bili.diushoujuaner.entity;
 
 import java.io.Serializable;
 

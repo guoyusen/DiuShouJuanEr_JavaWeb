@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bili.diushoujuaner.common.CommonUtils;
-import com.bili.diushoujuaner.common.recallpic.RecallPicManager;
+import com.bili.diushoujuaner.common.RecallPicUtil;
 import com.bili.diushoujuaner.database.mapper.PictureMapper;
 import com.bili.diushoujuaner.database.mapper.RecallMapper;
 import com.bili.diushoujuaner.database.model.Comment;
@@ -102,7 +102,7 @@ public class RecallMgtImpl implements RecallMgt {
 		try{
 			int effectLines = recallMapper.insertSelective(recall);
 			if(effectLines > 0 && picCount > 0){
-				Map<String, Picture> tmpMap = RecallPicManager.getPictureMap(userNo + deviceType);
+				Map<String, Picture> tmpMap = RecallPicUtil.getPictureMap(userNo + deviceType);
 				if(tmpMap != null){
 					for(Picture picture : tmpMap.values()){
 						if(picture.getSerial().equals(serial)){
@@ -113,7 +113,7 @@ public class RecallMgtImpl implements RecallMgt {
 						}
 					}
 				}
-				RecallPicManager.clearUserPicture(userNo + deviceType, false);
+				RecallPicUtil.clearUserPicture(userNo + deviceType, false);
 			}
 		}catch(Exception e){
 			return -1;

@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.common.springcontext;
+package com.bili.diushoujuaner.common;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

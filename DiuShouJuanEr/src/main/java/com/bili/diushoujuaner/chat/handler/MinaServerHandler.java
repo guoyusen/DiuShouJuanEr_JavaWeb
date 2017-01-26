@@ -14,7 +14,7 @@ import com.bili.diushoujuaner.chat.Transceiver;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.MessageDto;
+import com.bili.diushoujuaner.entity.MessageDto;
 
 public class MinaServerHandler extends IoHandlerAdapter {
 	

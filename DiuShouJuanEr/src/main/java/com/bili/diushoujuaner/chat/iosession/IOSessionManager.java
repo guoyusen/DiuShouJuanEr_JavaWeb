@@ -7,7 +7,7 @@ import org.apache.mina.core.session.IoSession;
 
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.MessageDto;
+import com.bili.diushoujuaner.entity.MessageDto;
 
 public class IOSessionManager {
 

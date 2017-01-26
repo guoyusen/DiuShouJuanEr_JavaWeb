@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.database.model.OffMsg;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.OffMsgMgt;
 import com.bili.diushoujuaner.service.OffMsgService;
 

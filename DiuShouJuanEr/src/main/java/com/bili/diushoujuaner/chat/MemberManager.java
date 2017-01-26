@@ -9,8 +9,8 @@ import org.apache.mina.core.session.IoSession;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.MessageDto;
-import com.bili.diushoujuaner.common.springcontext.SpringContextUtil;
+import com.bili.diushoujuaner.common.SpringContextUtil;
+import com.bili.diushoujuaner.entity.MessageDto;
 import com.bili.diushoujuaner.mgt.MemberMgt;
 
 public class MemberManager {

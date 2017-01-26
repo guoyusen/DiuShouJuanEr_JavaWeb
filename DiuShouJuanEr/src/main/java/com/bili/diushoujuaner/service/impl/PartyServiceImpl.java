@@ -15,14 +15,14 @@ import com.bili.diushoujuaner.chat.Transceiver;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.MessageDto;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
 import com.bili.diushoujuaner.database.model.ContactVo;
 import com.bili.diushoujuaner.database.model.Member;
 import com.bili.diushoujuaner.database.model.OffMsg;
 import com.bili.diushoujuaner.database.model.Party;
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.entity.MessageDto;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.CommonInfoMgt;
 import com.bili.diushoujuaner.mgt.ContactVoMgt;
 import com.bili.diushoujuaner.mgt.MemberMgt;
@@ -49,7 +49,7 @@ public class PartyServiceImpl implements PartyService {
 	
 	@Override
 	public ResponseDto getPartyUnGroup(long partyNo, String accessToken) {
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(userNo != partyMgt.getUserNoByPartyNo(partyNo)){
 			//非管理员，不能解散
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
@@ -72,7 +72,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public ResponseDto addMembersToParty(long partyNo, String members, String accessToken) {
 		List<Long> memberNoList = JSON.parseObject(members, new TypeReference<List<Long>>(){}.getType());
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(!memberMgt.isMember(partyNo, userNo)){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "非群成员不能执行添加操作", null);
 		}
@@ -104,7 +104,7 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public ResponseDto getMemberForceExit(long partyNo, long memberNo, String accessToken) {
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(userNo != partyMgt.getUserNoByPartyNo(partyNo)){
 			//非管理员，不能强制推出用户
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
@@ -130,7 +130,7 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public ResponseDto getMemberExit(long partyNo, String accessToken) {
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(userNo == partyMgt.getUserNoByPartyNo(partyNo)){
 			// 成员退出，不允许管理员退出
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
@@ -154,7 +154,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public ResponseDto getPartyApplyAgree(long partyNo, long memberNo, String accessToken) {
 		//accessToken 作为群主，同意memberNo用户加入群
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(userNo != partyMgt.getUserNoByPartyNo(partyNo)){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "您没有该权限", null);
 		}
@@ -182,7 +182,7 @@ public class PartyServiceImpl implements PartyService {
 		IoSession session = IOSessionManager.getSessionMobile(userNo);
 		if(session != null){
 			MessageDto messageDto = new MessageDto();
-			messageDto.setSenderNo(CustomSessionManager.getCustomSession(accessToken).getUserNo());
+			messageDto.setSenderNo(CustomSessionUtil.getCustomSession(accessToken).getUserNo());
 			messageDto.setReceiverNo(userNo);
 			messageDto.setSerialNo(CommonUtils.getSerialNo());
 			messageDto.setMsgType(ConstantUtils.CHAT_PARTY_APPLY);
@@ -193,7 +193,7 @@ public class PartyServiceImpl implements PartyService {
 			Transceiver.getInstance().addSendTask(messageDto, session);
 		}else{
 			OffMsg offMsg = new OffMsg();
-			offMsg.setFromNo(CustomSessionManager.getCustomSession(accessToken).getUserNo());
+			offMsg.setFromNo(CustomSessionUtil.getCustomSession(accessToken).getUserNo());
 			offMsg.setToNo(userNo);
 			offMsg.setContent(content);
 			offMsg.setTime(partyNo + "");
@@ -207,7 +207,7 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public ResponseDto addParty(MultipartFile file, String partyName, String accessToken) {
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		String filePath = CommonUtils.processHeadImage(file);
 		Party party = partyMgt.addParty(userNo, partyName, filePath);
 		User user = userMgt.getUserByUserNo(userNo);
@@ -224,7 +224,7 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public ResponseDto modifyPartyName(long partyNo, String partyName, String accessToken) {
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		if(!partyMgt.isPermitHeadModify(partyNo, userNo)){
 			CommonUtils.getResponse(ConstantUtils.FAIL, "暂无修改权限", null);
 		}
@@ -246,7 +246,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public ResponseDto modifyPartyIntroduce(long partyNo, String introduce, String accessToken) {
 		introduce = CommonUtils.getLimitContent(introduce, ConstantUtils.CONTENT_LENGTH_PARTY_INTRODUCE);
-		if(!partyMgt.isPermitHeadModify(partyNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+		if(!partyMgt.isPermitHeadModify(partyNo, CustomSessionUtil.getCustomSession(accessToken).getUserNo())){
 			CommonUtils.getResponse(ConstantUtils.FAIL, "暂无修改权限", null);
 		}
 		if(partyMgt.updateIntroduce(partyNo, introduce)){

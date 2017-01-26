@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import com.bili.diushoujuaner.chat.MemberManager;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.MemberMgt;
 import com.bili.diushoujuaner.service.MemberService;
 
@@ -19,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ResponseDto modifyMemberName(long partyNo, String memberName, String accessToken) {
-		long userNo = CustomSessionManager.getCustomSession(accessToken).getUserNo();
+		long userNo = CustomSessionUtil.getCustomSession(accessToken).getUserNo();
 		String tmpName = CommonUtils.getLimitContent(memberName, ConstantUtils.CONTENT_LENGTH_MEMBER_NAME);
 		if(memberMgt.modifyMemberName(partyNo, userNo, tmpName)){
 			new Thread(){

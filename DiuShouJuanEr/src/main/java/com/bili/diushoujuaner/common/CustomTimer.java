@@ -9,10 +9,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import com.bili.diushoujuaner.chat.Transceiver;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
-import com.bili.diushoujuaner.common.entity.MessageDto;
-import com.bili.diushoujuaner.common.springcontext.SpringContextUtil;
 import com.bili.diushoujuaner.database.model.OffMsg;
 import com.bili.diushoujuaner.database.model.UserBo;
+import com.bili.diushoujuaner.entity.MessageDto;
 import com.bili.diushoujuaner.mgt.CommonInfoMgt;
 import com.bili.diushoujuaner.mgt.FriendMgt;
 import com.bili.diushoujuaner.mgt.OffMsgMgt;

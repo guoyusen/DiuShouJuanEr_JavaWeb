@@ -27,18 +27,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bili.diushoujuaner.common.entity.MessageDto;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
-import com.bili.diushoujuaner.common.springcontext.SpringContextUtil;
 import com.bili.diushoujuaner.database.model.CommonInfo;
 import com.bili.diushoujuaner.database.model.CustomSession;
 import com.bili.diushoujuaner.database.model.OffMsg;
 import com.bili.diushoujuaner.database.model.Picture;
+import com.bili.diushoujuaner.entity.MessageDto;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.CommonInfoMgt;
 import com.bili.diushoujuaner.mgt.OffMsgMgt;
 
 public class CommonUtils {
+	
+	private CommonUtils() {}
 
 	private static Random random = new Random();
 
@@ -117,7 +117,7 @@ public class CommonUtils {
 	 * @return userNo(long)
 	 */
 	public static long getUserNoFromAccessToken(String accessToken){
-		CustomSession customSession = CustomSessionManager.getCustomSession(accessToken);
+		CustomSession customSession = CustomSessionUtil.getCustomSession(accessToken);
 		if(customSession != null){
 			return customSession.getUserNo();
 		}else{

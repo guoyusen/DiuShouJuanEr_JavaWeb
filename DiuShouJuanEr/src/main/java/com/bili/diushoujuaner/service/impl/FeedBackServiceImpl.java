@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.FeedBackMgt;
 import com.bili.diushoujuaner.service.FeedBackService;
 
@@ -19,7 +19,7 @@ public class FeedBackServiceImpl implements FeedBackService {
 	@Override
 	public ResponseDto addFeedBack(String content, String accessToken) {
 		content = CommonUtils.getLimitContent(content, ConstantUtils.CONTENT_LENGTH_FEEDBACK);
-		if(feedBackMgt.addFeedBack(content, CustomSessionManager.getCustomSession(accessToken).getUserNo()) > 0){
+		if(feedBackMgt.addFeedBack(content, CustomSessionUtil.getCustomSession(accessToken).getUserNo()) > 0){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "意见反馈成功", null);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "意见反馈成功", null);

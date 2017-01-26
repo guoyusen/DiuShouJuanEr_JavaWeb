@@ -89,7 +89,7 @@
 		</property>
 	</bean>
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-	<bean id="SpringContextUtil" class="com.bili.diushoujuaner.common.springcontext.SpringContextUtil" scope="singleton"/>
+	<bean id="SpringContextUtil" class="com.bili.diushoujuaner.common.SpringContextUtil" scope="singleton"/>
 	<bean id="transceiver" class="com.bili.diushoujuaner.chat.Transceiver" scope="singleton" init-method="init"></bean>
 	
     <bean id="customTimer" class="com.bili.diushoujuaner.common.CustomTimer"></bean>  

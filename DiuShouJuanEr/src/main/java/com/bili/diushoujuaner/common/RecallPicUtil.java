@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.common.recallpic;
+package com.bili.diushoujuaner.common;
 
 import java.io.File;
 import java.util.HashMap;
@@ -6,10 +6,9 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.database.model.Picture;
 
-public class RecallPicManager {
+public class RecallPicUtil {
 
 	private static Map<String,Map<String,Picture>> pictureMap = new HashMap<>();
 	
@@ -81,13 +80,6 @@ public class RecallPicManager {
 			pictureMap.put(userKey, tmpMap);
 		}
 		System.out.println(pictureMap.toString());
-	}
-	
-	public static void main(String[] args) {
-		Picture picture = new Picture();
-		picture.setRealPath("D:/ServerData/album/2016/01/18/1.jpg");
-		addPicture("10001Client/Borwser", picture);
-		System.out.println(picture);
 	}
 
 }

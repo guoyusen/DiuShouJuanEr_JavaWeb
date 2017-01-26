@@ -11,7 +11,6 @@ import com.bili.diushoujuaner.mgt.FeedBackMgt;
 @Repository
 public class FeedBackMgtImpl implements FeedBackMgt {
 	
-	
 	@Autowired
 	FeedBackMapper feedBackMapper;
 

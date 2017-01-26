@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.bili.diushoujuaner.common.CommonUtils;
-import com.bili.diushoujuaner.common.entity.MessageDto;
 import com.bili.diushoujuaner.common.pinyin.PinyinComparator;
 import com.bili.diushoujuaner.database.model.ContactVo;
+import com.bili.diushoujuaner.entity.MessageDto;
 
 public class CommonTest {
 

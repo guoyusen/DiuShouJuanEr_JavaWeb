@@ -7,14 +7,14 @@ import com.bili.diushoujuaner.mgt.CustomSessionMgt;
 import com.bili.diushoujuaner.mgt.UserMgt;
 import com.bili.diushoujuaner.mgt.VerifyCodeMgt;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
+import com.bili.diushoujuaner.common.RecallPicUtil;
 import com.bili.diushoujuaner.chat.iosession.IOSessionManager;
 import com.bili.diushoujuaner.common.CommonUtils;
-import com.bili.diushoujuaner.common.recallpic.RecallPicManager;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
 import com.bili.diushoujuaner.database.model.CustomSession;
 import com.bili.diushoujuaner.database.model.User;
 import com.bili.diushoujuaner.database.model.VerifyCode;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.service.UserService;
 
 @Service
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseDto updateUserInfo(User user, String accessToken) {
-		User result = userMgt.updateUserInfo(user, CustomSessionManager.getCustomSession(accessToken).getUserNo());
+		User result = userMgt.updateUserInfo(user, CustomSessionUtil.getCustomSession(accessToken).getUserNo());
 		if(result != null){
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "用户信息更新成功", result);
 		}
@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
 		User user = userMgt.getUserByMobile(mobile);
 		if (user != null && user.getUserPsd().equals(password)) {
 			userMgt.updateUserOnlineStatus(user.getUserNo(), true);
-			RecallPicManager.clearUserPicture(user.getUserNo() + deviceType, true);
+			RecallPicUtil.clearUserPicture(user.getUserNo() + deviceType, true);
 			IOSessionManager.closeSession(user.getUserNo(), CommonUtils.getDeviceType(deviceType));
 			CustomSession customSession = customSessionMgt.updateCustomSession(accessToken, user.getUserNo(), CommonUtils.getDeviceType(deviceType));
 			customSession.setPassWord(user.getUserPsd());
-			CustomSessionManager.addCustomSession(customSession);
+			CustomSessionUtil.addCustomSession(customSession);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "登录成功", customSession);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "账号或密码错误", null);
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
 			String accessToken = CommonUtils.getRandomAccessToken();
             CustomSession customSession = customSessionMgt.updateCustomSession(accessToken, user.getUserNo(), CommonUtils.getDeviceType(deviceType));
 			
-			CustomSessionManager.addCustomSession(customSession);
+			CustomSessionUtil.addCustomSession(customSession);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "您已注册成功", customSession);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.ERROR, "服务器贪玩去了...", null);
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 			String accessToken = CommonUtils.getRandomAccessToken();
             CustomSession customSession = customSessionMgt.updateCustomSession(accessToken, user.getUserNo(), CommonUtils.getDeviceType(deviceType));
 			
-			CustomSessionManager.addCustomSession(customSession);
+			CustomSessionUtil.addCustomSession(customSession);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "密码重置成功", customSession);
 		}else{
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "密码重置失败", null);
@@ -165,8 +165,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseDto getUserLogout(String accessToken, String deviceType) {
 		if(userMgt.updateUserOnlineStatus(CommonUtils.getUserNoFromAccessToken(accessToken), false)){
-			CustomSessionManager.removeCustomSession(accessToken);
-			RecallPicManager.clearUserPicture(CommonUtils.getUserNoFromAccessToken(accessToken) + deviceType, true);
+			CustomSessionUtil.removeCustomSession(accessToken);
+			RecallPicUtil.clearUserPicture(CommonUtils.getUserNoFromAccessToken(accessToken) + deviceType, true);
 			return CommonUtils.getResponse(ConstantUtils.SUCCESS, "退出账号成功", null);
 		}
 		return CommonUtils.getResponse(ConstantUtils.FAIL, "退出账号失败", null);

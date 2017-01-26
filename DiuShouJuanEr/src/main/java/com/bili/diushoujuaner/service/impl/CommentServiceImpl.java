@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
 import com.bili.diushoujuaner.database.model.Comment;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.CommentMgt;
 import com.bili.diushoujuaner.service.CommentService;
 
@@ -19,7 +19,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public ResponseDto removeCommentByCommentNo(long commentNo, String accessToken) {
-		if(!commentMgt.getPermitionForRemove(commentNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+		if(!commentMgt.getPermitionForRemove(commentNo, CustomSessionUtil.getCustomSession(accessToken).getUserNo())){
 			return CommonUtils.getResponse(ConstantUtils.ERROR, "非法操作", null);
 		}
 		

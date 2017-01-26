@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.mgt.UserMgt;
 import com.bili.diushoujuaner.mgt.VerifyCodeMgt;

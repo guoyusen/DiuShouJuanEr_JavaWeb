@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
 
 public class CustomSessionInterceptor implements HandlerInterceptor {
 	
@@ -51,7 +51,7 @@ public class CustomSessionInterceptor implements HandlerInterceptor {
         		}
         	}
         	//进入home页面，判断权限
-        	if(accessToken == null || CustomSessionManager.getCustomSession(accessToken) == null){
+        	if(accessToken == null || CustomSessionUtil.getCustomSession(accessToken) == null){
             	response.sendRedirect("login");
             	return false;
             }
@@ -59,7 +59,7 @@ public class CustomSessionInterceptor implements HandlerInterceptor {
         	accessToken = request.getHeader("AccessToken");
         	deviceType = request.getHeader("Device-Type");
         	if(accessToken == null 
-        			|| CustomSessionManager.getCustomSession(accessToken) == null
+        			|| CustomSessionUtil.getCustomSession(accessToken) == null
         			|| deviceType == null
         			|| !CommonUtils.isDeviceTypelegal(deviceType)){
         		response.setContentType("text/html;charset=UTF-8");

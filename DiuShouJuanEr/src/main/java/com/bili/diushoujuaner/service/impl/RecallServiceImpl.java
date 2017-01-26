@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.bili.diushoujuaner.common.CommonUtils;
 import com.bili.diushoujuaner.common.ConstantUtils;
-import com.bili.diushoujuaner.common.entity.ResponseDto;
-import com.bili.diushoujuaner.common.session.CustomSessionManager;
+import com.bili.diushoujuaner.common.CustomSessionUtil;
 import com.bili.diushoujuaner.database.model.Comment;
 import com.bili.diushoujuaner.database.model.Picture;
 import com.bili.diushoujuaner.database.model.Recall;
+import com.bili.diushoujuaner.entity.ResponseDto;
 import com.bili.diushoujuaner.mgt.CommentMgt;
 import com.bili.diushoujuaner.mgt.ResponMgt;
 import com.bili.diushoujuaner.mgt.RecallMgt;
@@ -85,7 +85,7 @@ public class RecallServiceImpl implements RecallService {
 
 	@Override
 	public ResponseDto removeRecallByRecallNo(long recallNo, String accessToken) {
-		if(!recallMgt.getPermitionForRemove(recallNo, CustomSessionManager.getCustomSession(accessToken).getUserNo())){
+		if(!recallMgt.getPermitionForRemove(recallNo, CustomSessionUtil.getCustomSession(accessToken).getUserNo())){
 			return CommonUtils.getResponse(ConstantUtils.FAIL, "非法操作", null);
 		}
 		

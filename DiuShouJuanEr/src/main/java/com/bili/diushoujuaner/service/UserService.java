@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.service;
 
-import com.bili.diushoujuaner.common.entity.ResponseDto;
 import com.bili.diushoujuaner.database.model.User;
+import com.bili.diushoujuaner.entity.ResponseDto;
 
 public interface UserService {
 
